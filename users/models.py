@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
     
     
     
-    def create_superuser(self, username, email, phone_number, password, **kwargs):
+    def create_superuser(self, username, email, password, **kwargs):
         """
         """
         if not username:
