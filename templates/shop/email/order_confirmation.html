@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #046A38 0%, #058a48 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .order-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #046A38;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .order-info p {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .order-items {
+            margin: 20px 0;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .total-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .total-row.grand-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #046A38;
+            border-top: 2px solid #046A38;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #ffc107;
+            color: #000;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #046A38 0%, #058a48 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🎉 Order Confirmed!</h1>
+            <p>Thank you for your order</p>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ user.first_name|default:user.username }},</p>
+            <p>We've received your order and will process it shortly. Here are your order details:</p>
+
+            <div class="order-info">
+                <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+                <p><strong>Payment Status:</strong> <span class="status-badge">{{ order.payment_status|upper }}</span>
+                </p>
+            </div>
+
+            <h3>Shipping Address</h3>
+            <p>
+                {{ order.shipping_name }}<br>
+                {{ order.shipping_address_line1 }}<br>
+                {{ order.shipping_city }}, {{ order.shipping_state }}<br>
+                {{ order.shipping_country }}<br>
+                Phone: {{ order.shipping_phone }}
+            </p>
+
+            <h3>Order Items</h3>
+            <div class="order-items">
+                {% for item in order.items.all %}
+                <div class="item">
+                    <span>{{ item.product_name }} × {{ item.quantity }}</span>
+                    <span><strong>₦{{ item.total_price|floatformat:0 }}</strong></span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="total-section">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>₦{{ order.subtotal|floatformat:0 }}</span>
+                </div>
+                <div class="total-row">
+                    <span>Shipping:</span>
+                    <span>₦{{ order.shipping_cost|floatformat:0 }}</span>
+                </div>
+                <div class="total-row">
+                    <span>Tax (7.5%):</span>
+                    <span>₦{{ order.tax|floatformat:0 }}</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total:</span>
+                    <span>₦{{ order.total_amount|floatformat:0 }}</span>
+                </div>
+            </div>
+
+            {% if order.payment_status == 'pending' %}
+            <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>⚠️ Payment Pending</strong></p>
+                <p style="margin: 5px 0 0 0;">
+                    {% if order.payment_method == 'cod' %}
+                    You selected Cash on Delivery. Please have the exact amount ready when your order arrives.
+                    {% else %}
+                    Please complete your payment to process your order.
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
+
+            <p>We'll send you another email once your payment is confirmed and your order is being processed.</p>
+
+            <p>If you have any questions, please don't hesitate to contact us.</p>
+
+            <p>Thank you for shopping with us!</p>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Nestova. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply to this message.</p>
+        </div>
+    </div>
+</body>
+
+</html>

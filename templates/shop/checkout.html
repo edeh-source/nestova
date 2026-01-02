@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    :root {
+        --emerald-green: #046A38;
+        --emerald-light: #058a48;
+        --metallic-gold: #D4AF37;
+        --gold-light: #e6c45a;
+        --charcoal-gray: #333333;
+    }
+
+    .checkout-section {
+        padding: 60px 0;
+        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        min-height: 100vh;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        color: white;
+        padding: 80px 0 50px;
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,128L48,138.7C96,149,192,171,288,165.3C384,160,480,128,576,128C672,128,768,160,864,165.3C960,171,1056,149,1152,133.3C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        background-size: cover;
+        bottom: 0;
+    }
+
+    .page-header h1 {
+        font-weight: 800;
+        font-size: 3rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-steps {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+        gap: 20px;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #94a3b8;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .progress-step.active .step-number {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        color: white;
+        border-color: var(--emerald-green);
+        box-shadow: 0 5px 20px rgba(4, 106, 56, 0.3);
+    }
+
+    .progress-step.completed .step-number {
+        background: linear-gradient(135deg, var(--metallic-gold) 0%, var(--gold-light) 100%);
+        color: white;
+        border-color: var(--metallic-gold);
+    }
+
+    .step-label {
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .checkout-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 8px 32px rgba(4, 106, 56, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .checkout-card h3 {
+        font-weight: 700;
+        color: var(--emerald-green);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--emerald-green);
+        box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 16px 32px;
+        font-weight: 700;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(4, 106, 56, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(4, 106, 56, 0.5);
+    }
+
+    .order-summary {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        padding: 25px;
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .summary-total {
+        font-size: 1.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="text-center text-white mt-3"><i class="fas fa-shopping-cart me-3"></i>Checkout</h1>
+        <p class="text-center mb-0" style="font-size: 1.1rem;">Complete your order securely</p>
+    </div>
+</div>
+
+<section class="checkout-section">
+    <div class="container">
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="progress-step completed">
+                <div class="step-number"><i class="fas fa-check"></i></div>
+                <span class="step-label">Cart</span>
+            </div>
+            <div class="progress-step active">
+                <div class="step-number">2</div>
+                <span class="step-label">Checkout</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <span class="step-label">Complete</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <form method="post" action="{% url 'shop:checkout' %}">
+                    {% csrf_token %}
+
+                    <!-- Shipping Information -->
+                    <div class="checkout-card">
+                        <h3><i class="fas fa-truck"></i> Shipping Information</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">First Name</label>
+                                <input type="text" name="first_name" class="form-control" required
+                                    value="{{ user.first_name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" required
+                                    value="{{ user.last_name }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" name="email" class="form-control" required value="{{ user.email }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Phone Number</label>
+                                <input type="tel" name="phone_number" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Address</label>
+                                <input type="text" name="address" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">City</label>
+                                <input type="text" name="city" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">State</label>
+                                <input type="text" name="state" class="form-control" required
+                                    placeholder="e.g., Lagos, Abuja, Rivers">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i> Shipping cost varies by state
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="checkout-card">
+                        <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="payment_method" id="paystack"
+                                value="paystack" checked>
+                            <label class="form-check-label" for="paystack">
+                                <strong>Paystack</strong> - Pay securely with card
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
+                            <label class="form-check-label" for="cod">
+                                <strong>Cash on Delivery</strong>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        <i class="fas fa-lock me-2"></i>Place Order Securely
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="order-summary">
+                    <h4 class="mb-4"><i class="fas fa-receipt me-2"></i>Order Summary</h4>
+                    {% for item in cart_items %}
+                    <div class="summary-item">
+                        <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                        <span class="fw-bold">₦{{ item.get_total_price|floatformat:0 }}</span>
+                    </div>
+                    {% endfor %}
+                    <div class="summary-item">
+                        <span class="fw-bold">Subtotal</span>
+                        <span class="fw-bold">₦{{ subtotal|floatformat:0 }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="fw-bold">Shipping</span>
+                        <span class="{% if shipping_cost == 0 %}text-muted{% else %}fw-bold{% endif %}">
+                            {% if shipping_cost == 0 %}
+                            Calculated at checkout
+                            {% else %}
+                            ₦{{ shipping_cost|floatformat:0 }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="fw-bold">Tax (7.5%)</span>
+                        <span class="fw-bold">₦{{ tax|floatformat:0 }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+                        <span class="h5 mb-0">Total</span>
+                        <span class="summary-total">₦{{ total|floatformat:0 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">Available Apartments</h1>
+            <p class="mb-0">
+              Discover your perfect home from our curated collection of premium apartments. 
+              Browse through luxury properties available for short-term and long-term stays.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li class="current">Apartments</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <!-- Properties Section -->
+  <section id="properties" class="properties section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row">
+
+        <div class="col-lg-8">
+
+          <div class="properties-header mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+              <div class="view-toggle d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm view-btn active" data-view="grid">
+                  <i class="bi bi-grid-3x3-gap"></i> Grid
+                </button>
+                <button class="btn btn-outline-secondary btn-sm view-btn" data-view="list">
+                  <i class="bi bi-list"></i> List
+                </button>
+              </div>
+              <div class="sort-dropdown">
+                <form method="GET" action="{% url 'apartment_list' %}" id="sortForm">
+                  <select class="form-select form-select-sm" name="sort" onchange="document.getElementById('sortForm').submit();">
+                    <option value="newest" {% if request.GET.sort == 'newest' or not request.GET.sort %}selected{% endif %}>Sort by: Newest</option>
+                    <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                  </select>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="properties-grid view-grid active" data-aos="fade-up" data-aos-delay="200">
+            <div class="row g-4">
+
+              {% for apartment in apartments %}
+              <div class="col-lg-6 col-md-6">
+                <div class="property-card">
+                  <div class="property-image">
+                    {% if apartment.main_image %}
+                    <img src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800" alt="{{ apartment.title }}" class="img-fluid">
+                    {% endif %}
+                    <div class="property-badges">
+                      {% if apartment.status == 'available' %}
+                      <span class="badge featured">Available</span>
+                      {% elif apartment.status == 'maintenance' %}
+                      <span class="badge new">Maintenance</span>
+                      {% elif apartment.status == 'booked' %}
+                      <span class="badge sold">Booked</span>
+                      {% endif %}
+                      {% if apartment.property_type %}
+                      <span class="badge for-sale">{{ apartment.property_type.name }}</span>
+                      {% endif %}
+                    </div>
+                    <div class="property-overlay">
+                      <button class="favorite-btn"><i class="bi bi-heart"></i></button>
+                      {% if apartment.images.count > 0 %}
+                      <button class="gallery-btn" data-count="{{ apartment.images.count }}"><i class="bi bi-images"></i></button>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="property-content">
+                    <div class="property-price">${{ apartment.price_per_night }}<span>/night</span></div>
+                    <h4 class="property-title">{{ apartment.title }}</h4>
+                    <p class="property-location"><i class="bi bi-geo-alt"></i> {{ apartment.address }}, {{ apartment.city }}, {{ apartment.state }}</p>
+                    <div class="property-features">
+                      <span><i class="bi bi-house"></i> {{ apartment.bedrooms }} Bed</span>
+                      <span><i class="bi bi-water"></i> {{ apartment.bathrooms }} Bath</span>
+                      <span><i class="bi bi-arrows-angle-expand"></i> {{ apartment.square_feet }} sqft</span>
+                    </div>
+                    <div class="property-agent">
+                      <img src="{% static 'assets/img/real-estate/agent-1.webp' %}" alt="Owner" class="agent-avatar">
+                      <div class="agent-info">
+                        {% if apartment.owner %}
+                        <strong>{{ apartment.owner.get_full_name|default:apartment.owner.username }}</strong>
+                        {% else %}
+                        <strong>Property Manager</strong>
+                        {% endif %}
+                        <div class="agent-contact">
+                          <small><i class="bi bi-people"></i> Max {{ apartment.max_guests }} guests</small>
+                        </div>
+                      </div>
+                    </div>
+                    <a href="{{ apartment.get_absolute_url}}" class="btn btn-primary w-100">View Details</a>
+                  </div>
+                </div>
+              </div><!-- End Property Item -->
+              {% empty %}
+              <div class="col-12">
+                <div class="text-center py-5">
+                  <i class="bi bi-search" style="font-size: 4rem; color: #ccc;"></i>
+                  <h3 class="mt-3">No Apartments Found</h3>
+                  <p class="text-muted">Try adjusting your filters or search criteria</p>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+          </div>
+
+          <div class="properties-list view-list" data-aos="fade-up" data-aos-delay="200">
+
+            {% for apartment in apartments %}
+            <div class="property-list-item">
+              <div class="row align-items-center">
+                <div class="col-lg-4">
+                  <div class="property-image">
+                    {% if apartment.main_image %}
+                    <img src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800" alt="{{ apartment.title }}" class="img-fluid">
+                    {% endif %}
+                    <div class="property-badges">
+                      {% if apartment.status == 'available' %}
+                      <span class="badge featured">Available</span>
+                      {% elif apartment.status == 'booked' %}
+                      <span class="badge sold">Booked</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="property-content">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <div>
+                        <h4 class="property-title mb-1">{{ apartment.title }}</h4>
+                        <p class="property-location mb-2"><i class="bi bi-geo-alt"></i> {{ apartment.address }}, {{ apartment.city }}, {{ apartment.state }}</p>
+                      </div>
+                      <div class="property-price">${{ apartment.price_per_night }}<span>/night</span></div>
+                    </div>
+                    <div class="property-features mb-3">
+                      <span><i class="bi bi-house"></i> {{ apartment.bedrooms }} Bed</span>
+                      <span><i class="bi bi-water"></i> {{ apartment.bathrooms }} Bath</span>
+                      <span><i class="bi bi-arrows-angle-expand"></i> {{ apartment.square_feet }} sqft</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      
+                      <div class="property-actions">
+                        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
+                        <a href="{{ apartment.get_absolute_url }}" class="btn btn-primary btn-sm">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Property List Item -->
+            {% empty %}
+            <div class="text-center py-5">
+              <i class="bi bi-search" style="font-size: 4rem; color: #ccc;"></i>
+              <h3 class="mt-3">No Apartments Found</h3>
+              <p class="text-muted">Try adjusting your filters or search criteria</p>
+            </div>
+            {% endfor %}
+
+          </div>
+
+          <!-- Pagination -->
+          {% if apartments.has_other_pages %}
+          <nav class="mt-5" data-aos="fade-up" data-aos-delay="300">
+            <ul class="pagination justify-content-center">
+              {% if apartments.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ apartments.previous_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.property_type %}&property_type={{ request.GET.property_type }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}{% if request.GET.bathrooms %}&bathrooms={{ request.GET.bathrooms }}{% endif %}">Previous</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              {% endif %}
+
+              {% for num in apartments.paginator.page_range %}
+              {% if apartments.number == num %}
+              <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+              {% elif num > apartments.number|add:'-3' and num < apartments.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.property_type %}&property_type={{ request.GET.property_type }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}{% if request.GET.bathrooms %}&bathrooms={{ request.GET.bathrooms }}{% endif %}">{{ num }}</a></li>
+              {% endif %}
+              {% endfor %}
+
+              {% if apartments.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ apartments.next_page_number }}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.property_type %}&property_type={{ request.GET.property_type }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}{% if request.GET.bathrooms %}&bathrooms={{ request.GET.bathrooms }}{% endif %}">Next</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+          {% endif %}
+
+        </div>
+
+        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+
+          <div class="properties-sidebar">
+
+            <div class="filter-widget">
+              <h5 class="filter-title">Filter Properties</h5>
+
+              <form method="GET" action="{% url 'apartment_list' %}">
+                <div class="filter-section">
+                  <label class="form-label">Search</label>
+                  <input type="text" name="search" class="form-control" placeholder="Search apartments..." value="{{ request.GET.search }}">
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Property Type</label>
+                  <select class="form-select" name="property_type">
+                    <option value="">All Types</option>
+                    {% for property in apartmentchoice %}
+                    <option value="{{ property }}" {% if request.GET.property_type == property %}selected{% endif %}>{{ property }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Price Range (per night)</label>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="{{ request.GET.min_price }}">
+                    </div>
+                    <div class="col-6">
+                      <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="{{ request.GET.max_price }}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Bedrooms</label>
+                  <div class="bedroom-filter">
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if not request.GET.bedrooms %}active{% endif %}" onclick="setFilter('bedrooms', '')">Any</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bedrooms == '1' %}active{% endif %}" onclick="setFilter('bedrooms', '1')">1+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bedrooms == '2' %}active{% endif %}" onclick="setFilter('bedrooms', '2')">2+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bedrooms == '3' %}active{% endif %}" onclick="setFilter('bedrooms', '3')">3+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bedrooms == '4' %}active{% endif %}" onclick="setFilter('bedrooms', '4')">4+</button>
+                  </div>
+                  <input type="hidden" name="bedrooms" id="bedroomsInput" value="{{ request.GET.bedrooms }}">
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Bathrooms</label>
+                  <div class="bathroom-filter">
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if not request.GET.bathrooms %}active{% endif %}" onclick="setFilter('bathrooms', '')">Any</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bathrooms == '1' %}active{% endif %}" onclick="setFilter('bathrooms', '1')">1+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bathrooms == '2' %}active{% endif %}" onclick="setFilter('bathrooms', '2')">2+</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn {% if request.GET.bathrooms == '3' %}active{% endif %}" onclick="setFilter('bathrooms', '3')">3+</button>
+                  </div>
+                  <input type="hidden" name="bathrooms" id="bathroomsInput" value="{{ request.GET.bathrooms }}">
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Location</label>
+                  <select class="form-select" name="city">
+                    <option value="">All Cities</option>
+                    {% for city in cities %}
+                    <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+              </form>
+
+            </div>
+
+            <div class="featured-properties mt-4">
+              <h5>Featured Apartments</h5>
+
+              {% for apartment in apartments|slice:":3" %}
+              <div class="featured-item">
+                <div class="row g-3 align-items-center">
+                  <div class="col-5">
+                    {% if apartment.main_image %}
+                    <img src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid rounded">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400" alt="{{ apartment.title }}" class="img-fluid rounded">
+                    {% endif %}
+                  </div>
+                  <div class="col-7">
+                    <h6 class="mb-1">{{ apartment.title|truncatewords:3 }}</h6>
+                    <p class="text-muted small mb-1">{{ apartment.city }}, {{ apartment.state }}</p>
+                    <strong class="text-primary">${{ apartment.price_per_night }}/night</strong>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section><!-- /Properties Section -->
+
+</main>
+
+<script>
+  // View Toggle functionality
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const view = this.dataset.view;
+      
+      // Update active button
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Toggle views
+      if (view === 'grid') {
+        document.querySelector('.properties-grid').classList.add('active');
+        document.querySelector('.properties-list').classList.remove('active');
+      } else {
+        document.querySelector('.properties-list').classList.add('active');
+        document.querySelector('.properties-grid').classList.remove('active');
+      }
+    });
+  });
+
+  // Filter button functionality
+  function setFilter(type, value) {
+    document.getElementById(type + 'Input').value = value;
+    
+    // Update active state
+    const parent = type === 'bedrooms' ? '.bedroom-filter' : '.bathroom-filter';
+    document.querySelectorAll(parent + ' .filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+  }
+
+  // Favorite button functionality
+  document.querySelectorAll('.favorite-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.querySelector('i').classList.toggle('bi-heart');
+      this.querySelector('i').classList.toggle('bi-heart-fill');
+      this.classList.toggle('active');
+    });
+  });
+</script>
+
+<style>
+  /* List view styles */
+  .properties-list {
+    display: none;
+  }
+  
+  .properties-list.active {
+    display: block;
+  }
+  
+  .properties-grid.active {
+    display: block;
+  }
+  
+  .property-list-item {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .property-list-item:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+  
+  /* Favorite button active state */
+  .favorite-btn.active {
+    color: #dc3545;
+  }
+  
+  .favorite-btn.active i {
+    color: #dc3545;
+  }
+</style>
+
+{% endblock content %}

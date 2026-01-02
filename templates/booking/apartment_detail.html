@@ -1,0 +1,436 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">{{ apartment.title }}</h1>
+            <p class="mb-0">
+              <i class="bi bi-geo-alt"></i> {{ apartment.address }}, {{ apartment.city }}, {{ apartment.state }} {{ apartment.zip_code }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'apartment_list' %}">Apartments</a></li>
+          <li class="current">{{ apartment.title }}</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <!-- Property Details Section -->
+  <section id="property-details" class="property-details section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        <div class="col-lg-8">
+
+          <!-- Property Gallery -->
+          <div class="property-gallery" data-aos="fade-up" data-aos-delay="200">
+            <div class="main-image-container image-zoom-container">
+              {% if apartment.main_image %}
+              <img id="main-product-image" src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid main-property-image" data-zoom="{{ apartment.main_image.url }}">
+              {% else %}
+              <img id="main-product-image" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200" alt="{{ apartment.title }}" class="img-fluid main-property-image" data-zoom="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200">
+              {% endif %}
+              <div class="image-nav-buttons">
+                <button class="image-nav-btn prev-image" type="button">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="image-nav-btn next-image" type="button">
+                  <i class="bi bi-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="thumbnail-gallery thumbnail-list">
+              {% if apartment.main_image %}
+              <div class="thumbnail-item active" data-image="{{ apartment.main_image.url }}">
+                <img src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid">
+              </div>
+              {% endif %}
+              {% for image in images %}
+              <div class="thumbnail-item" data-image="{{ image.image.url }}">
+                <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="img-fluid">
+              </div>
+              {% endfor %}
+            </div>
+          </div><!-- End Property Gallery -->
+
+          <!-- Property Description -->
+          <div class="property-description" data-aos="fade-up" data-aos-delay="300">
+            <h3>About This Property</h3>
+            <p>{{ apartment.description }}</p>
+          </div><!-- End Property Description -->
+
+          <!-- Amenities -->
+          <div class="property-amenities" data-aos="fade-up" data-aos-delay="400">
+            <h3>Amenities &amp; Features</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Interior Features</h4>
+                <ul class="features-list">
+                  {% if apartment.has_ac %}
+                  <li><i class="bi bi-check-circle"></i>Air Conditioning</li>
+                  {% endif %}
+                  {% if apartment.has_heating %}
+                  <li><i class="bi bi-check-circle"></i>Heating System</li>
+                  {% endif %}
+                  {% if apartment.has_elevator %}
+                  <li><i class="bi bi-check-circle"></i>Elevator Access</li>
+                  {% endif %}
+                  {% if apartment.has_balcony %}
+                  <li><i class="bi bi-check-circle"></i>Balcony</li>
+                  {% endif %}
+                  {% if apartment.has_wifi %}
+                  <li><i class="bi bi-check-circle"></i>High-Speed WiFi</li>
+                  {% endif %}
+                  <li><i class="bi bi-check-circle"></i>{{ apartment.bedrooms }} Bedrooms</li>
+                  <li><i class="bi bi-check-circle"></i>{{ apartment.bathrooms }} Bathrooms</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h4>Exterior Features</h4>
+                <ul class="features-list">
+                  {% if apartment.has_parking %}
+                  <li><i class="bi bi-check-circle"></i>Parking Space</li>
+                  {% endif %}
+                  {% if apartment.has_pool %}
+                  <li><i class="bi bi-check-circle"></i>Swimming Pool</li>
+                  {% endif %}
+                  {% if apartment.has_gym %}
+                  <li><i class="bi bi-check-circle"></i>Fitness Center</li>
+                  {% endif %}
+                  {% if apartment.is_pet_friendly %}
+                  <li><i class="bi bi-check-circle"></i>Pet Friendly</li>
+                  {% endif %}
+                  <li><i class="bi bi-check-circle"></i>{{ apartment.square_feet }} Square Feet</li>
+                  {% if apartment.floor_number %}
+                  <li><i class="bi bi-check-circle"></i>Floor {{ apartment.floor_number }}</li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div><!-- End Amenities -->
+
+          <!-- Reviews Section -->
+          {% if reviews %}
+          <div class="property-reviews" data-aos="fade-up" data-aos-delay="500">
+            <h3>Guest Reviews</h3>
+            
+            {% if avg_ratings.total_reviews %}
+            <div class="rating-summary mb-4 p-4 bg-light rounded">
+              <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                  <h2 class="mb-0 display-4">{{ avg_ratings.avg_overall|floatformat:1 }}</h2>
+                  <div class="stars text-warning mb-2">
+                    {% for i in "12345" %}
+                    <i class="bi bi-star-fill {% if forloop.counter > avg_ratings.avg_overall %}opacity-25{% endif %}"></i>
+                    {% endfor %}
+                  </div>
+                  <small class="text-muted">{{ avg_ratings.total_reviews }} reviews</small>
+                </div>
+                <div class="col-md-9">
+                  <div class="mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small>Cleanliness</small>
+                      <small>{{ avg_ratings.avg_cleanliness|floatformat:1 }}/5</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar bg-success" style="width: {{ avg_ratings.avg_cleanliness|floatformat:0 }}%"></div>
+                    </div>
+                  </div>
+                  <div class="mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small>Communication</small>
+                      <small>{{ avg_ratings.avg_communication|floatformat:1 }}/5</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar bg-info" style="width: {{ avg_ratings.avg_communication|floatformat:0 }}%"></div>
+                    </div>
+                  </div>
+                  <div class="mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small>Location</small>
+                      <small>{{ avg_ratings.avg_location|floatformat:1 }}/5</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar bg-primary" style="width: {{ avg_ratings.avg_location|floatformat:0 }}%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small>Value for Money</small>
+                      <small>{{ avg_ratings.avg_value|floatformat:1 }}/5</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar bg-warning" style="width: {{ avg_ratings.avg_value|floatformat:0 }}%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="reviews-list">
+              {% for review in reviews %}
+              <div class="review-item mb-4 p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div class="d-flex align-items-center">
+                    <div class="review-avatar me-3">
+                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-weight: bold;">
+                        {{ review.user.first_name|first|upper }}{{ review.user.last_name|first|upper }}
+                      </div>
+                    </div>
+                    <div>
+                      <h6 class="mb-0">{{ review.user.get_full_name }}</h6>
+                      <small class="text-muted">{{ review.created_at|date:"F d, Y" }}</small>
+                    </div>
+                  </div>
+                  <div class="stars text-warning">
+                    {% for i in "12345" %}
+                    <i class="bi bi-star-fill {% if forloop.counter > review.overall_rating %}opacity-25{% endif %}"></i>
+                    {% endfor %}
+                  </div>
+                </div>
+                <h6 class="mb-2">{{ review.title }}</h6>
+                <p class="mb-0 text-muted">{{ review.comment }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Map Section -->
+          <div class="property-map" data-aos="fade-up" data-aos-delay="600">
+            <h3>Location</h3>
+            <div class="map-container">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0824050173574!2d-87.63000000000002!3d41.88844360000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2s{{ apartment.city }}%2C%20{{ apartment.state }}%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890123" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="location-details">
+              <h4>Neighborhood Information</h4>
+              <p>Located in {{ apartment.city }}, {{ apartment.state }}, this property offers convenient access to local amenities, shopping, dining, and entertainment. Easy access to public transportation and major highways.</p>
+            </div>
+          </div><!-- End Map Section -->
+
+        </div>
+
+        <div class="col-lg-4">
+
+          <!-- Property Overview -->
+          <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
+            <div class="price-tag">${{ apartment.price_per_night }}<span>/night</span></div>
+            {% if apartment.price_per_month %}
+            <div class="property-status">or ${{ apartment.price_per_month }}/month</div>
+            {% else %}
+            <div class="property-status">{{ apartment.get_status_display }}</div>
+            {% endif %}
+
+            <div class="property-address">
+              <h4>{{ apartment.address }}</h4>
+              <p>{{ apartment.city }}, {{ apartment.state }} {{ apartment.zip_code }}</p>
+            </div>
+
+            <div class="property-stats">
+              <div class="stat-item">
+                <i class="bi bi-house"></i>
+                <div>
+                  <span class="value">{{ apartment.bedrooms }}</span>
+                  <span class="label">Bedrooms</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <i class="bi bi-droplet"></i>
+                <div>
+                  <span class="value">{{ apartment.bathrooms }}</span>
+                  <span class="label">Bathrooms</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <i class="bi bi-rulers"></i>
+                <div>
+                  <span class="value">{{ apartment.square_feet }}</span>
+                  <span class="label">Sq Ft</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <i class="bi bi-people"></i>
+                <div>
+                  <span class="value">{{ apartment.max_guests }}</span>
+                  <span class="label">Max Guests</span>
+                </div>
+              </div>
+              {% if apartment.floor_number %}
+              <div class="stat-item">
+                <i class="bi bi-building"></i>
+                <div>
+                  <span class="value">{{ apartment.floor_number }}</span>
+                  <span class="label">Floor</span>
+                </div>
+              </div>
+              {% endif %}
+              <div class="stat-item">
+                <i class="bi bi-credit-card"></i>
+                <div>
+                  <span class="value">${{ apartment.security_deposit }}</span>
+                  <span class="label">Deposit</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agent Info -->
+            <div class="agent-info">
+              <div class="agent-avatar">
+                <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="{{ apartment.owner.get_full_name }}" class="img-fluid">
+              </div>
+              
+            </div><!-- End Agent Info -->
+
+            <!-- Booking Form -->
+            <div class="contact-form">
+              <h4>Book This Apartment</h4>
+              
+              {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+              {% endfor %}
+              {% endif %}
+
+              <form action="{% url 'create_booking' apartment.id %}" method="post" class="php-email-form">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <label>Check-in Date</label>
+                    <input type="date" name="check_in_date" class="form-control" id="checkInDate" required min="{{ today|date:'Y-m-d' }}">
+                  </div>
+                  <div class="col-12 form-group">
+                    <label>Check-out Date</label>
+                    <input type="date" name="check_out_date" class="form-control" id="checkOutDate" required>
+                  </div>
+                  <div class="col-12 form-group">
+                    <label>Number of Guests</label>
+                    <select name="number_of_guests" class="form-control" required>
+                      {% for i in "123456789"|make_list %}
+                      {% if forloop.counter <= apartment.max_guests %}
+                      <option value="{{ forloop.counter }}">{{ forloop.counter }} Guest{{ forloop.counter|pluralize }}</option>
+                      {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-12 form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="guest_phone" class="form-control" placeholder="+234 800 000 0000" required>
+                  </div>
+                  <div class="col-12 form-group">
+                    <label>Special Requests (Optional)</label>
+                    <textarea class="form-control" name="special_requests" rows="3" placeholder="Any special requirements..."></textarea>
+                  </div>
+
+                  <!-- Price Breakdown -->
+                  <div class="col-12 mb-3">
+                    <div class="price-breakdown p-3 bg-light rounded" id="priceBreakdown" style="display: none;">
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>${{ apartment.price_per_night }} × <span id="numberOfNights">0</span> nights</span>
+                        <span>$<span id="subtotal">0</span></span>
+                      </div>
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Security Deposit</span>
+                        <span>${{ apartment.security_deposit }}</span>
+                      </div>
+                      <hr>
+                      <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span class="text-primary">$<span id="totalPrice">0</span></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 text-center">
+                    {% if user.is_authenticated %}
+                    <button type="submit" class="btn btn-primary">
+                      <i class="bi bi-calendar-check"></i> Book Now
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">
+                      <i class="bi bi-box-arrow-in-right"></i> Login to Book
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+            </div><!-- End Booking Form -->
+
+            <!-- Social Share -->
+            <div class="social-share">
+              <h5>Share This Property</h5>
+              <div class="share-buttons">
+                <a href="#" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="share-btn twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="share-btn email"><i class="bi bi-envelope"></i></a>
+                <a href="#" class="share-btn print"><i class="bi bi-printer"></i></a>
+              </div>
+            </div><!-- End Social Share -->
+
+          </div><!-- End Property Overview -->
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section><!-- /Property Details Section -->
+
+</main>
+
+<script>
+  // Price calculation
+  const checkInInput = document.getElementById('checkInDate');
+  const checkOutInput = document.getElementById('checkOutDate');
+  const pricePerNight = {{ apartment.price_per_night }};
+  const depositAmount = {{ apartment.security_deposit }};
+
+  function calculatePrice() {
+    const checkIn = new Date(checkInInput.value);
+    const checkOut = new Date(checkOutInput.value);
+    
+    if (checkIn && checkOut && checkOut > checkIn) {
+      const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+      const subtotal = pricePerNight * nights;
+      const total = subtotal + depositAmount;
+      
+      document.getElementById('numberOfNights').textContent = nights;
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('totalPrice').textContent = total.toFixed(2);
+      document.getElementById('priceBreakdown').style.display = 'block';
+    }
+  }
+
+  checkInInput.addEventListener('change', function() {
+    const tomorrow = new Date(this.value);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    checkOutInput.min = tomorrow.toISOString().split('T')[0];
+    calculatePrice();
+  });
+
+  checkOutInput.addEventListener('change', calculatePrice);
+</script>
+
+{% endblock content %}

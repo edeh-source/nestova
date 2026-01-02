@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #046A38 0%, #058a48 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .payment-info {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .payment-info p {
+            margin: 8px 0;
+            color: #155724;
+        }
+
+        .order-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #046A38;
+            padding-top: 15px;
+            margin-top: 10px;
+            border-top: 2px solid #046A38;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .timeline {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .timeline-item {
+            padding: 10px 0;
+            border-left: 3px solid #046A38;
+            padding-left: 20px;
+            margin-left: 10px;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #046A38 0%, #058a48 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="success-icon">✅</div>
+            <h1>Payment Successful!</h1>
+            <p>Your order is confirmed and being processed</p>
+        </div>
+
+        <div class="content">
+            <p>Hi {{ user.first_name|default:user.username }},</p>
+            <p>Great news! We've received your payment and your order is now being processed.</p>
+
+            <div class="payment-info">
+                <p><strong>💳 Payment Confirmed</strong></p>
+                <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+                <p><strong>Transaction ID:</strong> {{ order.transaction_id }}</p>
+                <p><strong>Payment Method:</strong> {{ order.payment_method|title }}</p>
+                <p><strong>Amount Paid:</strong> ₦{{ order.total_amount|floatformat:0 }}</p>
+                <p><strong>Payment Date:</strong> {{ order.paid_at|date:"F d, Y - h:i A" }}</p>
+            </div>
+
+            <h3>Order Status: <span class="status-badge">{{ order.status|upper }}</span></h3>
+
+            <div class="order-summary">
+                <h4 style="margin-top: 0;">Order Summary</h4>
+                {% for item in order.items.all %}
+                <div class="summary-row">
+                    <span>{{ item.product_name }} × {{ item.quantity }}</span>
+                    <span>₦{{ item.total_price|floatformat:0 }}</span>
+                </div>
+                {% endfor %}
+                <div class="summary-row">
+                    <span>Shipping ({{ order.shipping_state }}):</span>
+                    <span>₦{{ order.shipping_cost|floatformat:0 }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax:</span>
+                    <span>₦{{ order.tax|floatformat:0 }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Paid:</span>
+                    <span>₦{{ order.total_amount|floatformat:0 }}</span>
+                </div>
+            </div>
+
+            <h3>Delivery Address</h3>
+            <p style="background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+                {{ order.shipping_name }}<br>
+                {{ order.shipping_address_line1 }}<br>
+                {{ order.shipping_city }}, {{ order.shipping_state }}<br>
+                {{ order.shipping_country }}<br>
+                Phone: {{ order.shipping_phone }}
+            </p>
+
+            <div class="timeline">
+                <h4 style="margin-top: 0;">📦 What's Next?</h4>
+                <div class="timeline-item">
+                    <strong>✓ Order Confirmed</strong><br>
+                    <small>Your order has been received and payment confirmed</small>
+                </div>
+                <div class="timeline-item">
+                    <strong>⏳ Processing</strong><br>
+                    <small>We're preparing your items for shipment (1-2 business days)</small>
+                </div>
+                <div class="timeline-item">
+                    <strong>🚚 Shipping</strong><br>
+                    <small>Your order will be shipped to your address (3-5 business days)</small>
+                </div>
+                <div class="timeline-item">
+                    <strong>🎉 Delivered</strong><br>
+                    <small>Enjoy your purchase!</small>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="http://localhost:8000/shop/order/{{ order.id }}/" class="btn">View Order Details</a>
+            </div>
+
+            <div
+                style="background-color: #e7f3ff; border-left: 4px solid #0066cc; padding: 15px; margin: 20px 0; border-radius: 8px;">
+                <p style="margin: 0;"><strong>📧 Stay Updated</strong></p>
+                <p style="margin: 5px 0 0 0;">We'll send you tracking information once your order ships. You can also
+                    check your order status anytime in your dashboard.</p>
+            </div>
+
+            <p>Thank you for choosing Nestova! If you have any questions about your order, please don't hesitate to
+                contact our customer support.</p>
+
+            <p style="margin-top: 30px;">Best regards,<br><strong>The Nestova Team</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Nestova. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply to this message.</p>
+        </div>
+    </div>
+</body>
+
+</html>
