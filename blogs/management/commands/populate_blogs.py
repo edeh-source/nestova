@@ -96,7 +96,7 @@ class Command(BaseCommand):
                 name=title,
                 slug=slug,
                 author=author,
-                status=Post.Status.published, # "Published"
+                status=Post.Status.PUBLISHED, # "Published"
                 text=f"""
                 <p>Welcome to <strong>{title}</strong>.</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
