@@ -12,7 +12,7 @@ from decimal import Decimal
 User = get_user_model()
 
 class Command(BaseCommand):
-    help = 'Generates 20, actually make that 20 dummy properties with images'
+    help = 'Generates 20 dummy properties with images (if available)'
 
     def handle(self, *args, **kwargs):
         self.stdout.write('Generating dummy properties...')
@@ -27,7 +27,8 @@ class Command(BaseCommand):
                 'first_name': 'Admin',
                 'last_name': 'User',
                 'is_staff': True,
-                'is_superuser': True
+                'is_superuser': True,
+                'phone_number': '+2348000000000'  # Add required phone number
             }
         )
         if created:
@@ -66,9 +67,25 @@ class Command(BaseCommand):
             ps, _ = PropertyStatus.objects.get_or_create(name=code)
             property_statuses.append(ps)
 
-        # Image Source
+        # Image Source - Check if directory exists
+        available_images = []
         static_img_dir = os.path.join(settings.BASE_DIR, 'static', 'assets', 'img', 'real-estate')
-        available_images = [f for f in os.listdir(static_img_dir) if f.startswith('property-') and f.endswith('.webp')]
+        
+        # Only try to list images if the directory exists
+        if os.path.exists(static_img_dir) and os.path.isdir(static_img_dir):
+            try:
+                available_images = [
+                    f for f in os.listdir(static_img_dir) 
+                    if f.startswith('property-') and f.endswith('.webp')
+                ]
+                self.stdout.write(f'Found {len(available_images)} images in static directory')
+            except Exception as e:
+                self.stdout.write(self.style.WARNING(f'Could not read images: {e}'))
+        else:
+            self.stdout.write(self.style.WARNING(
+                f'Static image directory not found: {static_img_dir}. '
+                'Properties will be created without images.'
+            ))
 
         # 2. Create Properties
         titles = [
@@ -104,15 +121,25 @@ class Command(BaseCommand):
             # Save first to get ID/Slug
             p.save()
 
-            # Attach Image
+            # Attach Image - Only if images are available
             if available_images:
                 img_name = random.choice(available_images)
                 img_path = os.path.join(static_img_dir, img_name)
                 
-                # Copy file to media
-                with open(img_path, 'rb') as f:
-                    p.featured_image.save(f"dummy_{i}_{img_name}", ContentFile(f.read()), save=True)
-
-            self.stdout.write(f'Created Property: {p.title}')
+                try:
+                    # Copy file to media
+                    with open(img_path, 'rb') as f:
+                        p.featured_image.save(
+                            f"dummy_{i}_{img_name}", 
+                            ContentFile(f.read()), 
+                            save=True
+                        )
+                    self.stdout.write(f'✅ Created Property: {p.title} (with image)')
+                except Exception as e:
+                    self.stdout.write(self.style.WARNING(
+                        f'⚠️  Created Property: {p.title} (without image - {e})'
+                    ))
+            else:
+                self.stdout.write(f'✅ Created Property: {p.title} (no images available)')
 
         self.stdout.write(self.style.SUCCESS('Successfully created 20 dummy properties'))
