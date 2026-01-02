@@ -28,7 +28,7 @@ class Apartment(models.Model):
     ]
     
     title = models.CharField(max_length=200)
-    slug = models.SlugField(blank=True, null=True, unique=True)
+    slug = models.SlugField(max_length=200, blank=True, null=True, unique=True)
     description = RichTextField()
     property_type = models.ForeignKey(ApartmentChoice, on_delete=models.SET_NULL, null=True, related_name='apartments')
     address = models.CharField(max_length=300)
@@ -84,7 +84,8 @@ class Apartment(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title)
+            self.slug = base_slug[:100]  # Reasonable slug length
         super().save(*args, **kwargs)
         
         
