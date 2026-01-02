@@ -40,9 +40,9 @@ local_settings.py
 # ===========================
 # Static and Media Files
 # ===========================
-/static/
-/staticfiles/
-/media/
+
+
+
 *.coverage
 
 # But keep these directories (they'll be empty in git)
