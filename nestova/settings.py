@@ -495,9 +495,11 @@ CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:
 
 
 
-
-
-PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URL')
+if DEBUG:
+    PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URL')
+    
+else:
+    PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URLS')
 CLIENT_ID = os.environ.get("CLIENT_ID")
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 
