@@ -365,6 +365,8 @@ if not DEBUG:
 # EMAIL CONFIGURATION
 # ==================================
 
+# settings.py - Email Configuration (FIXED)
+
 if DEBUG:
     EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
     EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
@@ -378,7 +380,7 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'users.email_backend.ResendBackend'
     RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-    DEFAULT_FROM_EMAIL = 'noreply@nestova.com'
+    DEFAULT_FROM_EMAIL = 'noreply@globaledgeconsultz.com'
 
 
 from django.contrib.messages import constants as messages
