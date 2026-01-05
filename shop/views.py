@@ -17,6 +17,9 @@ from .models import (
 )
 import json
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # ===========================
@@ -77,7 +80,7 @@ def send_order_confirmation_email(order):
         )
         return True
     except Exception as e:
-        print(f"Error sending order confirmation email: {e}")
+        logger.error(f"Error sending order confirmation email for order {order.order_number}: {e}", exc_info=True)
         return False
 
 
@@ -103,7 +106,7 @@ def send_payment_success_email(order):
         )
         return True
     except Exception as e:
-        print(f"Error sending payment success email: {e}")
+        logger.error(f"Error sending payment success email for order {order.order_number}: {e}", exc_info=True)
         return False
 import requests
 

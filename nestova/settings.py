@@ -375,6 +375,7 @@ if DEBUG:
     EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
     
     
 else:
@@ -501,7 +502,7 @@ if DEBUG:
     PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URL')
     
 else:
-    PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URLS')
+    PAYSTACK_CALLBACK_URL = os.environ.get('PAYSTACK_CALLBACK_URL')
 CLIENT_ID = os.environ.get("CLIENT_ID")
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 
