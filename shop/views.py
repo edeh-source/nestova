@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
@@ -865,12 +866,15 @@ def initialize_payment(request, order_id):
     # Convert amount to kobo (Paystack uses kobo, not naira)
     amount_in_kobo = int(order.total_amount * 100)
     
+    # Construct dynamic callback URL
+    callback_url = request.build_absolute_uri(reverse('shop:verify_payment'))
+    
     data = {
         "email": order.user.email,
         "amount": amount_in_kobo,
         "currency": "NGN",
         "reference": f"{order.order_number}-{order.id}",
-        "callback_url": settings.PAYSTACK_CALLBACK_URL,
+        "callback_url": callback_url,
         "metadata": {
             "order_id": str(order.id),
             "order_number": order.order_number,
