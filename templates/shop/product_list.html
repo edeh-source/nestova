@@ -748,7 +748,7 @@
     <div class="container">
       <div class="row d-flex justify-content-center text-center">
         <div class="col-lg-8">
-          <h1 class="animate__animated animate__fadeInDown">Smart Security Products</h1>
+          <h1 class="animate__animated animate__fadeInDown">Nestova's Smart Security Products</h1>
           <p class="mb-0 animate__animated animate__fadeInUp animate__delay-1s">
             <i class="fas fa-shield-alt me-2"></i>
             Explore our range of cutting-edge smart locks and security shields for your property
@@ -798,23 +798,15 @@
                 </label>
                 <select name="category" class="form-select">
                   <option value="">All Categories</option>
-
-
+                  {% for category in categories %}
+                  <option value="{{ category.slug }}">{{ category.slug }}</option>
+                  {% endfor %}
+                </select>
                 </select>
               </div>
 
               <!-- Product Type Filter -->
-              <div class="mb-4">
-                <label class="form-label">
-                  <i class="fas fa-cube me-1"></i>Product Type
-                </label>
-                <select name="type" class="form-select">
-                  <option value="">All Types</option>
-                  <option value="smart_lock">Smart Locks</option>
-                  <option value="smart_shield">Smart Shields</option>
-                  <option value="accessory">Accessories</option>
-                </select>
-              </div>
+              
 
               <!-- Price Range -->
               <div class="mb-4">
@@ -831,19 +823,7 @@
                 </div>
               </div>
 
-              <!-- Brand Filter -->
-              <div class="mb-4">
-                <label class="form-label">
-                  <i class="fas fa-copyright me-1"></i>Brand
-                </label>
-                <select name="brand" class="form-select">
-                  <option value="">All Brands</option>
-                  {% for brand in brands %}
-                  <option value="{{ brand }}">{{ brand }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-
+             
               <!-- Sort By -->
               <div class="mb-4">
                 <label class="form-label">

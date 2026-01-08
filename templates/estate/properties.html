@@ -40,6 +40,162 @@
     <div class="container" data-aos="fade-up" data-aos-delay="100">
 
       <div class="row">
+        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+
+          <div class="properties-sidebar">
+
+            <div class="filter-widget">
+              <h5 class="filter-title">Filter Properties</h5>
+
+              <form method="GET" action="{% url 'properties' %}" id="filter-form">
+                <!-- Preserve Sort if present -->
+                {% if search_params.sort %}
+                <input type="hidden" name="sort" value="{{ search_params.sort }}">
+                {% endif %}
+
+                <div class="filter-section">
+                  <label class="form-label">Property Type</label>
+                  <select class="form-select" name="type">
+                    <option value="">All Types</option>
+                    {% for type in property_types %}
+                    <option value="{{ type.name }}" {% if search_params.type == type.name %}selected{% endif %}>{{type.name|title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Price Range</label>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <input type="number" class="form-control" name="min_price" placeholder="Min Price"
+                        value="{{ search_params.min_price|default:'' }}">
+                    </div>
+                    <div class="col-6">
+                      <input type="number" class="form-control" name="max_price" placeholder="Max Price"
+                        value="{{ search_params.max_price|default:'' }}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Bedrooms</label>
+                  <input type="hidden" name="bedrooms" id="bedrooms_input"
+                    value="{{ search_params.bedrooms|default:'Any' }}">
+                  <div class="bedroom-filter">
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if not search_params.bedrooms or search_params.bedrooms == 'Any' %}active{% endif %}"
+                      data-value="Any" onclick="setFilterValue('bedrooms', 'Any', this)">Any</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '1' %}active{% endif %}"
+                      data-value="1" onclick="setFilterValue('bedrooms', '1', this)">1</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '2' %}active{% endif %}"
+                      data-value="2" onclick="setFilterValue('bedrooms', '2', this)">2</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '3' %}active{% endif %}"
+                      data-value="3" onclick="setFilterValue('bedrooms', '3', this)">3</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '4+' %}active{% endif %}"
+                      data-value="4+" onclick="setFilterValue('bedrooms', '4+', this)">4+</button>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Bathrooms</label>
+                  <input type="hidden" name="bathrooms" id="bathrooms_input"
+                    value="{{ search_params.bathrooms|default:'Any' }}">
+                  <div class="bathroom-filter">
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if not search_params.bathrooms or search_params.bathrooms == 'Any' %}active{% endif %}"
+                      data-value="Any" onclick="setFilterValue('bathrooms', 'Any', this)">Any</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '1' %}active{% endif %}"
+                      data-value="1" onclick="setFilterValue('bathrooms', '1', this)">1</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '2' %}active{% endif %}"
+                      data-value="2" onclick="setFilterValue('bathrooms', '2', this)">2</button>
+                    <button type="button"
+                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '3+' %}active{% endif %}"
+                      data-value="3+" onclick="setFilterValue('bathrooms', '3+', this)">3+</button>
+                  </div>
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Location</label>
+                  <input type="text" class="form-control" name="location" placeholder="Enter city or neighborhood"
+                    value="{{ search_params.location|default:'' }}">
+                </div>
+
+                <div class="filter-section">
+                  <label class="form-label">Features</label>
+                  <div class="features-filter">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="garage" name="garage" {% if 'garage' in search_params %}checked{% endif %}>
+                      <label class="form-check-label" for="garage">Garage</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="pool" name="pool" {% if 'pool' in search_params %}checked{% endif %}>
+                      <label class="form-check-label" for="pool">Swimming Pool</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="balcony" name="balcony" {% if 'balcony' in search_params %}checked{% endif %}>
+                      <label class="form-check-label" for="balcony">Balcony</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="garden" name="garden" {% if 'garden' in search_params %}checked{% endif %}>
+                      <label class="form-check-label" for="garden">Garden</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+              </form>
+              <script>
+                function setFilterValue(fieldName, value, btn) {
+                  document.getElementById(fieldName + '_input').value = value;
+                  // Reset active state for siblings
+                  let siblings = btn.parentElement.children;
+                  for (let i = 0; i < siblings.length; i++) {
+                    siblings[i].classList.remove('active');
+                  }
+                  btn.classList.add('active');
+                }
+              </script>
+            </div>
+
+            <div class="featured-properties mt-4">
+              <h5>Featured Properties</h5>
+
+              {% for prop in featured_sidebar %}
+              <div class="featured-item mb-3">
+                <div class="row g-3 align-items-center">
+                  <div class="col-5">
+                    <a href="{{ prop.get_absolute_url }}">
+                      {% if prop.featured_image %}
+                      <img src="{{ prop.featured_image.url }}" alt="{{ prop.title }}" class="img-fluid rounded"
+                        style="height: 80px; width: 100%; object-fit: cover;">
+                      {% else %}
+                      <img src="{% static 'assets/img/real-estate/property-exterior-1.webp' %}" alt="Default Image"
+                        class="img-fluid rounded" style="height: 80px; width: 100%; object-fit: cover;">
+                      {% endif %}
+                    </a>
+                  </div>
+                  <div class="col-7">
+                    <h6 class="mb-1"><a href="{{ prop.get_absolute_url }}" class="text-dark text-decoration-none">{{ prop.title|truncatechars:25 }}</a></h6>
+                    <p class="text-muted small mb-1">{{ prop.city.name }}, {{ prop.state.code }}</p>
+                    <strong class="text-primary">{{ prop.formatted_price }}</strong>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <p class="text-muted small">No featured properties available at this time.</p>
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+        </div>
 
         <div class="col-lg-8">
 
@@ -229,163 +385,7 @@
 
         </div>
 
-        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="properties-sidebar">
-
-            <div class="filter-widget">
-              <h5 class="filter-title">Filter Properties</h5>
-
-              <form method="GET" action="{% url 'properties' %}" id="filter-form">
-                <!-- Preserve Sort if present -->
-                {% if search_params.sort %}
-                <input type="hidden" name="sort" value="{{ search_params.sort }}">
-                {% endif %}
-
-                <div class="filter-section">
-                  <label class="form-label">Property Type</label>
-                  <select class="form-select" name="type">
-                    <option value="">All Types</option>
-                    {% for type in property_types %}
-                    <option value="{{ type.name }}" {% if search_params.type == type.name %}selected{% endif %}>{{
-                      type.name|title }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-
-                <div class="filter-section">
-                  <label class="form-label">Price Range</label>
-                  <div class="row g-2">
-                    <div class="col-6">
-                      <input type="number" class="form-control" name="min_price" placeholder="Min Price"
-                        value="{{ search_params.min_price|default:'' }}">
-                    </div>
-                    <div class="col-6">
-                      <input type="number" class="form-control" name="max_price" placeholder="Max Price"
-                        value="{{ search_params.max_price|default:'' }}">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="filter-section">
-                  <label class="form-label">Bedrooms</label>
-                  <input type="hidden" name="bedrooms" id="bedrooms_input"
-                    value="{{ search_params.bedrooms|default:'Any' }}">
-                  <div class="bedroom-filter">
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if not search_params.bedrooms or search_params.bedrooms == 'Any' %}active{% endif %}"
-                      data-value="Any" onclick="setFilterValue('bedrooms', 'Any', this)">Any</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '1' %}active{% endif %}"
-                      data-value="1" onclick="setFilterValue('bedrooms', '1', this)">1</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '2' %}active{% endif %}"
-                      data-value="2" onclick="setFilterValue('bedrooms', '2', this)">2</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '3' %}active{% endif %}"
-                      data-value="3" onclick="setFilterValue('bedrooms', '3', this)">3</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bedrooms == '4+' %}active{% endif %}"
-                      data-value="4+" onclick="setFilterValue('bedrooms', '4+', this)">4+</button>
-                  </div>
-                </div>
-
-                <div class="filter-section">
-                  <label class="form-label">Bathrooms</label>
-                  <input type="hidden" name="bathrooms" id="bathrooms_input"
-                    value="{{ search_params.bathrooms|default:'Any' }}">
-                  <div class="bathroom-filter">
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if not search_params.bathrooms or search_params.bathrooms == 'Any' %}active{% endif %}"
-                      data-value="Any" onclick="setFilterValue('bathrooms', 'Any', this)">Any</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '1' %}active{% endif %}"
-                      data-value="1" onclick="setFilterValue('bathrooms', '1', this)">1</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '2' %}active{% endif %}"
-                      data-value="2" onclick="setFilterValue('bathrooms', '2', this)">2</button>
-                    <button type="button"
-                      class="btn btn-outline-secondary btn-sm filter-btn width-btn {% if search_params.bathrooms == '3+' %}active{% endif %}"
-                      data-value="3+" onclick="setFilterValue('bathrooms', '3+', this)">3+</button>
-                  </div>
-                </div>
-
-                <div class="filter-section">
-                  <label class="form-label">Location</label>
-                  <input type="text" class="form-control" name="location" placeholder="Enter city or neighborhood"
-                    value="{{ search_params.location|default:'' }}">
-                </div>
-
-                <div class="filter-section">
-                  <label class="form-label">Features</label>
-                  <div class="features-filter">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="garage" name="garage" {% if 'garage' in search_params %}checked{% endif %}>
-                      <label class="form-check-label" for="garage">Garage</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="pool" name="pool" {% if 'pool' in search_params %}checked{% endif %}>
-                      <label class="form-check-label" for="pool">Swimming Pool</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="balcony" name="balcony" {% if 'balcony' in search_params %}checked{% endif %}>
-                      <label class="form-check-label" for="balcony">Balcony</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="garden" name="garden" {% if 'garden' in search_params %}checked{% endif %}>
-                      <label class="form-check-label" for="garden">Garden</label>
-                    </div>
-                  </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-              </form>
-              <script>
-                function setFilterValue(fieldName, value, btn) {
-                  document.getElementById(fieldName + '_input').value = value;
-                  // Reset active state for siblings
-                  let siblings = btn.parentElement.children;
-                  for (let i = 0; i < siblings.length; i++) {
-                    siblings[i].classList.remove('active');
-                  }
-                  btn.classList.add('active');
-                }
-              </script>
-            </div>
-
-            <div class="featured-properties mt-4">
-              <h5>Featured Properties</h5>
-
-              {% for prop in featured_sidebar %}
-              <div class="featured-item mb-3">
-                <div class="row g-3 align-items-center">
-                  <div class="col-5">
-                    <a href="{{ prop.get_absolute_url }}">
-                      {% if prop.featured_image %}
-                      <img src="{{ prop.featured_image.url }}" alt="{{ prop.title }}" class="img-fluid rounded"
-                        style="height: 80px; width: 100%; object-fit: cover;">
-                      {% else %}
-                      <img src="{% static 'assets/img/real-estate/property-exterior-1.webp' %}" alt="Default Image"
-                        class="img-fluid rounded" style="height: 80px; width: 100%; object-fit: cover;">
-                      {% endif %}
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mb-1"><a href="{{ prop.get_absolute_url }}" class="text-dark text-decoration-none">{{ prop.title|truncatechars:25 }}</a></h6>
-                    <p class="text-muted small mb-1">{{ prop.city.name }}, {{ prop.state.code }}</p>
-                    <strong class="text-primary">{{ prop.formatted_price }}</strong>
-                  </div>
-                </div>
-              </div>
-              {% empty %}
-              <p class="text-muted small">No featured properties available at this time.</p>
-              {% endfor %}
-
-            </div>
-
-          </div>
-
-        </div>
+        
 
       </div>
 

@@ -158,11 +158,7 @@
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'properties' %}">Properties</a></li>
           <li><a href="{% url 'service' %}">Services</a></li>
-          {% if request.user.is_authenticated %}
-          <li><a href="{% url 'shop:profile' %}">Dashboard</a></li>
-          {% else %}
-          <li><a href="{% url 'login' %}">Login</a></li>
-          {% endif %}
+          <li><a href="{% url 'shop:product_list' %}">Shop</a></li>
           <li><a href="{% url 'agents' %}">Agents</a></li>
           <li><a href="{% url 'post_list' %}">Blog</a></li>
           <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -171,14 +167,9 @@
               <li><a href="{% url 'agents_signup' %}">Become An Agent</a></li>
               {% endif %}
               <li><a href="{% url 'shop:profile' %}">My Dashboard</a></li>
-              <li><a href="{% url 'shop:product_list' %}">Our Shop</a></li>
-
-              {% if agent or user %}
-              <li><a href="{% url 'agent_details' %}">Agent Profile</a></li>
-              {% endif %}
             </ul>
           </li>
-          <li class="dropdown"><a><span>Catalogs</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="{% url 'apartment_list' %}">Our Apartments</a></li>
             </ul>
