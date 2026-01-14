@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<style>
+    :root {
+        --emerald-green: #046A38;
+        --emerald-light: #058a48;
+        --metallic-gold: #D4AF37;
+    }
+
+    .order-detail-section {
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        padding: 80px 0;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        color: white;
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+        border-radius: 0 0 30px 30px;
+    }
+
+    .order-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(4, 106, 56, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .order-header {
+        border-bottom: 3px solid var(--emerald-green);
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .status-badge {
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .status-processing {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .status-shipped {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .status-delivered {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .status-cancelled {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .payment-paid {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .payment-pending {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .payment-failed {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .total-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+
+    .grand-total {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--emerald-green);
+        border-top: 3px solid var(--emerald-green);
+        padding-top: 20px;
+        margin-top: 15px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(4, 106, 56, 0.4);
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-bottom: 30px;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -22px;
+        top: 8px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #dee2e6;
+    }
+
+    .timeline-item.active::before {
+        background: var(--emerald-green);
+        box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.2);
+    }
+
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: -17px;
+        top: 20px;
+        width: 2px;
+        height: calc(100% - 10px);
+        background: #dee2e6;
+    }
+
+    .timeline-item:last-child::after {
+        display: none;
+    }
+</style>
+
+<div class="page-header">
+    <div class="container">
+        <h1 class="mb-2"><i class="fas fa-receipt me-3"></i>Order Details</h1>
+        <p class="mb-0">Order #{{ order.order_number }}</p>
+    </div>
+</div>
+
+<section class="order-detail-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Order Information -->
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0"><i class="fas fa-info-circle me-2"></i>Order Information</h3>
+                            <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="fw-bold">Order Number:</span>
+                        <span class="text-success fw-bold">#{{ order.order_number }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="fw-bold">Order Date:</span>
+                        <span>{{ order.created_at|date:"F d, Y - h:i A" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="fw-bold">Payment Status:</span>
+                        <span class="status-badge payment-{{ order.payment_status }}">{{ order.get_payment_status_display }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="fw-bold">Payment Method:</span>
+                        <span>{{ order.payment_method|title }}</span>
+                    </div>
+                    {% if order.transaction_id %}
+                    <div class="info-row">
+                        <span class="fw-bold">Transaction ID:</span>
+                        <span class="font-monospace">{{ order.transaction_id }}</span>
+                    </div>
+                    {% endif %}
+                    {% if order.tracking_number %}
+                    <div class="info-row">
+                        <span class="fw-bold">Tracking Number:</span>
+                        <span class="font-monospace">{{ order.tracking_number }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Order Items -->
+                <div class="order-card">
+                    <h3 class="mb-4"><i class="fas fa-shopping-bag me-2"></i>Order Items</h3>
+                    {% for item in order.items.all %}
+                    <div class="order-item">
+                        <div>
+                            <h5 class="mb-1">{{ item.product_name }}</h5>
+                            <small class="text-muted">SKU: {{ item.product_sku }}</small>
+                            <p class="mb-0 mt-2">
+                                <span class="badge bg-secondary">Qty: {{ item.quantity }}</span>
+                                <span class="ms-2">₦{{ item.unit_price|floatformat:0|intcomma }} each</span>
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <h5 class="mb-0" style="color: var(--emerald-green);">₦{{ item.total_price|floatformat:0|intcomma }}</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Order Total -->
+                    <div class="total-section">
+                        <div class="total-row">
+                            <span class="fw-bold">Subtotal:</span>
+                            <span>₦{{ order.subtotal|floatformat:0|intcomma }}</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="fw-bold">Shipping ({{ order.shipping_state }}):</span>
+                            <span>₦{{ order.shipping_cost|floatformat:0|intcomma }}</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="fw-bold">Tax (7.5%):</span>
+                            <span>₦{{ order.tax|floatformat:0|intcomma }}</span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>Total:</span>
+                            <span>₦{{ order.total_amount|floatformat:0|intcomma }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="order-card">
+                    <h3 class="mb-4"><i class="fas fa-truck me-2"></i>Shipping Address</h3>
+                    <p class="mb-2"><strong>{{ order.shipping_name }}</strong></p>
+                    <p class="mb-1">{{ order.shipping_address_line1 }}</p>
+                    {% if order.shipping_address_line2 %}
+                    <p class="mb-1">{{ order.shipping_address_line2 }}</p>
+                    {% endif %}
+                    <p class="mb-1">{{ order.shipping_city }}, {{ order.shipping_state }}</p>
+                    {% if order.shipping_postal_code %}
+                    <p class="mb-1">{{ order.shipping_postal_code }}</p>
+                    {% endif %}
+                    <p class="mb-1">{{ order.shipping_country }}</p>
+                    <p class="mb-0 mt-3"><i class="fas fa-phone me-2"></i>{{ order.shipping_phone }}</p>
+                </div>
+
+                {% if order.customer_notes %}
+                <div class="order-card">
+                    <h3 class="mb-3"><i class="fas fa-comment me-2"></i>Customer Notes</h3>
+                    <p class="mb-0">{{ order.customer_notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Order Timeline -->
+                <div class="order-card">
+                    <h3 class="mb-4"><i class="fas fa-clock me-2"></i>Order Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item active">
+                            <strong>Order Placed</strong>
+                            <p class="text-muted mb-0 small">{{ order.created_at|date:"M d, Y - h:i A" }}</p>
+                        </div>
+                        {% if order.paid_at %}
+                        <div class="timeline-item active">
+                            <strong>Payment Confirmed</strong>
+                            <p class="text-muted mb-0 small">{{ order.paid_at|date:"M d, Y - h:i A" }}</p>
+                        </div>
+                        {% endif %}
+                        {% if order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}
+                        <div class="timeline-item active">
+                            <strong>Processing</strong>
+                            <p class="text-muted mb-0 small">Order is being prepared</p>
+                        </div>
+                        {% else %}
+                        <div class="timeline-item">
+                            <strong>Processing</strong>
+                            <p class="text-muted mb-0 small">Pending</p>
+                        </div>
+                        {% endif %}
+                        {% if order.shipped_at %}
+                        <div class="timeline-item active">
+                            <strong>Shipped</strong>
+                            <p class="text-muted mb-0 small">{{ order.shipped_at|date:"M d, Y - h:i A" }}</p>
+                        </div>
+                        {% else %}
+                        <div class="timeline-item">
+                            <strong>Shipped</strong>
+                            <p class="text-muted mb-0 small">Pending</p>
+                        </div>
+                        {% endif %}
+                        {% if order.delivered_at %}
+                        <div class="timeline-item active">
+                            <strong>Delivered</strong>
+                            <p class="text-muted mb-0 small">{{ order.delivered_at|date:"M d, Y - h:i A" }}</p>
+                        </div>
+                        {% else %}
+                        <div class="timeline-item">
+                            <strong>Delivered</strong>
+                            <p class="text-muted mb-0 small">Pending</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="order-card">
+                    <h3 class="mb-4"><i class="fas fa-cog me-2"></i>Actions</h3>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'shop:order_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-2"></i>View All Orders
+                        </a>
+                        <a href="{% url 'shop:product_list' %}" class="btn btn-primary">
+                            <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                        </a>
+                    </div>
+                </div>
+
+                {% if order.payment_status == 'pending' and order.payment_method == 'paystack' %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Payment Pending</strong>
+                    <p class="mb-2 mt-2">Your payment is still pending. Please complete the payment to process your
+                        order.</p>
+                    <a href="{% url 'shop:initialize_payment' order.id %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-credit-card me-2"></i>Complete Payment
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

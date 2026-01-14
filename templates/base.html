@@ -1,0 +1,391 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Nestova - Your Premier Real Estate Platform</title>
+  <meta name="description"
+    content="Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents across Lagos, Abuja, Port Harcourt and more.">
+  <meta name="keywords"
+    content="real estate Nigeria, properties for sale, houses for rent, apartments Lagos, land for sale, Nestova">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Modern Fonts - Inter for Premium Look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/drift-zoom/drift-basic.css' %}" rel="stylesheet">
+
+  <!-- Modern CSS Libraries via CDN -->
+  <!-- Animate.css for smooth animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- Font Awesome 6 for modern icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Hover.css for hover effects -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <style>
+    /* Cart Icon Styling */
+    .cart-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      padding: 0 15px;
+      color: inherit;
+    }
+
+    .cart-icon-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 0.7rem;
+      padding: 0.25em 0.6em;
+      border-radius: 50%;
+      background-color: #dc3545;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Header actions container */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Mobile nav toggle styling */
+    .mobile-nav-toggle {
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 0;
+      transition: 0.5s;
+      color: var(--nav-color, #000);
+    }
+
+    .mobile-nav-toggle:hover {
+      color: var(--nav-hover-color, #333);
+    }
+
+    /* Mobile responsiveness - CRITICAL FIX */
+    @media (max-width: 1199px) {
+
+      /* Force header container layout: Logo LEFT | Cart+Hamburger RIGHT */
+      .header-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+
+      /* Logo stays on the left */
+      .logo {
+        order: 1;
+        margin-right: 0 !important;
+      }
+
+      /* Mobile actions stay on the right */
+      .header-actions {
+        order: 2;
+        margin-left: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px;
+      }
+
+      /* Make cart more compact on mobile */
+      .cart-link {
+        padding: 0 5px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 575px) {
+      .header-actions {
+        gap: 10px;
+      }
+
+      .cart-icon-wrapper i {
+        font-size: 1.3rem !important;
+      }
+    }
+  </style>
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div
+      class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="{% static 'assets/img/logo.webp' %}" alt="Nestova"> -->
+        <h1 class="sitename">Nestova</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'home' %}" class="active">Home</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'properties' %}">Properties</a></li>
+          <li><a href="{% url 'service' %}">Services</a></li>
+          <li><a href="{% url 'shop:product_list' %}">Shop</a></li>
+          <li><a href="{% url 'agents' %}">Agents</a></li>
+          <li><a href="{% url 'post_list' %}">Blog</a></li>
+          <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              {% if not request.user.agent_profile and not request.user.is_authenticated %}
+              <li><a href="{% url 'agents:agents_signup' %}">Become An Agent</a></li>
+              {% endif %}
+              <li><a href="{% url 'shop:profile' %}">My Dashboard</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="{% url 'apartment_list' %}">Our Apartments</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Aligned Action Buttons with Cart and Mobile Menu Toggle -->
+      <div class="header-actions">
+        <a class="btn-getstarted" href="{% url 'properties' %}">Get Started</a>
+
+        <a class="cart-link" href="{% url 'shop:cart' %}">
+          <div class="cart-icon-wrapper">
+            <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+            <span class="cart-badge" id="cart-count">0</span>
+          </div>
+        </a>
+
+        <!-- Mobile hamburger menu toggle -->
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </div>
+
+    </div>
+  </header>
+
+  <script>
+    function updateCartCount() {
+      fetch('{% url "shop:cart_count" %}')
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('cart-count');
+          if (badge) {
+            badge.textContent = data.count;
+            // Optional: Hide badge if 0
+            badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+          }
+        })
+        .catch(err => console.error('Failed to update cart count:', err));
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+    document.addEventListener('cartUpdated', updateCartCount);
+  </script>
+
+
+  {% block content %}
+
+  {% endblock content %}
+
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container">
+      <div class="row gy-5">
+
+        <div class="col-lg-4">
+          <div class="footer-content">
+            <a href="{% url 'home' %}" class="logo d-flex align-items-center mb-4">
+              <span class="sitename">{% if contact_info %}{{ contact_info.company_name }}{% else %}Nestova{% endif %}</span>
+            </a>
+            <p class="mb-4">
+              {% if contact_info and contact_info.description %}
+              {{ contact_info.description }}
+              {% else %}
+              Discover your dream property with us. We provide exceptional real estate
+              services tailored to your needs, ensuring a seamless experience from start to finish.
+              {% endif %}
+            </p>
+
+            <div class="newsletter-form">
+              <h5>Stay Updated</h5>
+              <form method="post" action="{% url 'newsletter_subscribe' %}" class="" id="">
+                {% csrf_token %}
+                <div class="input-group">
+                  <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                  <button type="submit" class="btn-subscribe">
+                    <i class="bi bi-send"></i>
+                  </button>
+                </div>
+                <div class="loading" style="display: none;">Loading</div>
+                <div class="error-message" style="display: none;"></div>
+                <div class="sent-message" style="display: none;">Thank you for subscribing!</div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+          <div class="footer-links">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right"></i> About</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Careers</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Press</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Blog</a></li>
+              <li><a href="{% url 'contact' %}"><i class="bi bi-chevron-right"></i> Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+          <div class="footer-links">
+            <h4>Solutions</h4>
+            <ul>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Buy Property</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Sell Property</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Rent Property</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Property Management</a></li>
+              <li><a href="#"><i class="bi bi-chevron-right"></i> Consultation</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="footer-contact">
+            <h4>Get in Touch</h4>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div class="contact-info">
+                {% if contact_info %}
+                <p>{{ contact_info.address_line1 }}<br>{{ contact_info.city }}, {{ contact_info.state }} {{
+                  contact_info.postal_code }}<br>{{ contact_info.country }}</p>
+                {% else %}
+                <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div class="contact-info">
+                <p>{% if contact_info %}{{ contact_info.phone }}{% else %}+1 (555) 987-6543{% endif %}</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="contact-info">
+                <p>{% if contact_info %}{{ contact_info.email }}{% else %}contact@example.com{% endif %}</p>
+              </div>
+            </div>
+
+            <div class="social-links">
+              {% if contact_info %}
+              {% if contact_info.facebook_url %}<a href="{{ contact_info.facebook_url }}" target="_blank"><i
+                  class="bi bi-facebook"></i></a>{% endif %}
+              {% if contact_info.twitter_url %}<a href="{{ contact_info.twitter_url }}" target="_blank"><i
+                  class="bi bi-twitter-x"></i></a>{% endif %}
+              {% if contact_info.linkedin_url %}<a href="{{ contact_info.linkedin_url }}" target="_blank"><i
+                  class="bi bi-linkedin"></i></a>{% endif %}
+              {% if contact_info.youtube_url %}<a href="{{ contact_info.youtube_url }}" target="_blank"><i
+                  class="bi bi-youtube"></i></a>{% endif %}
+              {% if contact_info.github_url %}<a href="{{ contact_info.github_url }}" target="_blank"><i
+                  class="bi bi-github"></i></a>{% endif %}
+              {% else %}
+              <a href="#"><i class="bi bi-facebook"></i></a>
+              <a href="#"><i class="bi bi-twitter-x"></i></a>
+              <a href="#"><i class="bi bi-linkedin"></i></a>
+              <a href="#"><i class="bi bi-youtube"></i></a>
+              <a href="#"><i class="bi bi-github"></i></a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="copyright">
+              <p>© <span>Copyright</span> <strong class="px-1 sitename">{% if contact_info %}{{
+                  contact_info.company_name }}{% else %}Nestova{% endif %}</strong> <span>All Rights Reserved</span></p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="footer-bottom-links">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/drift-zoom/Drift.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

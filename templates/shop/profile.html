@@ -1,0 +1,1474 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
+
+    /* ==================== CSS VARIABLES ==================== */
+    :root {
+        /* Premium Color Palette */
+        --primary-hue: 155;
+        --primary-sat: 70%;
+        --primary-light: 45%;
+
+        --primary-color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+        --primary-light-color: hsl(var(--primary-hue), var(--primary-sat), 55%);
+        --primary-dark: hsl(var(--primary-hue), var(--primary-sat), 35%);
+        --primary-gradient: linear-gradient(135deg, hsl(155, 70%, 45%) 0%, hsl(155, 65%, 35%) 100%);
+
+        /* Accent Colors */
+        --accent-blue: hsl(220, 80%, 60%);
+        --accent-purple: hsl(270, 70%, 60%);
+        --accent-orange: hsl(25, 85%, 60%);
+
+        /* Neutral Colors */
+        --surface-light: hsl(0, 0%, 98%);
+        --surface-white: hsl(0, 0%, 100%);
+        --text-primary: hsl(220, 15%, 15%);
+        --text-secondary: hsl(220, 10%, 45%);
+        --text-muted: hsl(220, 10%, 65%);
+        --border-color: hsl(220, 15%, 90%);
+
+        /* Glassmorphism */
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: rgba(255, 255, 255, 0.3);
+        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        --shadow-primary: 0 8px 24px rgba(46, 202, 106, 0.25);
+
+        /* Spacing */
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+
+        /* Border Radius */
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 20px;
+        --radius-xl: 28px;
+
+        /* Transitions */
+        --transition-fast: 150ms ease;
+        --transition-base: 250ms ease;
+        --transition-slow: 400ms ease;
+    }
+
+    /* ==================== GLOBAL STYLES ==================== */
+    .profile-wrapper {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, hsl(155, 70%, 96%) 0%, hsl(220, 70%, 98%) 100%);
+        min-height: 100vh;
+        padding-bottom: 3rem;
+    }
+
+    .profile-wrapper h1,
+    .profile-wrapper h2,
+    .profile-wrapper h3,
+    .profile-wrapper h4,
+    .profile-wrapper h5,
+    .profile-wrapper h6 {
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* ==================== TOP NAVIGATION ==================== */
+    .profile-nav {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .profile-nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .profile-brand {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .profile-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .nav-icon-btn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-base);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+
+    .nav-icon-btn:hover {
+        background: var(--surface-light);
+        color: var(--primary-color);
+    }
+
+    .nav-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    .profile-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .profile-user-menu:hover {
+        background: var(--surface-light);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--primary-color);
+    }
+
+    .user-avatar-placeholder {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+    }
+
+    .user-role {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    /* ==================== PAGE HERO ==================== */
+    .profile-hero {
+        background: var(--surface-white);
+        border-bottom: 1px solid var(--border-color);
+        padding: 2rem 0;
+    }
+
+    .hero-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .hero-content {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-avatar {
+        position: relative;
+    }
+
+    .hero-avatar img,
+    .hero-avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: var(--shadow-md);
+    }
+
+    .hero-avatar-placeholder {
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 2.5rem;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem 0;
+    }
+
+    .hero-text p {
+        color: var(--text-secondary);
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .stat-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        transition: all var(--transition-base);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-icon.blue {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+    }
+
+    .stat-icon.green {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .stat-icon.orange {
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        color: white;
+    }
+
+    .stat-icon.purple {
+        background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+        color: white;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* ==================== TAB NAVIGATION ==================== */
+    /* ==================== TAB NAVIGATION (FIXED) ==================== */
+.tab-nav-wrapper {
+    background: var(--surface-white);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 73px;
+    z-index: 999;
+    /* Add these for better scrolling on mobile */
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tab-nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    /* Remove any width constraints */
+    min-width: 100%;
+}
+
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; /* Show thin scrollbar on Firefox */
+    scrollbar-color: var(--border-color) transparent;
+    /* Prevent flex items from shrinking */
+    flex-wrap: nowrap;
+    /* Add padding for better UX on mobile */
+    padding-bottom: 0;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.tab-nav::-webkit-scrollbar {
+    height: 3px;
+}
+
+.tab-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tab-nav::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.tab-nav::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.tab-btn {
+    padding: 1rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    font-size: 0.95rem;
+    /* Prevent shrinking */
+    flex-shrink: 0;
+    /* Ensure minimum touch target size */
+    min-width: fit-content;
+}
+
+.tab-btn:hover {
+    color: var(--primary-color);
+    background: var(--surface-light);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .tab-nav-container {
+        padding: 0 1rem;
+    }
+    
+    .tab-btn {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Show scroll hint on mobile */
+    .tab-nav-wrapper::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 3px;
+        width: 40px;
+        background: linear-gradient(to right, transparent, var(--surface-white));
+        pointer-events: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+    
+   
+
+    
+
+    
+
+    /* ==================== CONTENT AREA ==================== */
+    .content-area {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ==================== CARDS ==================== */
+    .content-card {
+        background: var(--surface-white);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-primary);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .btn-secondary:hover {
+        background: var(--surface-white);
+        transform: translateY(-2px);
+    }
+
+    /* ==================== PROPERTY GRID ==================== */
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .property-card {
+        background: var(--surface-white);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        transition: all var(--transition-base);
+    }
+
+    .property-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .property-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: var(--surface-light);
+    }
+
+    .property-image-placeholder {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, var(--surface-light) 0%, #e5e7eb 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 3rem;
+    }
+
+    .property-body {
+        padding: 1.5rem;
+    }
+
+    .property-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem 0;
+    }
+
+    .property-location {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin: 0 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .property-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        margin: 0 0 1rem 0;
+    }
+
+    .property-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .property-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        border-radius: var(--radius-sm);
+    }
+
+    /* ==================== TABLE STYLES ==================== */
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .data-table thead {
+        background: var(--surface-light);
+    }
+
+    .data-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .data-table td {
+        padding: 1rem;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table tbody tr:hover {
+        background: var(--surface-light);
+    }
+
+    .badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .badge-success {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .badge-warning {
+        background: #fef3c7;
+        color: #ca8a04;
+    }
+
+    .badge-danger {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .badge-info {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    /* ==================== NOTIFICATION LIST ==================== */
+    .notification-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .notification-item {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        transition: background var(--transition-fast);
+    }
+
+    .notification-item:hover {
+        background: var(--surface-light);
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .notification-title {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .notification-time {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .notification-message {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    /* ==================== FORM STYLES ==================== */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.875rem 1.25rem;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 1rem;
+        transition: all var(--transition-base);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(46, 202, 106, 0.1);
+    }
+
+    /* ==================== EMPTY STATES ==================== */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        font-size: 0.95rem;
+    }
+
+    /* ==================== RESPONSIVE DESIGN ==================== */
+    @media (max-width: 1024px) {
+        .hero-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .property-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .profile-nav-container,
+        .hero-container,
+        .tab-nav-container,
+        .content-area {
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            margin-bottom: 0;
+        }
+
+        .property-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tab-nav-wrapper {
+            top: 65px;
+        }
+
+        .user-info {
+            display: none;
+        }
+
+        .content-card {
+            padding: 1.5rem;
+        }
+
+        .data-table {
+            font-size: 0.85rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 0.5rem;
+        }
+    }
+</style>
+
+<div class="profile-wrapper">
+    <!-- Top Navigation -->
+    <nav class="profile-nav">
+        <div class="profile-nav-container">
+            <a href="{% url 'home' %}" class="profile-brand">NESTOVA</a>
+
+            <div class="profile-nav-right">
+                <button class="nav-icon-btn" onclick="window.location.href='{% url 'home' %}'">
+                    <i class="bi bi-house-door"></i>
+                </button>
+
+                <button class="nav-icon-btn" onclick="switchTab('notifications')">
+                    <i class="bi bi-bell"></i>
+                    {% if notifications.count > 0 %}
+                    <span class="nav-badge">{{ notifications.count }}</span>
+                    {% endif %}
+                </button>
+
+                <div class="profile-user-menu">
+                    {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ user.username }}" class="user-avatar">
+                    {% else %}
+                    <div class="user-avatar-placeholder">{{ user.username|first|upper }}</div>
+                    {% endif %}
+                    <div class="user-info">
+                        <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                        <span class="user-role">Member</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="profile-hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-avatar">
+                    {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ user.username }}">
+                    {% else %}
+                    <div class="hero-avatar-placeholder">{{ user.username|first|upper }}</div>
+                    {% endif %}
+                </div>
+                <div class="hero-text">
+                    <h1>Welcome back, {{ user.first_name|default:user.username }}!</h1>
+                    <p>Manage your properties, orders, and account settings all in one place</p>
+                </div>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h3 class="stat-value">{{ my_properties.count }}</h3>
+                    <p class="stat-label">My Properties</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h3 class="stat-value">{{ my_bookings.count }}</h3>
+                    <p class="stat-label">Appointments</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <h3 class="stat-value">{{ saved_properties.count }}</h3>
+                    <p class="stat-label">Saved Items</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="bi bi-bag"></i>
+                    </div>
+                    <h3 class="stat-value">{{ recent_orders.count }}</h3>
+                    <p class="stat-label">Orders</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav-wrapper">
+        <div class="tab-nav-container">
+            <div class="tab-nav">
+                {% if agent_profile %}
+                <button class="tab-btn active" onclick="switchTab('overview')">
+                    <i class="bi bi-grid me-1"></i> Agents Dashboard
+                </button>
+                {% endif %}
+                
+                <button class="tab-btn" onclick="switchTab('properties')">
+                    <i class="bi bi-building me-1"></i> My Properties
+                </button>
+                <button class="tab-btn" onclick="switchTab('appointments')">
+                    <i class="bi bi-calendar-event me-1"></i> Appointments
+                </button>
+                <button class="tab-btn" onclick="switchTab('orders')">
+                    <i class="bi bi-bag me-1"></i> Orders
+                </button>
+                <button class="tab-btn" onclick="switchTab('saved')">
+                    <i class="bi bi-heart me-1"></i> Saved
+                </button>
+                <button class="tab-btn" onclick="switchTab('notifications')">
+                    <i class="bi bi-bell me-1"></i> Notifications
+                </button>
+                <button class="tab-btn" onclick="switchTab('settings')">
+                    <i class="bi bi-gear me-1"></i> Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Overview Tab -->
+        <div id="tab-overview" class="tab-content active">
+            <!-- ... existing overview content ... -->
+
+            <!-- Agent Dashboard Content (Inserted here for logic, but displayed via tab switch) -->
+            {% if agent_profile %}
+            <div id="tab-agent" class="tab-content" style="display: block;">
+                <!-- Stats Row -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                            <h3 class="stat-value">₦{{ agent_data.total_commission_earned|intcomma }}</h3>
+                            <p class="stat-label">Total Earned</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+                            <h3 class="stat-value">₦{{ agent_data.pending_commission_amount|intcomma }}</h3>
+                            <p class="stat-label">Pending</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <h3 class="stat-value">₦{{ agent_data.approved_commission_amount|intcomma }}</h3>
+                            <p class="stat-label">Approved (Unpaid)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <h3 class="stat-value">{{ agent_data.downline_count }}</h3>
+                            <p class="stat-label">Downlines</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referral Link Section -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Your Referral Link</h2>
+                    </div>
+                    <div class="p-4 bg-light rounded text-center">
+                        <p class="mb-3">Share this link to invite new agents and earn commission!</p>
+                        <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
+                            <input type="text" class="form-control" value="{{ request.scheme }}://{{ request.get_host }}{% url 'agents:agents_signup' %}?ref={{ agent_data.referral_code }}" id="agentRefLink" readonly>
+                            <button class="btn btn-primary" onclick="copyAgentRefLink()">
+                                <i class="bi bi-clipboard me-2"></i>Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Commissions Table -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Commissions</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Property</th>
+                                    <th>Amount</th>
+                                    <th>Rate</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for commission in agent_data.commissions %}
+                                <tr>
+                                    <td>{{ commission.created_at|date:"M d, Y" }}</td>
+                                    <td>{{ commission.sale.property.title }}</td>
+                                    <td class="fw-bold">₦{{ commission.commission_amount|intcomma }}</td>
+                                    <td>{{ commission.commission_rate }}%</td>
+                                    <td>
+                                        <span
+                                            class="badge {% if commission.status == 'paid' %}badge-success{% elif commission.status == 'approved' %}badge-info{% elif commission.status == 'pending' %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {{ commission.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="empty-state">No commissions yet. Start referring!</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Downlines Table -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Your Downlines</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Agent</th>
+                                    <th>Joined</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for downline in agent_data.downlines %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            {% if downline.user.customer_profile.profile_image %}
+                                            <img src="{{ downline.user.customer_profile.profile_image.url }}"
+                                                class="rounded-circle" width="30" height="30">
+                                            {% else %}
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                                style="width: 30px; height: 30px;">
+                                                <small>{{ downline.user.username|first|upper }}</small>
+                                            </div>
+                                            {% endif %}
+                                            {{ downline.user.get_full_name|default:downline.user.username }}
+                                        </div>
+                                    </td>
+                                    <td>{{ downline.created|date:"M d, Y" }}</td>
+                                    <td>
+                                        <span
+                                            class="badge {% if downline.is_active %}badge-success{% else %}badge-danger{% endif %}">
+                                            {% if downline.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="empty-state">No downlines yet. Invite people to join!</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <script>
+                    function copyAgentRefLink() {
+                        var copyText = document.getElementById("agentRefLink");
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999);
+                        navigator.clipboard.writeText(copyText.value).then(function () {
+                            alert("Agent referral link copied!");
+                        });
+                    }
+                </script>
+            </div>
+            {% endif %}
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Activity</h2>
+                    <a href="{% url 'listings:post_property' %}" class="btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i> Post New Property
+                    </a>
+                </div>
+
+                <ul class="notification-list">
+                    {% for notif in notifications|slice:":5" %}
+                    <li class="notification-item">
+                        <div class="notification-header">
+                            <span class="notification-title">{{ notif.title }}</span>
+                            <span class="notification-time">{{ notif.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="notification-message">{{ notif.message }}</p>
+                    </li>
+                    {% empty %}
+                    <li class="notification-item">
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h3 class="empty-title">No recent activity</h3>
+                            <p class="empty-text">Your notifications will appear here</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Properties Tab -->
+        <div id="tab-properties" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">My Properties</h2>
+                    <a href="{% url 'listings:post_property' %}" class="btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i> Add New
+                    </a>
+                </div>
+
+                {% if my_properties %}
+                <div class="property-grid">
+                    {% for prop in my_properties %}
+                    <div class="property-card">
+                        {% if prop.featured_image %}
+                        <img src="{{ prop.featured_image.url }}" alt="{{ prop.title }}" class="property-image">
+                        {% else %}
+                        <div class="property-image-placeholder">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        {% endif %}
+
+                        <div class="property-body">
+                            <h3 class="property-title">{{ prop.title }}</h3>
+                            <p class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ prop.city.name }}, {{ prop.state.name }}
+                            </p>
+                            <div class="property-price">₦{{ prop.price|intcomma }}</div>
+                            <div class="property-meta">
+                                <span><i class="bi bi-door-closed"></i> {{ prop.bedrooms }} bed</span>
+                                <span><i class="bi bi-droplet"></i> {{ prop.bathrooms }} bath</span>
+                                <span><i class="bi bi-rulers"></i> {{ prop.square_feet|intcomma }} sqft</span>
+                            </div>
+                            <div class="property-actions">
+                                <a href="{{ prop.get_absolute_url }}" class="btn-secondary btn-sm">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <button class="btn-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">🏠</div>
+                    <h3 class="empty-title">No properties yet</h3>
+                    <p class="empty-text">Start by posting your first property</p>
+                    <a href="{% url 'listings:post_property' %}" class="btn-primary mt-3">
+                        <i class="bi bi-plus-circle me-2"></i> Post Property
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Appointments Tab -->
+        <div id="tab-appointments" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Appointments</h2>
+                </div>
+
+                {% if my_bookings %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Property</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in my_bookings %}
+                        <tr>
+                            <td><strong>{{ booking.booking_number }}</strong></td>
+                            <td>{{ booking.apartment.title }}</td>
+                            <td>{{ booking.check_in_date|date:"M d, Y" }}</td>
+                            <td><span class="badge badge-warning">{{ booking.booking_status }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📅</div>
+                    <h3 class="empty-title">No appointments scheduled</h3>
+                    <p class="empty-text">Your appointment history will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="tab-orders" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Order History</h2>
+                </div>
+
+                {% if recent_orders %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recent_orders %}
+                        <tr>
+                            <td><strong>{{ order.order_number }}</strong></td>
+                            <td>{{ order.created_at|date:"M d, Y" }}</td>
+                            <td><span class="badge badge-success">{{ order.get_status_display }}</span></td>
+                            <td><strong>₦{{ order.total_amount|intcomma }}</strong></td>
+                            <td>
+                                <a href="{% url 'shop:order_detail' order.id %}" class="btn-secondary btn-sm">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">🛍️</div>
+                    <h3 class="empty-title">No orders yet</h3>
+                    <p class="empty-text">Your purchase history will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Saved Properties Tab -->
+        <div id="tab-saved" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Saved Properties</h2>
+                </div>
+
+                {% if saved_properties %}
+                <div class="property-grid">
+                    {% for item in saved_properties %}
+                    <div class="property-card">
+                        {% if item.property.featured_image %}
+                        <img src="{{ item.property.featured_image.url }}" alt="{{ item.property.title }}"
+                            class="property-image">
+                        {% else %}
+                        <div class="property-image-placeholder">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        {% endif %}
+
+                        <div class="property-body">
+                            <h3 class="property-title">{{ item.property.title }}</h3>
+                            <p class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ item.property.city.name }}
+                            </p>
+                            <div class="property-price">₦{{ item.property.price|intcomma }}</div>
+                            <div class="property-actions">
+                                <a href="{{ item.property.get_absolute_url }}" class="btn-secondary btn-sm">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <button class="btn-secondary btn-sm">
+                                    <i class="bi bi-heart-fill text-danger"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">💝</div>
+                    <h3 class="empty-title">No saved properties</h3>
+                    <p class="empty-text">Properties you save will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="tab-notifications" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">All Notifications</h2>
+                </div>
+
+                <ul class="notification-list">
+                    {% for notif in notifications %}
+                    <li class="notification-item">
+                        <div class="notification-header">
+                            <span class="notification-title {% if not notif.is_read %}fw-bold{% endif %}">{{ notif.title
+                                }}</span>
+                            <span class="notification-time">{{ notif.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="notification-message">{{ notif.message }}</p>
+                    </li>
+                    {% empty %}
+                    <li class="notification-item">
+                        <div class="empty-state">
+                            <div class="empty-icon">🔔</div>
+                            <h3 class="empty-title">No notifications</h3>
+                            <p class="empty-text">You're all caught up!</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="tab-settings" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Profile Settings</h2>
+                </div>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="update_profile" value="true">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}"
+                                    placeholder="Enter your first name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}"
+                                    placeholder="Enter your last name">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" name="phone" class="form-control" value="{{ profile.phone }}"
+                                    placeholder="Enter your phone number">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" name="city" class="form-control" value="{{ profile.city }}"
+                                    placeholder="Enter your city">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input type="text" name="address_line1" class="form-control"
+                                    value="{{ profile.address_line1 }}" placeholder="Enter your full address">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">State</label>
+                                <input type="text" name="state" class="form-control" value="{{ profile.state }}"
+                                    placeholder="Enter your state">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Profile Image</label>
+                                <input type="file" name="profile_image" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn-primary">
+                            <i class="bi bi-check-circle me-2"></i> Save Changes
+                        </button>
+                        <a href="{% url 'logout' %}" class="btn-secondary ms-2">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // Remove active class from all tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show selected tab content
+        document.getElementById('tab-' + tabId).classList.add('active');
+
+        // Add active class to clicked tab button
+        event.target.closest('.tab-btn').classList.add('active');
+
+        // Smooth scroll to content
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+{% endblock %}

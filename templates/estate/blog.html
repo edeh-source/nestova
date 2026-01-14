@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">Blog</h1>
+            <p class="mb-0">
+              Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
+              odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
+              debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
+              ipsum dolorem.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li class="current">Blog</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <!-- Blog Hero Section -->
+  
+
+  <!-- Blog Posts Section -->
+  <section id="blog-posts" class="blog-posts section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+
+        {% for post in posts %}
+        <div class="col-lg-4">
+          <article>
+
+            <div class="post-img">
+              {% if post.image %}
+              <img src="{{ post.image.url }}" alt="{{ post.name }}" class="img-fluid">
+              {% else %}
+              <img src="{% static 'assets/img/blog/blog-post-1.webp' %}" alt="" class="img-fluid">
+              {% endif %}
+            </div>
+
+            <p class="post-category">{{ post.category.name }}</p>
+
+            <h2 class="title">
+              <a href="{{ post.get_absolute_url }}">{{ post.name }}</a>
+            </h2>
+
+            <div class="d-flex align-items-center">
+              <img src="{% static 'assets/img/person/person-f-12.webp' %}" alt=""
+                class="img-fluid post-author-img flex-shrink-0">
+              <div class="post-meta">
+                <p class="post-author">{{ post.author.user.username }}</p>
+                <p class="post-date">
+                  <time datetime="{{ post.publish|date:'Y-m-d' }}">{{ post.publish|date:"M d, Y" }}</time>
+                </p>
+              </div>
+            </div>
+
+          </article>
+        </div><!-- End post list item -->
+        {% empty %}
+        <div class="col-12">
+          <p class="text-center">No blog posts available.</p>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </section><!-- /Blog Posts Section -->
+
+  <!-- Pagination Section -->
+  <section id="pagination-2" class="pagination-2 section">
+    <div class="container">
+      {% if posts.has_other_pages %}
+      <nav class="d-flex justify-content-center" aria-label="Page navigation">
+        <ul>
+          {% if posts.has_previous %}
+          <li>
+            <a href="?page={{ posts.previous_page_number }}" aria-label="Previous page">
+              <i class="bi bi-arrow-left"></i>
+              <span class="d-none d-sm-inline">Previous</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="disabled">
+            <span aria-label="Previous page">
+              <i class="bi bi-arrow-left"></i>
+              <span class="d-none d-sm-inline">Previous</span>
+            </span>
+          </li>
+          {% endif %}
+
+          {% for num in posts.paginator.page_range %}
+            {% if posts.number == num %}
+              <li><a href="?page={{ num }}" class="active">{{ num }}</a></li>
+            {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% elif num == 1 %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+              {% if posts.number > 4 %}
+                <li class="ellipsis">...</li>
+              {% endif %}
+            {% elif num == posts.paginator.num_pages %}
+              {% if posts.number < posts.paginator.num_pages|add:'-3' %}
+                <li class="ellipsis">...</li>
+              {% endif %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if posts.has_next %}
+          <li>
+            <a href="?page={{ posts.next_page_number }}" aria-label="Next page">
+              <span class="d-none d-sm-inline">Next</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </li>
+          {% else %}
+          <li class="disabled">
+            <span aria-label="Next page">
+              <span class="d-none d-sm-inline">Next</span>
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </section><!-- /Pagination Section -->
+
+</main>
+{% endblock content %}

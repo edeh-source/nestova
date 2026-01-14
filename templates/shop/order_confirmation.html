@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    :root {
+        --emerald-green: #046A38;
+        --emerald-light: #058a48;
+        --metallic-gold: #D4AF37;
+    }
+
+    .confirmation-section {
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        padding: 100px 0;
+    }
+
+    .success-card {
+        background: white;
+        border-radius: 30px;
+        padding: 60px 40px;
+        box-shadow: 0 20px 60px rgba(4, 106, 56, 0.15);
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+        0% {
+            transform: scale(0);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .success-icon i {
+        font-size: 60px;
+        color: white;
+        animation: checkmark 0.8s ease 0.3s both;
+    }
+
+    @keyframes checkmark {
+        0% {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .order-details {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--emerald-green) 0%, var(--emerald-light) 100%);
+        border: none;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(4, 106, 56, 0.4);
+    }
+
+    .btn-outline-primary {
+        border: 2px solid var(--emerald-green);
+        color: var(--emerald-green);
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--emerald-green);
+        color: white;
+    }
+</style>
+
+<section class="confirmation-section">
+    <div class="container">
+        <div class="success-card animate__animated animate__fadeIn">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+
+            <h1 class="mb-3" style="font-weight: 800; color: var(--emerald-green);">Order Confirmed!</h1>
+            <p class="lead mb-4">Thank you for your purchase. Your order has been successfully placed.</p>
+
+            <div class="order-details">
+                <div class="detail-row">
+                    <span class="fw-bold">Order Number:</span>
+                    <span class="text-success fw-bold">#{{ order.order_number }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="fw-bold">Total Amount:</span>
+                    <span class="fw-bold" style="color: var(--emerald-green);">₦{{ order.total_amount|floatformat:0 }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="fw-bold">Payment Method:</span>
+                    <span>{{ order.get_payment_method_display }}</span>
+                </div>
+                <div class="detail-row" style="border: none;">
+                    <span class="fw-bold">Status:</span>
+                    <span class="badge bg-success">{{ order.get_status_display }}</span>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-envelope me-2"></i>
+                A confirmation email has been sent to <strong>{{ order.email }}</strong>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-center mt-4">
+                <a href="{% url 'shop:product_list' %}" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                </a>
+                <a href="{% url 'shop:order_list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-list me-2"></i>View Orders
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
