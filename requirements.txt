@@ -70,7 +70,7 @@ executing==2.2.1
 Faker==39.0.0
 fastjsonschema==2.21.2
 fuzzywuzzy==0.18.0
-python-Levenshtein==0.21.1
+Levenshtein==0.26.1
 filelock==3.19.1
 flake8==7.1.2
 flatbuffers==25.9.23
