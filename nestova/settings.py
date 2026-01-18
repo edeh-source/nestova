@@ -39,7 +39,7 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
     if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
-        ALLOWED_HOSTS = ['globaledge.fly.dev', 'globaledgeconsultz.com', 'nestova.onrender.com', 'www.globaledgeconsultz.com', 'globaledge-6ppe.onrender.com']
+        ALLOWED_HOSTS = ['globaledge.fly.dev', 'globaledgeconsultz.com', 'nestova-v6ks.onrender.com', 'www.globaledgeconsultz.com', 'globaledge-6ppe.onrender.com']
 
 
 
