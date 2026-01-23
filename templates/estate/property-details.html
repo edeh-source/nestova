@@ -7,8 +7,7 @@
 {% include 'includes/seo_meta.html' %}
 {% endblock seo_meta %}
 
-{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{%
-endblock %}
+{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{% endblock %}
 
 {% block extra_head %}
 {# Structured Data for Property Listing #}
@@ -185,8 +184,7 @@ endblock %}
 
           <!-- Property Overview -->
           <div class="property-overview sticky-top">
-            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent'
-              %}<span>/mo</span>{% endif %}</div>
+            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
             <div
               class="property-status {% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
               {{ property.status.get_name_display }}</div>
