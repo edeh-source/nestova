@@ -128,7 +128,7 @@
           </div><!-- End Amenities -->
 
           <!-- Map Section -->
-          
+
 
         </div>
 
@@ -136,7 +136,8 @@
 
           <!-- Property Overview -->
           <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
-            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
+            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent'
+              %}<span>/mo</span>{% endif %}</div>
             <div
               class="property-status {% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
               {{ property.status.get_name_display }}</div>
@@ -194,36 +195,39 @@
                   <span class="value">{{ property.parking_spaces }}</span>
                   <span class="label">Parking</span>
                 </div>
-              </div> 
+              </div>
             </div>
-             <p id="property-messagge-success" class="text-white bg-success p-3 rounded-3 text-center mt-4" style="display: none;"></p>
-              <p id="property-messagge-error" class="text-white bg-danger p-3 rounded-3 text-center mt-4" style="display: none;"></p>
+            <p id="property-messagge-success" class="text-white bg-success p-3 rounded-3 text-center mt-4"
+              style="display: none;"></p>
+            <p id="property-messagge-error" class="text-white bg-danger p-3 rounded-3 text-center mt-4"
+              style="display: none;"></p>
             <div class="container">
               <div class="login-container">
                 {% if user.is_authenticated %}
-                  {% if saved_property %}
-                    
-                      <div class="d-grid mb-3">
-                        <button class="btn btn-success">Property Saved</button>
-                      </div>
-                    
-                  {% else %}
-                  <form id="property-id" method="post" action="{% url 'property_detail' property.slug %}">
-                    {% csrf_token %}
-                      <div class="d-grid mb-3">
-                        <button id="save-btn" type="submit" class="btn btn-success">Save Property</button>
-                      </div>
-                  </form>    
-                  {% endif %}    
+                {% if saved_property %}
 
-                {% else %}  
-                   <div class="d-grid mb-3">
-                      <a class="btn btn-success p-2 rounded-3" href="{% url 'login' %}?next={{ request.path }}">Login To Save Property</a>
-                  </div> 
+                <div class="d-grid mb-3">
+                  <button class="btn btn-success">Property Saved</button>
+                </div>
+
+                {% else %}
+                <form id="property-id" method="post" action="{% url 'property_detail' property.slug %}">
+                  {% csrf_token %}
+                  <div class="d-grid mb-3">
+                    <button id="save-btn" type="submit" class="btn btn-success">Save Property</button>
+                  </div>
+                </form>
                 {% endif %}
-                 
+
+                {% else %}
+                <div class="d-grid mb-3">
+                  <a class="btn btn-success p-2 rounded-3" href="{% url 'users:login' %}?next={{ request.path }}">Login
+                    To Save Property</a>
+                </div>
+                {% endif %}
+
               </div>
-            </div> 
+            </div>
             <!-- Agent Info -->
             <div class="agent-info">
               <div class="agent-avatar">
@@ -239,7 +243,7 @@
             </div><!-- End Agent Info -->
 
             <!-- Contact Form -->
-            
+
 
             <!-- Referral & Social Share -->
             <div class="social-share">
@@ -313,7 +317,7 @@
 
 <script>
 
-  document.addEventListener("DOMContentLoaded", ()=> {
+  document.addEventListener("DOMContentLoaded", () => {
     const saveForm = document.getElementById("property-id");
     const saveSuccessMessage = document.getElementById("property-messagge-success");
     const saveErrorMessage = document.getElementById("property-messagge-error");
@@ -332,7 +336,7 @@
       console.error(`CSRF token cookie "${cookieName}" not found.`);
       return null;
     };
-    saveForm.addEventListener("submit", (e)=> {
+    saveForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const csrfToken = getCsrfToken();
       submitBtn.textContent = "Saving Property";
@@ -347,11 +351,11 @@
         }
       }).then((response) => {
         return response.json()
-      }).then(( data) => {
-        if (data.status === "success"){
+      }).then((data) => {
+        if (data.status === "success") {
           saveSuccessMessage.style.display = "block",
-          saveSuccessMessage.innerHTML = data.message;
-          setTimeout(()=> {
+            saveSuccessMessage.innerHTML = data.message;
+          setTimeout(() => {
             saveSuccessMessage.style.display = "none";
             saveSuccessMessage.innerHTML = "";
             submitBtn.textContent = "Property Saved";
@@ -361,7 +365,7 @@
         } else {
           saveErrorMessage.style.display = "block";
           saveErrorMessage.innerHTML = data.message;
-          setTimeout(()=> {
+          setTimeout(() => {
             saveErrorMessage.style.display = "none";
             saveErrorMessage.innerHTML = "";
             submitBtn.textContent = "Save Property";
@@ -375,6 +379,6 @@
 
   })
 
-  
+
 </script>
 {% endblock content %}

@@ -57,11 +57,12 @@ def post_property(request):
         company = request.user.company_profile
         if not company.can_post_properties:
             messages.warning(request, "Your company account must be verified before you can post properties.")
-            return redirect('verification_dashboard')
+            return redirect('agents:verification_dashboard')
     else:
-        # Normal users might also be able to post if they have slots, 
-        # but the request was specifically about agents and companies.
-        pass
+        # Normal users must also verify before posting
+        if not request.user.id_verified or not request.user.can_post_properties:
+            messages.warning(request, "You must verify your identity before posting properties.")
+            return redirect('users:submit_user_verification')
 
     
     if request.method == 'POST':

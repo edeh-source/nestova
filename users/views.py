@@ -266,7 +266,7 @@ def users_logout(request):
     """   
     logout(request)
     messages.success(request, "Logged Out Successfully")
-    return redirect("login")    
+    return redirect("users:login")    
     
     
     
@@ -407,3 +407,106 @@ def password_reset_confirm(request, uidb64, token):
         return render(request, 'estate/password_reset_confirm.html', {
             'validlink': False
         })
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def submit_user_verification(request):
+    """Normal user submits NIN/vNIN/BVN verification to post properties"""
+    if request.user.id_verified and request.user.can_post_properties:
+        messages.info(request, "You are already verified and can post properties.")
+        return redirect('shop:profile')
+    
+    if request.method == 'POST':
+        from django.utils import timezone
+        from agents.verification_service import VerificationService
+        
+        id_type = request.POST.get('id_type')  # nin, vnin, or bvn
+        id_number = request.POST.get('id_number')
+        
+        if not id_type or not id_number:
+            messages.error(request, "Please provide both ID type and ID number.")
+            return redirect('users:submit_user_verification')
+        
+        # Save ID info
+        request.user.id_type = id_type
+        request.user.id_number = id_number
+        request.user.save()
+        
+        # Perform verification
+        service = VerificationService()
+        verification_success = False
+        api_data = {}
+        
+        if id_type == 'nin':
+            success, result = service.verify_nin(request.user, id_number)
+            if success:
+                verification_success = True
+                api_data = result
+        elif id_type == 'vnin':
+            success, result = service.verify_vnin(request.user, id_number)
+            if success:
+                verification_success = True
+                api_data = result
+        elif id_type == 'bvn':
+            success, result = service.verify_bvn(request.user, id_number)
+            if success:
+                verification_success = True
+                api_data = result
+        else:
+            messages.error(request, "Invalid ID type selected.")
+            return redirect('users:submit_user_verification')
+        
+        # Calculate confidence and auto-approve/reject
+        if verification_success and api_data:
+            confidence_result = service.calculate_confidence_score(api_data, request.user)
+            
+            request.user.verification_data = {
+                'api_response': api_data,
+                'confidence_score': confidence_result['overall_confidence'],
+                'confidence_breakdown': confidence_result['breakdown'],
+                'verified_at': timezone.now().isoformat()
+            }
+            
+            overall_confidence = confidence_result['overall_confidence']
+            recommendation = confidence_result['recommendation']
+            
+            if recommendation == 'auto_approve':
+                request.user.id_verified = True
+                request.user.can_post_properties = True
+                request.user.id_verification_date = timezone.now()
+                request.user.save()
+                
+                messages.success(
+                    request,
+                    f"✅ Verification successful! Your identity has been verified with {overall_confidence:.0f}% confidence. "
+                    "You can now post properties."
+                )
+                return redirect('shop:profile')
+            
+            elif recommendation == 'manual_review':
+                request.user.save()
+                messages.info(
+                    request,
+                    f"⏳ Your verification is under review (confidence: {overall_confidence:.0f}%). "
+                    "Our team will review your information and notify you within 24-48 hours."
+                )
+                return redirect('shop:profile')
+            
+            else:
+                request.user.save()
+                messages.error(
+                    request,
+                    f"❌ Verification failed. The information provided does not match our records "
+                    f"(confidence: {overall_confidence:.0f}%). Please check your details and try again."
+                )
+                return redirect('users:submit_user_verification')
+        else:
+            error_msg = result if isinstance(result, str) else "Verification failed. Please try again."
+            messages.error(request, f"Verification failed: {error_msg}")
+            return redirect('users:submit_user_verification')
+    
+    return render(request, 'users/submit_user_verification.html', {
+        'user': request.user
+    })

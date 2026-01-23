@@ -521,13 +521,13 @@
               <div class="form-header">
                 <h2>Sign In</h2>
                 <p>Enter your credentials to access your account</p>
-                <div class="p-3 bg-success rounded-4 shadow-lg  justify-content-center align-items-center"
-                  style="display: none;" id="loginSuccessMessage">
-                  <p class="fw-bold text-white text-center my-auto" style="display: none;" id="success-message"></p>
+                <div class="p-3 bg-success rounded-4 shadow-lg d-flex justify-content-center align-items-center"
+                  style="display: none !important;" id="loginSuccessMessage">
+                  <p class="fw-bold text-white text-center my-auto" id="success-message"></p>
                 </div>
-                <div class="p-3 bg-danger rounded-4 shadow-lg  justify-content-center align-items-center"
-                  style="display: none;" id="loginErrorMessage">
-                  <p class="fw-bold text-center my-auto text-white" style="display: none;" id="error-message-text"></p>
+                <div class="p-3 bg-danger rounded-4 shadow-lg d-flex justify-content-center align-items-center"
+                  style="display: none !important;" id="loginErrorMessage">
+                  <p class="fw-bold text-center my-auto text-white" id="error-message-text"></p>
                 </div>
               </div>
 
@@ -539,7 +539,7 @@
                 <input type="hidden" name="next" value="{{ request.GET.next }}">
                 {% endif %}
                 <!-- Hidden field for action URL -->
-                <input type="hidden" id="loginActionUrl" value="{% url 'login' %}">
+                <input type="hidden" id="loginActionUrl" value="{% url 'users:login' %}">
 
                 <!-- Email or Phone Number -->
                 <div class="form-group">
@@ -578,7 +578,7 @@
                     <input type="checkbox" id="rememberMe" name="remember_me">
                     <label for="rememberMe">Remember me</label>
                   </div>
-                  <a href="{% url 'password_reset_request' %}" class="forgot-password">Forgot Password?</a>
+                  <a href="{% url 'users:password_reset_request' %}" class="forgot-password">Forgot Password?</a>
                 </div>
 
                 <!-- Submit Button -->
@@ -605,7 +605,7 @@
 
                 <!-- Register Link -->
                 <div class="register-link">
-                  Don't have an account? <a href="{% url 'register' %}">Create one</a>
+                  Don't have an account? <a href="{% url 'users:register' %}">Create one</a>
                 </div>
               </form>
             </div>
@@ -668,7 +668,7 @@
     const emailOrPhone = document.getElementById('emailOrPhone');
     const emailOrPhoneError = document.getElementById('emailOrPhoneError');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phonePattern = /^\+?[1-9]\d{1,14}$/;
+    const phonePattern = /^(\+234|0)[789]\d{9}$/; // Flexible Nigerian phone pattern
 
     if (!emailPattern.test(emailOrPhone.value) && !phonePattern.test(emailOrPhone.value.replace(/\s/g, ''))) {
       emailOrPhoneError.querySelector('span').textContent = 'Please enter a valid email or phone number';
@@ -708,8 +708,7 @@
         })
         .then((data) => {
           if (data.status === "success") {
-            loginSuccessMessage.style.display = "block";
-            successMessage.style.display = "block";
+            loginSuccessMessage.setAttribute('style', 'display: flex !important;');
             successMessage.innerHTML = data.message;
 
             // Redirect after showing success message
@@ -717,8 +716,7 @@
               window.location.href = data.redirect_url;
             }, 1500);
           } else if (data.status === "error") {
-            errorMessage.style.display = "block";
-            errorText.style.display = "block";
+            errorMessage.setAttribute('style', 'display: flex !important;');
             errorText.innerHTML = data.message;
 
             setTimeout(() => {
@@ -749,7 +747,7 @@
     }
 
     return false;
-  }, true); // Use capture phase
+  }, false); // Use bubble phase (default)
 
   // Clear error on input
   document.querySelectorAll('.form-control-custom').forEach(input => {

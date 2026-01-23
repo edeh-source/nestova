@@ -325,121 +325,122 @@
 
     /* ==================== TAB NAVIGATION ==================== */
     /* ==================== TAB NAVIGATION (FIXED) ==================== */
-.tab-nav-wrapper {
-    background: var(--surface-white);
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 73px;
-    z-index: 999;
-    /* Add these for better scrolling on mobile */
-    overflow-x: auto;
-    overflow-y: hidden;
-}
+    .tab-nav-wrapper {
+        background: var(--surface-white);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 73px;
+        z-index: 999;
+        /* Add these for better scrolling on mobile */
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
 
-.tab-nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    /* Remove any width constraints */
-    min-width: 100%;
-}
-
-.tab-nav {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin; /* Show thin scrollbar on Firefox */
-    scrollbar-color: var(--border-color) transparent;
-    /* Prevent flex items from shrinking */
-    flex-wrap: nowrap;
-    /* Add padding for better UX on mobile */
-    padding-bottom: 0;
-}
-
-/* Custom scrollbar for WebKit browsers */
-.tab-nav::-webkit-scrollbar {
-    height: 3px;
-}
-
-.tab-nav::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.tab-nav::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 3px;
-}
-
-.tab-nav::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-}
-
-.tab-btn {
-    padding: 1rem 1.5rem;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    white-space: nowrap;
-    border-bottom: 3px solid transparent;
-    font-size: 0.95rem;
-    /* Prevent shrinking */
-    flex-shrink: 0;
-    /* Ensure minimum touch target size */
-    min-width: fit-content;
-}
-
-.tab-btn:hover {
-    color: var(--primary-color);
-    background: var(--surface-light);
-}
-
-.tab-btn.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 768px) {
     .tab-nav-container {
-        padding: 0 1rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        /* Remove any width constraints */
+        min-width: 100%;
     }
-    
+
+    .tab-nav {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        /* Show thin scrollbar on Firefox */
+        scrollbar-color: var(--border-color) transparent;
+        /* Prevent flex items from shrinking */
+        flex-wrap: nowrap;
+        /* Add padding for better UX on mobile */
+        padding-bottom: 0;
+    }
+
+    /* Custom scrollbar for WebKit browsers */
+    .tab-nav::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .tab-nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .tab-nav::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 3px;
+    }
+
+    .tab-nav::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+
     .tab-btn {
-        padding: 0.875rem 1.25rem;
-        font-size: 0.9rem;
+        padding: 1rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        white-space: nowrap;
+        border-bottom: 3px solid transparent;
+        font-size: 0.95rem;
+        /* Prevent shrinking */
+        flex-shrink: 0;
+        /* Ensure minimum touch target size */
+        min-width: fit-content;
     }
-    
-    /* Show scroll hint on mobile */
-    .tab-nav-wrapper::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 3px;
-        width: 40px;
-        background: linear-gradient(to right, transparent, var(--surface-white));
-        pointer-events: none;
+
+    .tab-btn:hover {
+        color: var(--primary-color);
+        background: var(--surface-light);
     }
-}
 
-@media (max-width: 480px) {
-    .tab-btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
+    .tab-btn.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
     }
-}
 
-    
-   
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+        .tab-nav-container {
+            padding: 0 1rem;
+        }
 
-    
+        .tab-btn {
+            padding: 0.875rem 1.25rem;
+            font-size: 0.9rem;
+        }
 
-    
+        /* Show scroll hint on mobile */
+        .tab-nav-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 3px;
+            width: 40px;
+            background: linear-gradient(to right, transparent, var(--surface-white));
+            pointer-events: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+        }
+    }
+
+
+
+
+
+
+
 
     /* ==================== CONTENT AREA ==================== */
     .content-area {
@@ -920,6 +921,54 @@
         </div>
     </section>
 
+    <!-- Verification Status Banner (for normal users) -->
+    {% if not agent_profile and not company_profile and not user.id_verified %}
+    <section class="verification-banner"
+        style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-bottom: 1px solid #fbbf24; padding: 1.5rem 0;">
+        <div class="hero-container">
+            <div
+                style="display: flex; align-items: center; gap: 1.5rem; background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <div
+                    style="width: 60px; height: 60px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="bi bi-shield-exclamation" style="font-size: 28px; color: white;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 700; color: #92400e;">
+                        <i class="bi bi-exclamation-circle-fill me-2"></i>Identity Verification Required
+                    </h4>
+                    <p style="margin: 0; color: #78350f; font-size: 0.95rem;">
+                        To post properties on our platform, you need to verify your identity. This helps us maintain a
+                        safe and trusted community.
+                    </p>
+                </div>
+                <a href="{% url 'users:submit_user_verification' %}"
+                    style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 0.875rem 1.75rem; border-radius: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+                    <i class="bi bi-shield-check me-2"></i>Verify Now
+                </a>
+            </div>
+        </div>
+    </section>
+    {% elif not agent_profile and not company_profile and user.id_verified %}
+    <section class="verification-banner"
+        style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-bottom: 1px solid #22c55e; padding: 1rem 0;">
+        <div class="hero-container">
+            <div
+                style="display: flex; align-items: center; gap: 1rem; background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <div
+                    style="width: 40px; height: 40px; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-check-circle-fill" style="font-size: 20px; color: white;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <p style="margin: 0; color: #14532d; font-weight: 600; font-size: 0.95rem;">
+                        <i class="bi bi-shield-fill-check me-2"></i>Your identity is verified. You can now post
+                        properties!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- Tab Navigation -->
     <div class="tab-nav-wrapper">
         <div class="tab-nav-container">
@@ -929,7 +978,7 @@
                     <i class="bi bi-grid me-1"></i> Agents Dashboard
                 </button>
                 {% endif %}
-                
+
                 <button class="tab-btn" onclick="switchTab('properties')">
                     <i class="bi bi-building me-1"></i> My Properties
                 </button>
@@ -1009,7 +1058,9 @@
                     <div class="p-4 bg-light rounded text-center">
                         <p class="mb-3">Share this link to invite new agents and earn commission!</p>
                         <div class="input-group mb-3" style="max-width: 600px; margin: 0 auto;">
-                            <input type="text" class="form-control" value="{{ request.scheme }}://{{ request.get_host }}{% url 'agents:agents_signup' %}?ref={{ agent_data.referral_code }}" id="agentRefLink" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ request.scheme }}://{{ request.get_host }}{% url 'agents:agents_signup' %}?ref={{ agent_data.referral_code }}"
+                                id="agentRefLink" readonly>
                             <button class="btn btn-primary" onclick="copyAgentRefLink()">
                                 <i class="bi bi-clipboard me-2"></i>Copy Link
                             </button>
@@ -1438,7 +1489,7 @@
                         <button type="submit" class="btn-primary">
                             <i class="bi bi-check-circle me-2"></i> Save Changes
                         </button>
-                        <a href="{% url 'logout' %}" class="btn-secondary ms-2">
+                        <a href="{% url 'users:logout' %}" class="btn-secondary ms-2">
                             <i class="bi bi-box-arrow-right me-2"></i> Logout
                         </a>
                     </div>

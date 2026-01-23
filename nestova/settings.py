@@ -407,13 +407,13 @@ if not DEBUG and not PAYSTACK_SECRET_KEY:
     raise ValueError("PAYSTACK_SECRET_KEY must be set in production!")
 
 # ==================================
-# VERIFICATION API CONFIGURATION
+# VERIFICATION API CONFIGURATION (KORA)
 # ==================================
 
-# Persona API credentials for identity verification
-# Default sandbox key for development/testing
-PERSONA_API_KEY = os.environ.get('DEFAULT_PERSONA_KEY')
-PERSONA_TEMPLATE_ID = os.environ.get('PERSONA_TEMPLATE_ID', '')  # Optional: Template for Nigerian verifications
+# Kora API credentials for identity verification
+KORA_PUBLIC_KEY = os.environ.get('KORA_PUBLIC_KEY')
+KORA_SECRET_KEY = os.environ.get('KORA_SECRET_KEY')
+KORA_BASE_URL = 'https://api.korapay.com/merchant/api/v1'
 
 # Auto-verification confidence thresholds (0-100)
 AUTO_VERIFY_CONFIDENCE_THRESHOLD = int(os.environ.get('AUTO_VERIFY_CONFIDENCE_THRESHOLD', '85'))
@@ -421,9 +421,9 @@ REQUIRE_MANUAL_REVIEW_BELOW = int(os.environ.get('REQUIRE_MANUAL_REVIEW_BELOW', 
 AUTO_REJECT_BELOW = int(os.environ.get('AUTO_REJECT_BELOW', '50'))
 
 # Verification requirements by user type
-AGENT_VERIFICATION_REQUIRED = ['nin', 'selfie']  # or 'bvn'
+AGENT_VERIFICATION_REQUIRED = ['nin']  # or 'bvn' or 'vnin'
 COMPANY_VERIFICATION_REQUIRED = ['cac', 'utility_bill']
-INDIVIDUAL_VERIFICATION_REQUIRED = []  # Optional for regular customers
+USER_VERIFICATION_REQUIRED = ['nin']  # Normal users must verify NIN to post properties
 
 
 # Site URL for email notifications
@@ -553,7 +553,7 @@ SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 
 
 LOGS_DIR = BASE_DIR / 'logs'
-LOGS_DIR.mkdir(exist_ok=True)
+os.makedirs(LOGS_DIR, exist_ok=True)
 
 LOGGING = {
     'version': 1,
@@ -577,7 +577,7 @@ LOGGING = {
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': LOGS_DIR / 'django_errors.log',
+            'filename': str(LOGS_DIR / 'django_errors.log'),  # Convert to string
             'formatter': 'verbose',
         },
     },

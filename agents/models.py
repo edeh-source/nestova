@@ -39,6 +39,8 @@ class Agent(models.Model):
     
     ID_TYPE_CHOICES = [
         ('nin', 'National Identity Number (NIN)'),
+        ('vnin', 'Virtual NIN (vNIN)'),
+        ('bvn', 'Bank Verification Number (BVN)'),
         ('passport', 'International Passport'),
         ('voters_card', "Voter's Card"),
     ]
@@ -397,6 +399,8 @@ class VerificationLog(models.Model):
     """Track all verification attempts and API calls"""
     VERIFICATION_TYPES = [
         ('nin', 'NIN'),
+        ('vnin', 'Virtual NIN'),
+        ('bvn', 'BVN'),
         ('passport', 'Passport'),
         ('voters_card', "Voter's Card"),
         ('cac', 'CAC'),
@@ -417,7 +421,7 @@ class VerificationLog(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     
     # API details
-    api_provider = models.CharField(max_length=50, blank=True, help_text="e.g., Persona, VerifyMe")
+    api_provider = models.CharField(max_length=50, blank=True, help_text="e.g., Kora, Persona, VerifyMe")
     request_data = models.JSONField(default=dict, blank=True)
     response_data = models.JSONField(default=dict, blank=True)
     

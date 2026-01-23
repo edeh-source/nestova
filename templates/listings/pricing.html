@@ -369,7 +369,8 @@
                             </div>
                         </div>
                     </div>
-                    <p class="progress-label">{{ user_subscription.used_slots }} slots used • {{ user_subscription.remaining_slots }} slots available</p>
+                    <p class="progress-label">{{ user_subscription.used_slots }} slots used • {{
+                        user_subscription.remaining_slots }} slots available</p>
                 </div>
             </div>
         </div>
@@ -404,7 +405,8 @@
                 </div>
 
                 <ul class="package-features">
-                    <li><i class="bi bi-check-circle-fill"></i> {{ pkg.slots_count }} Property Listing{% if pkg.slots_count > 1 %}s{% endif %}</li>
+                    <li><i class="bi bi-check-circle-fill"></i> {{ pkg.slots_count }} Property Listing{% if
+                        pkg.slots_count > 1 %}s{% endif %}</li>
                     <li><i class="bi bi-check-circle-fill"></i> Slots Never Expire</li>
                     <li><i class="bi bi-check-circle-fill"></i> Post Anytime</li>
                     <li><i class="bi bi-check-circle-fill"></i> Manage from Dashboard</li>
@@ -423,7 +425,7 @@
                     {% endif %}
                 </a>
                 {% else %}
-                <a href="{% url 'login' %}?next={% url 'listings:pricing' %}" class="buy-button secondary">
+                <a href="{% url 'users:login' %}?next={% url 'listings:pricing' %}" class="buy-button secondary">
                     Login to Purchase
                 </a>
                 {% endif %}

@@ -170,6 +170,13 @@ def submit_agent_verification(request):
                 api_data = result
                 agent.id_verified = True
         
+        elif id_type == 'vnin' and id_number:
+            success, result = service.verify_vnin(request.user, id_number)
+            if success:
+                verification_success = True
+                api_data = result
+                agent.id_verified = True
+        
         elif id_type == 'bvn' and id_number:
             success, result = service.verify_bvn(request.user, id_number)
             if success:

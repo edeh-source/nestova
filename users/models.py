@@ -91,6 +91,14 @@ class User(PermissionsMixin, AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     
+    # Verification fields for normal users
+    id_verified = models.BooleanField(default=False, help_text="User has verified their ID")
+    id_type = models.CharField(max_length=20, blank=True, null=True, help_text="nin, vnin, or bvn")
+    id_number = models.CharField(max_length=50, blank=True, null=True, help_text="ID number used for verification")
+    id_verification_date = models.DateTimeField(null=True, blank=True)
+    verification_data = models.JSONField(default=dict, blank=True, help_text="API verification response data")
+    can_post_properties = models.BooleanField(default=False, help_text="User can post properties after verification")
+    
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
 

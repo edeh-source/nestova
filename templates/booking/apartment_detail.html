@@ -13,7 +13,8 @@
           <div class="col-lg-8">
             <h1 class="heading-title">{{ apartment.title }}</h1>
             <p class="mb-0">
-              <i class="bi bi-geo-alt"></i> {{ apartment.address }}, {{ apartment.city }}, {{ apartment.state }} {{ apartment.zip_code }}
+              <i class="bi bi-geo-alt"></i> {{ apartment.address }}, {{ apartment.city }}, {{ apartment.state }} {{
+              apartment.zip_code }}
             </p>
           </div>
         </div>
@@ -43,9 +44,12 @@
           <div class="property-gallery" data-aos="fade-up" data-aos-delay="200">
             <div class="main-image-container image-zoom-container">
               {% if apartment.main_image %}
-              <img id="main-product-image" src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}" class="img-fluid main-property-image" data-zoom="{{ apartment.main_image.url }}">
+              <img id="main-product-image" src="{{ apartment.main_image.url }}" alt="{{ apartment.title }}"
+                class="img-fluid main-property-image" data-zoom="{{ apartment.main_image.url }}">
               {% else %}
-              <img id="main-product-image" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200" alt="{{ apartment.title }}" class="img-fluid main-property-image" data-zoom="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200">
+              <img id="main-product-image" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200"
+                alt="{{ apartment.title }}" class="img-fluid main-property-image"
+                data-zoom="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200">
               {% endif %}
               <div class="image-nav-buttons">
                 <button class="image-nav-btn prev-image" type="button">
@@ -130,7 +134,7 @@
           {% if reviews %}
           <div class="property-reviews" data-aos="fade-up" data-aos-delay="500">
             <h3>Guest Reviews</h3>
-            
+
             {% if avg_ratings.total_reviews %}
             <div class="rating-summary mb-4 p-4 bg-light rounded">
               <div class="row align-items-center">
@@ -138,7 +142,8 @@
                   <h2 class="mb-0 display-4">{{ avg_ratings.avg_overall|floatformat:1 }}</h2>
                   <div class="stars text-warning mb-2">
                     {% for i in "12345" %}
-                    <i class="bi bi-star-fill {% if forloop.counter > avg_ratings.avg_overall %}opacity-25{% endif %}"></i>
+                    <i
+                      class="bi bi-star-fill {% if forloop.counter > avg_ratings.avg_overall %}opacity-25{% endif %}"></i>
                     {% endfor %}
                   </div>
                   <small class="text-muted">{{ avg_ratings.total_reviews }} reviews</small>
@@ -150,7 +155,8 @@
                       <small>{{ avg_ratings.avg_cleanliness|floatformat:1 }}/5</small>
                     </div>
                     <div class="progress" style="height: 8px;">
-                      <div class="progress-bar bg-success" style="width: {{ avg_ratings.avg_cleanliness|floatformat:0 }}%"></div>
+                      <div class="progress-bar bg-success"
+                        style="width: {{ avg_ratings.avg_cleanliness|floatformat:0 }}%"></div>
                     </div>
                   </div>
                   <div class="mb-2">
@@ -159,7 +165,8 @@
                       <small>{{ avg_ratings.avg_communication|floatformat:1 }}/5</small>
                     </div>
                     <div class="progress" style="height: 8px;">
-                      <div class="progress-bar bg-info" style="width: {{ avg_ratings.avg_communication|floatformat:0 }}%"></div>
+                      <div class="progress-bar bg-info"
+                        style="width: {{ avg_ratings.avg_communication|floatformat:0 }}%"></div>
                     </div>
                   </div>
                   <div class="mb-2">
@@ -168,7 +175,8 @@
                       <small>{{ avg_ratings.avg_location|floatformat:1 }}/5</small>
                     </div>
                     <div class="progress" style="height: 8px;">
-                      <div class="progress-bar bg-primary" style="width: {{ avg_ratings.avg_location|floatformat:0 }}%"></div>
+                      <div class="progress-bar bg-primary" style="width: {{ avg_ratings.avg_location|floatformat:0 }}%">
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -177,7 +185,8 @@
                       <small>{{ avg_ratings.avg_value|floatformat:1 }}/5</small>
                     </div>
                     <div class="progress" style="height: 8px;">
-                      <div class="progress-bar bg-warning" style="width: {{ avg_ratings.avg_value|floatformat:0 }}%"></div>
+                      <div class="progress-bar bg-warning" style="width: {{ avg_ratings.avg_value|floatformat:0 }}%">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -191,7 +200,8 @@
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <div class="d-flex align-items-center">
                     <div class="review-avatar me-3">
-                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-weight: bold;">
+                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 50px; height: 50px; font-weight: bold;">
                         {{ review.user.first_name|first|upper }}{{ review.user.last_name|first|upper }}
                       </div>
                     </div>
@@ -202,7 +212,8 @@
                   </div>
                   <div class="stars text-warning">
                     {% for i in "12345" %}
-                    <i class="bi bi-star-fill {% if forloop.counter > review.overall_rating %}opacity-25{% endif %}"></i>
+                    <i
+                      class="bi bi-star-fill {% if forloop.counter > review.overall_rating %}opacity-25{% endif %}"></i>
                     {% endfor %}
                   </div>
                 </div>
@@ -218,11 +229,15 @@
           <div class="property-map" data-aos="fade-up" data-aos-delay="600">
             <h3>Location</h3>
             <div class="map-container">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0824050173574!2d-87.63000000000002!3d41.88844360000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2s{{ apartment.city }}%2C%20{{ apartment.state }}%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890123" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2965.0824050173574!2d-87.63000000000002!3d41.88844360000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2s{{ apartment.city }}%2C%20{{ apartment.state }}%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890123"
+                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
             <div class="location-details">
               <h4>Neighborhood Information</h4>
-              <p>Located in {{ apartment.city }}, {{ apartment.state }}, this property offers convenient access to local amenities, shopping, dining, and entertainment. Easy access to public transportation and major highways.</p>
+              <p>Located in {{ apartment.city }}, {{ apartment.state }}, this property offers convenient access to local
+                amenities, shopping, dining, and entertainment. Easy access to public transportation and major highways.
+              </p>
             </div>
           </div><!-- End Map Section -->
 
@@ -294,15 +309,16 @@
             <!-- Agent Info -->
             <div class="agent-info">
               <div class="agent-avatar">
-                <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="{{ apartment.owner.get_full_name }}" class="img-fluid">
+                <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="{{ apartment.owner.get_full_name }}"
+                  class="img-fluid">
               </div>
-              
+
             </div><!-- End Agent Info -->
 
             <!-- Booking Form -->
             <div class="contact-form">
               <h4>Book This Apartment</h4>
-              
+
               {% if messages %}
               {% for message in messages %}
               <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -317,7 +333,8 @@
                 <div class="row">
                   <div class="col-12 form-group">
                     <label>Check-in Date</label>
-                    <input type="date" name="check_in_date" class="form-control" id="checkInDate" required min="{{ today|date:'Y-m-d' }}">
+                    <input type="date" name="check_in_date" class="form-control" id="checkInDate" required
+                      min="{{ today|date:'Y-m-d' }}">
                   </div>
                   <div class="col-12 form-group">
                     <label>Check-out Date</label>
@@ -327,10 +344,10 @@
                     <label>Number of Guests</label>
                     <select name="number_of_guests" class="form-control" required>
                       {% for i in "123456789"|make_list %}
-                      {% if forloop.counter <= apartment.max_guests %}
-                      <option value="{{ forloop.counter }}">{{ forloop.counter }} Guest{{ forloop.counter|pluralize }}</option>
-                      {% endif %}
-                      {% endfor %}
+                      {% if forloop.counter <= apartment.max_guests %} <option value="{{ forloop.counter }}">{{
+                        forloop.counter }} Guest{{ forloop.counter|pluralize }}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
                   </div>
                   <div class="col-12 form-group">
@@ -339,7 +356,8 @@
                   </div>
                   <div class="col-12 form-group">
                     <label>Special Requests (Optional)</label>
-                    <textarea class="form-control" name="special_requests" rows="3" placeholder="Any special requirements..."></textarea>
+                    <textarea class="form-control" name="special_requests" rows="3"
+                      placeholder="Any special requirements..."></textarea>
                   </div>
 
                   <!-- Price Breakdown -->
@@ -367,7 +385,7 @@
                       <i class="bi bi-calendar-check"></i> Book Now
                     </button>
                     {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">
+                    <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn btn-primary">
                       <i class="bi bi-box-arrow-in-right"></i> Login to Book
                     </a>
                     {% endif %}
@@ -410,12 +428,12 @@
   function calculatePrice() {
     const checkIn = new Date(checkInInput.value);
     const checkOut = new Date(checkOutInput.value);
-    
+
     if (checkIn && checkOut && checkOut > checkIn) {
       const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
       const subtotal = pricePerNight * nights;
       const total = subtotal + depositAmount;
-      
+
       document.getElementById('numberOfNights').textContent = nights;
       document.getElementById('subtotal').textContent = subtotal.toFixed(2);
       document.getElementById('totalPrice').textContent = total.toFixed(2);
@@ -423,7 +441,7 @@
     }
   }
 
-  checkInInput.addEventListener('change', function() {
+  checkInInput.addEventListener('change', function () {
     const tomorrow = new Date(this.value);
     tomorrow.setDate(tomorrow.getDate() + 1);
     checkOutInput.min = tomorrow.toISOString().split('T')[0];
