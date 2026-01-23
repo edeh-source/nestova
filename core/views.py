@@ -56,3 +56,5 @@ def properties_details(request):
 
 def dashboard_user(request):
     return render(request, "estate/dashboard.html")
+
+

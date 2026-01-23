@@ -4,7 +4,68 @@
 {% load static %}
 {% load humanize %}
 
-{% block content %}
+{# SEO Meta Tags for Property Detail Page #}
+{% block seo_meta %}
+{% include 'includes/seo_meta.html' with meta_title=property.title|add:" - Property for
+"|add:property.status.get_name_display|add:" in "|add:property.city.name
+meta_description=property.description|striptags|truncatewords:30 meta_keywords="property for
+"|add:property.status.get_name_display|add:", "|add:property.city.name|add:", "|add:property.state.name|add:", real
+estate Nigeria, "|add:property.property_type|add:", "|add:property.bedrooms|add:" bedroom" og_title=property.title
+og_description=property.description|striptags|truncatewords:30 og_type="product" og_url=request.build_absolute_uri
+og_image=property.featured_image.url|default:"/static/assets/img/og-default.jpg" og_image_alt=property.title
+twitter_card="summary_large_image" twitter_title=property.title
+twitter_description=property.description|striptags|truncatewords:30
+twitter_image=property.featured_image.url|default:"/static/assets/img/og-default.jpg" product_price=property.price
+product_availability="in stock" canonical_url=request.build_absolute_uri %}
+{% endblock seo_meta %}
+
+{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{%
+endblock %}
+
+{% block extra_head %}
+{# Structured Data for Property Listing #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateListing",
+  "name": "{{ property.title|escapejs }}",
+  "description": "{{ property.description|striptags|truncatewords:50|escapejs }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "image": "{% if property.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ property.featured_image.url }}{% endif %}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ property.address|escapejs }}",
+    "addressLocality": "{{ property.city.name|escapejs }}",
+    "addressRegion": "{{ property.state.name|escapejs }}",
+    "addressCountry": "NG"
+  },
+  "geo": {
+    "@type": "GeoCoordinates"
+    {% if property.latitude and property.longitude %}
+    ,"latitude": "{{ property.latitude }}",
+    "longitude": "{{ property.longitude }}"
+    {% endif %}
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ property.price }}",
+    "priceCurrency": "NGN",
+    "availability": "https://schema.org/InStock",
+    "url": "{{ request.build_absolute_uri }}"
+  },
+  "numberOfRooms": "{{ property.bedrooms }}",
+  "numberOfBathroomsTotal": "{{ property.bathrooms }}",
+  "floorSize": {
+    "@type": "QuantitativeValue",
+    "value": "{{ property.square_feet }}",
+    "unitCode": "FTK"
+  }
+  {% if property.year_built %}
+  ,"yearBuilt": "{{ property.year_built }}"
+  {% endif %}
+}
+</script>
+{% endblock extra_head %}
 
 
 
@@ -245,7 +306,7 @@
             <!-- Contact Form -->
 
 
-            <!-- Referral & Social Share -->
+            {# Referral & Social Share #}
             <div class="social-share">
               {% if referral_link %}
               <div class="agent-referral mb-4 p-3 bg-light rounded border">
@@ -264,20 +325,34 @@
               <h5>Share This Property</h5>
               <div class="share-buttons">
                 <!-- Facebook -->
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ referral_link|default:request.build_absolute_uri|urlencode }}"
-                  target="_blank" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}"
+                  target="_blank" rel="noopener noreferrer" class="share-btn facebook" aria-label="Share on Facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
 
                 <!-- Twitter/X -->
-                <a href="https://twitter.com/intent/tweet?text=Check out this amazing property!&url={{ referral_link|default:request.build_absolute_uri|urlencode }}"
-                  target="_blank" class="share-btn twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="https://twitter.com/intent/tweet?text={{ property.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}"
+                  target="_blank" rel="noopener noreferrer" class="share-btn twitter" aria-label="Share on Twitter">
+                  <i class="bi bi-twitter-x"></i>
+                </a>
 
                 <!-- WhatsApp -->
-                <a href="https://wa.me/?text=Check out this property: {{ referral_link|default:request.build_absolute_uri|urlencode }}"
-                  target="_blank" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
+                <a href="https://wa.me/?text={{ property.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
+                  target="_blank" rel="noopener noreferrer" class="share-btn whatsapp" aria-label="Share on WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </a>
+
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
+                  target="_blank" rel="noopener noreferrer" class="share-btn linkedin" aria-label="Share on LinkedIn">
+                  <i class="bi bi-linkedin"></i>
+                </a>
 
                 <!-- Email -->
-                <a href="mailto:?subject=Check out this property&body=I found this property and thought you might be interested: {{ referral_link|default:request.build_absolute_uri }}"
-                  class="share-btn email"><i class="bi bi-envelope"></i></a>
+                <a href="mailto:?subject={{ property.title|urlencode }}&body=Check out this property: {{ request.build_absolute_uri }}"
+                  class="share-btn email" aria-label="Share via Email">
+                  <i class="bi bi-envelope"></i>
+                </a>
               </div>
 
               {% if not referral_link and user.is_authenticated and not user.agent_profile %}

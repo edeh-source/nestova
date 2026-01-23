@@ -2,7 +2,56 @@
 {% load text_filters %}
 {% load static %}
 
-{% block content %}
+{# SEO Meta Tags for Product Detail Page #}
+{% block seo_meta %}
+{% include 'includes/seo_meta.html' with meta_title=product.name|add:" - "|add:product.category.name
+meta_description=product.short_description|striptags|truncatewords:30 meta_keywords=product.category.name|add:",
+"|add:product.brand|add:", smart home, home automation, Nigeria" og_title=product.name
+og_description=product.short_description|striptags|truncatewords:30 og_type="product" og_url=request.build_absolute_uri
+og_image=product.main_image.url|default:"/static/assets/img/og-default.jpg" og_image_alt=product.name
+twitter_card="summary_large_image" twitter_title=product.name
+twitter_description=product.short_description|striptags|truncatewords:30
+twitter_image=product.main_image.url|default:"/static/assets/img/og-default.jpg"
+product_price=product.discount_price|default:product.price product_availability=product.is_in_stock|yesno:"in stock,out
+of stock" product_condition="new" canonical_url=request.build_absolute_uri %}
+{% endblock seo_meta %}
+
+{% block title %}{{ product.name }} - {{ product.category.name }} | Nestova Shop{% endblock %}
+
+{% block extra_head %}
+{# Structured Data for Product #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name|escapejs }}",
+  "description": "{{ product.short_description|striptags|truncatewords:50|escapejs }}",
+  "image": "{% if product.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.main_image.url }}{% endif %}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ product.brand|escapejs }}"
+  },
+  "sku": "{{ product.sku }}",
+  "mpn": "{{ product.model_number }}",
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ request.build_absolute_uri }}",
+    "priceCurrency": "NGN",
+    "price": "{% if product.discount_price %}{{ product.discount_price }}{% else %}{{ product.price }}{% endif %}",
+    "priceValidUntil": "{{ product.updated_at|date:'Y-12-31' }}",
+    "availability": "{% if product.is_in_stock %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+  {% if average_rating > 0 %}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ average_rating }}",
+    "reviewCount": "{{ reviews_count }}"
+  }
+  {% endif %}
+}
+</script>
+{% endblock extra_head %}
 
 <!-- Custom CSS for Modern Product Detail Design -->
 <style>
@@ -774,6 +823,37 @@
               <div class="col-md-6">
                 <strong><i class="fas fa-shield-alt me-1"></i>Warranty:</strong> {{ product.warranty_period }}
               </div>
+            </div>
+          </div>
+
+          {# Social Share Section #}
+          <div class="product-meta mt-4">
+            <h5 class="mb-3"><i class="fas fa-share-alt me-2"></i>Share This Product</h5>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}"
+                target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm"
+                aria-label="Share on Facebook">
+                <i class="bi bi-facebook me-1"></i> Facebook
+              </a>
+              <a href="https://twitter.com/intent/tweet?text={{ product.name|urlencode }}&url={{ request.build_absolute_uri|urlencode }}"
+                target="_blank" rel="noopener noreferrer" class="btn btn-outline-info btn-sm"
+                aria-label="Share on Twitter">
+                <i class="bi bi-twitter-x me-1"></i> Twitter
+              </a>
+              <a href="https://wa.me/?text={{ product.name|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
+                target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-sm"
+                aria-label="Share on WhatsApp">
+                <i class="bi bi-whatsapp me-1"></i> WhatsApp
+              </a>
+              <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
+                target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm"
+                aria-label="Share on LinkedIn">
+                <i class="bi bi-linkedin me-1"></i> LinkedIn
+              </a>
+              <a href="mailto:?subject={{ product.name|urlencode }}&body=Check out this product: {{ request.build_absolute_uri }}"
+                class="btn btn-outline-secondary btn-sm" aria-label="Share via Email">
+                <i class="bi bi-envelope me-1"></i> Email
+              </a>
             </div>
           </div>
         </div>

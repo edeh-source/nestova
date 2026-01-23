@@ -174,7 +174,7 @@ class Property(models.Model):
     has_ac = models.BooleanField(default=False)
     has_heating = models.BooleanField(default=False)
     pet_friendly = models.BooleanField(default=False)
-    
+    is_active = models.BooleanField(default=True)
     # Additional Features (JSON field for flexibility)
     additional_features = models.JSONField(blank=True, null=True, help_text="Store additional features as JSON")
     

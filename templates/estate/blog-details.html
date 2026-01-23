@@ -1,8 +1,42 @@
 {% extends 'base.html' %}
 
+{# SEO Meta Tags for Blog Post #}
+{% block seo_meta %}
+{% include 'includes/seo_meta.html' with meta_title=post.name meta_description=post.text|striptags|truncatewords:30 meta_keywords=post.category.name|add:", blog, Nestova, real estate Nigeria" og_title=post.name og_description=post.text|striptags|truncatewords:30 og_type="article" og_url=request.build_absolute_uri og_image=post.image.url|default:"/static/assets/img/og-default.jpg" og_image_alt=post.name twitter_card="summary_large_image" twitter_title=post.name twitter_description=post.text|striptags|truncatewords:30 twitter_image=post.image.url|default:"/static/assets/img/og-default.jpg" article_published_time=post.publish|date:"c" article_modified_time=post.updated|date:"c" article_author=post.author article_section=post.category.name canonical_url=request.build_absolute_uri %}
+{% endblock seo_meta %}
 
+{% block title %}{{ post.name }} | Nestova Blog{% endblock %}
 
-{% block content %}
+{% block extra_head %}
+{# Structured Data for Blog Article #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.name|escapejs }}",
+  "description": "{{ post.text|striptags|truncatewords:50|escapejs }}",
+  "image": "{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% endif %}",
+  "datePublished": "{{ post.publish|date:'c' }}",
+  "dateModified": "{{ post.updated|date:'c' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author|escapejs }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nestova",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/static/assets/img/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>
+{% endblock extra_head %}
   
 
   

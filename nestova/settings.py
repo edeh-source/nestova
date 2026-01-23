@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',  # SEO: Sitemap framework
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'agents.apps.AgentsConfig',
@@ -86,6 +87,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Early: serves static files before app logic
+    'django.middleware.gzip.GZipMiddleware',  # SEO/Performance: Compress responses
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -426,8 +428,10 @@ COMPANY_VERIFICATION_REQUIRED = ['cac', 'utility_bill']
 USER_VERIFICATION_REQUIRED = ['nin']  # Normal users must verify NIN to post properties
 
 
-# Site URL for email notifications
-SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000' if DEBUG else 'https://globaledgeconsultz.com')
+# Site URL for email notifications and SEO
+SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000' if DEBUG else 'https://nestovaproperty.com')
+SITE_NAME = 'Nestova'
+SITE_DESCRIPTION = 'Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents across Lagos, Abuja, Port Harcourt and more.'
 
 
 # ==================================
