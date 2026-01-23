@@ -555,7 +555,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 
-
+"""
 LOGS_DIR = BASE_DIR / 'logs'
 os.makedirs(LOGS_DIR, exist_ok=True)
 
@@ -602,7 +602,7 @@ LOGGING = {
         },
     },
 }
-
+"""
 # ==================================
 # PERFORMANCE OPTIMIZATIONS
 # ==================================
