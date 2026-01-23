@@ -6,7 +6,7 @@
 * License: https://bootstrapmade.com/license/
 */
 
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -20,7 +20,16 @@
   }
 
   document.addEventListener('scroll', toggleScrolled);
-  window.addEventListener('load', toggleScrolled);
+  window.addEventListener('load', () => {
+    toggleScrolled();
+    /**
+     * Preloader removal
+     */
+    const preloader = document.querySelector('#preloader');
+    if (preloader) {
+      preloader.remove();
+    }
+  });
 
   /**
    * Mobile nav toggle
@@ -52,7 +61,7 @@
    * Toggle mobile nav dropdowns
    */
   document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
+    navmenu.addEventListener('click', function (e) {
       e.preventDefault();
       this.parentNode.classList.toggle('active');
       this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
@@ -63,7 +72,7 @@
   /**
    * 
    */
-  
+
   /**
    * Scroll top button
    */
@@ -74,13 +83,15 @@
       window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
     }
   }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  if (scrollTop) {
+    scrollTop.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  });
+  }
 
   window.addEventListener('load', toggleScrollTop);
   document.addEventListener('scroll', toggleScrollTop);
@@ -107,7 +118,7 @@
    * Init swiper sliders
    */
   function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
+    document.querySelectorAll(".init-swiper").forEach(function (swiperElement) {
       let config = JSON.parse(
         swiperElement.querySelector(".swiper-config").innerHTML.trim()
       );
@@ -135,15 +146,27 @@
 
   function productDetailFeatures() {
     // Initialize Drift for image zoom
+    let driftInstance = null;
+
     function initDriftZoom() {
       // Check if Drift is available
       if (typeof Drift === 'undefined') {
-        console.error('Drift library is not loaded');
+        // console.warn('Drift library is not loaded');
         return;
       }
 
+      const mainImage = document.getElementById('main-product-image');
+      const zoomContainer = document.querySelector('.image-zoom-container');
+
+      if (!mainImage || !zoomContainer) return;
+
+      // Destroy existing instance if it exists to prevent memory leaks
+      if (driftInstance) {
+        driftInstance.destroy();
+      }
+
       const driftOptions = {
-        paneContainer: document.querySelector('.image-zoom-container'),
+        paneContainer: zoomContainer,
         inlinePane: window.innerWidth < 768 ? true : false,
         inlineOffsetY: -85,
         containInline: true,
@@ -153,10 +176,7 @@
       };
 
       // Initialize Drift on the main product image
-      const mainImage = document.getElementById('main-product-image');
-      if (mainImage) {
-        new Drift(mainImage, driftOptions);
-      }
+      driftInstance = new Drift(mainImage, driftOptions);
     }
 
     // Thumbnail click functionality
@@ -167,7 +187,7 @@
       if (!thumbnails.length || !mainImage) return;
 
       thumbnails.forEach(thumbnail => {
-        thumbnail.addEventListener('click', function() {
+        thumbnail.addEventListener('click', function () {
           // Get image path from data attribute
           const imageSrc = this.getAttribute('data-image');
 

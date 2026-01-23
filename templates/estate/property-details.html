@@ -7,7 +7,8 @@
 {% include 'includes/seo_meta.html' %}
 {% endblock seo_meta %}
 
-{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{% endblock %}
+{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{%
+endblock %}
 
 {% block extra_head %}
 {# Structured Data for Property Listing #}
@@ -74,7 +75,7 @@
     <nav class="breadcrumbs">
       <div class="container">
         <ol>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="{% url 'home' %}">Home</a></li>
           <li class="current">{{ property.title }}</li>
         </ol>
       </div>
@@ -183,8 +184,9 @@
         <div class="col-lg-4">
 
           <!-- Property Overview -->
-          <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
-            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
+          <div class="property-overview sticky-top">
+            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent'
+              %}<span>/mo</span>{% endif %}</div>
             <div
               class="property-status {% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
               {{ property.status.get_name_display }}</div>
@@ -383,7 +385,7 @@
     const saveSuccessMessage = document.getElementById("property-messagge-success");
     const saveErrorMessage = document.getElementById("property-messagge-error");
     const submitBtn = document.getElementById("save-btn");
-    const url = saveForm.action;
+    const url = saveForm ? saveForm.action : '';
     const getCsrfToken = () => {
       const cookieName = 'csrftoken';
       const cookies = document.cookie.split(';').map(c => c.trim());
@@ -397,7 +399,7 @@
       console.error(`CSRF token cookie "${cookieName}" not found.`);
       return null;
     };
-    saveForm.addEventListener("submit", (e) => {
+    saveForm && saveForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const csrfToken = getCsrfToken();
       submitBtn.textContent = "Saving Property";
@@ -406,7 +408,7 @@
       fetch(url, {
         method: "POST",
         body: formData,
-        Headers: {
+        headers: {
           "X-CSRFToken": csrfToken,
           "X-Requested-With": "XMLHttpRequest",
         }
