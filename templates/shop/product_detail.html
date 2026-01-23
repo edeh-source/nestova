@@ -4,16 +4,7 @@
 
 {# SEO Meta Tags for Product Detail Page #}
 {% block seo_meta %}
-{% include 'includes/seo_meta.html' with meta_title=product.name|add:" - "|add:product.category.name
-meta_description=product.short_description|striptags|truncatewords:30 meta_keywords=product.category.name|add:",
-"|add:product.brand|add:", smart home, home automation, Nigeria" og_title=product.name
-og_description=product.short_description|striptags|truncatewords:30 og_type="product" og_url=request.build_absolute_uri
-og_image=product.main_image.url|default:"/static/assets/img/og-default.jpg" og_image_alt=product.name
-twitter_card="summary_large_image" twitter_title=product.name
-twitter_description=product.short_description|striptags|truncatewords:30
-twitter_image=product.main_image.url|default:"/static/assets/img/og-default.jpg"
-product_price=product.discount_price|default:product.price product_availability=product.is_in_stock|yesno:"in stock,out
-of stock" product_condition="new" canonical_url=request.build_absolute_uri %}
+{% include 'includes/seo_meta.html' %}
 {% endblock seo_meta %}
 
 {% block title %}{{ product.name }} - {{ product.category.name }} | Nestova Shop{% endblock %}
@@ -54,6 +45,10 @@ of stock" product_condition="new" canonical_url=request.build_absolute_uri %}
 {% endblock extra_head %}
 
 <!-- Custom CSS for Modern Product Detail Design -->
+
+{% block content %}
+
+
 <style>
   /* ========================================
    MODERN DESIGN SYSTEM - PRODUCT DETAIL

@@ -1,26 +1,13 @@
 {% extends 'base.html' %}
 
-
 {% load static %}
 {% load humanize %}
 
-{# SEO Meta Tags for Property Detail Page #}
 {% block seo_meta %}
-{% include 'includes/seo_meta.html' with meta_title=property.title|add:" - Property for
-"|add:property.status.get_name_display|add:" in "|add:property.city.name
-meta_description=property.description|striptags|truncatewords:30 meta_keywords="property for
-"|add:property.status.get_name_display|add:", "|add:property.city.name|add:", "|add:property.state.name|add:", real
-estate Nigeria, "|add:property.property_type|add:", "|add:property.bedrooms|add:" bedroom" og_title=property.title
-og_description=property.description|striptags|truncatewords:30 og_type="product" og_url=request.build_absolute_uri
-og_image=property.featured_image.url|default:"/static/assets/img/og-default.jpg" og_image_alt=property.title
-twitter_card="summary_large_image" twitter_title=property.title
-twitter_description=property.description|striptags|truncatewords:30
-twitter_image=property.featured_image.url|default:"/static/assets/img/og-default.jpg" product_price=property.price
-product_availability="in stock" canonical_url=request.build_absolute_uri %}
+{% include 'includes/seo_meta.html' %}
 {% endblock seo_meta %}
 
-{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{%
-endblock %}
+{% block title %}{{ property.title }} - {{ property.status.get_name_display }} in {{ property.city.name }} | Nestova{% endblock %}
 
 {% block extra_head %}
 {# Structured Data for Property Listing #}
@@ -67,7 +54,7 @@ endblock %}
 </script>
 {% endblock extra_head %}
 
-
+{% block content %}
 
 
 
@@ -197,8 +184,7 @@ endblock %}
 
           <!-- Property Overview -->
           <div class="property-overview sticky-top" data-aos="fade-up" data-aos-delay="200">
-            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent'
-              %}<span>/mo</span>{% endif %}</div>
+            <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
             <div
               class="property-status {% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
               {{ property.status.get_name_display }}</div>
@@ -357,7 +343,7 @@ endblock %}
 
               {% if not referral_link and user.is_authenticated and not user.agent_profile %}
               <div class="mt-3">
-                <a href="{% url 'agents_signup' %}" class="small text-primary fw-bold">
+                <a href="{% url 'agents:agents_signup' %}" class="small text-primary fw-bold">
                   <i class="bi bi-person-plus me-1"></i>Become an agent to earn commission
                 </a>
               </div>

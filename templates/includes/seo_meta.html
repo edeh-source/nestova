@@ -1,100 +1,84 @@
 {% load static %}
-{# SEO Meta Tags Template - Include this in all pages with proper context variables #}
+{# SEO Meta Tags Template - Safe version using explicit IF checks to avoid VariableDoesNotExist #}
 
-{# Basic Meta Tags #}
+{# 1. Basic Meta Tags #}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="description"
-  content="{{ meta_description|default:'Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents across Lagos, Abuja, Port Harcourt and more.' }}">
+  content="{% if meta_description %}{{ meta_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents across Lagos, Abuja, Port Harcourt and more.{% endif %}">
+
 <meta name="keywords"
-  content="{{ meta_keywords|default:'real estate Nigeria, properties for sale, houses for rent, apartments Lagos, land for sale, Nestova, Nigerian real estate' }}">
+  content="{% if meta_keywords %}{{ meta_keywords }}{% elif property %}{{ property.category.name }}, {{ property.city.name }}, real estate Nigeria{% elif post %}{{ post.category.name }}, blog, Nestova{% elif product %}{{ product.category.name }}, {{ product.brand }}, smart home{% else %}real estate Nigeria, properties for sale, houses for rent, apartments Lagos, land for sale, Nestova, Nigerian real estate{% endif %}">
+
 <meta name="author" content="{{ meta_author|default:'Nestova' }}">
 <meta name="robots" content="{{ meta_robots|default:'index, follow' }}">
 
-{# Canonical URL #}
+{# 2. Canonical URL #}
 {% if canonical_url %}
 <link rel="canonical" href="{{ canonical_url }}">
 {% elif request %}
 <link rel="canonical" href="https://nestovaproperty.com{{ request.path }}">
 {% endif %}
 
-{# Open Graph Meta Tags (Facebook, LinkedIn) #}
+{# 3. Open Graph Meta Tags #}
 <meta property="og:site_name" content="Nestova">
-<meta property="og:title" content="{{ og_title|default:'Nestova - Your Premier Real Estate Platform' }}">
+<meta property="og:title"
+  content="{% if og_title %}{{ og_title }}{% elif property %}{{ property.title }}{% elif post %}{{ post.name }}{% elif product %}{{ product.name }}{% else %}Nestova - Your Premier Real Estate Platform{% endif %}">
 <meta property="og:description"
-  content="{{ og_description|default:'Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents.' }}">
-<meta property="og:type" content="{{ og_type|default:'website' }}">
+  content="{% if og_description %}{{ og_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova.{% endif %}">
+
+<meta property="og:type"
+  content="{% if og_type %}{{ og_type }}{% elif post %}article{% elif property or product %}product{% else %}website{% endif %}">
 <meta property="og:url"
-  content="{{ og_url|default:'https://nestovaproperty.com' }}{% if request %}{{ request.path }}{% endif %}">
+  content="{% if og_url %}{{ og_url }}{% else %}https://nestovaproperty.com{{ request.path }}{% endif %}">
+
 <meta property="og:image"
-  content="{{ og_image|default:'https://nestovaproperty.com/static/assets/img/og-default.jpg' }}">
-<meta property="og:image:width" content="{{ og_image_width|default:'1200' }}">
-<meta property="og:image:height" content="{{ og_image_height|default:'630' }}">
-<meta property="og:image:alt" content="{{ og_image_alt|default:'Nestova Property' }}">
+  content="{% if og_image %}{{ og_image }}{% elif property and property.featured_image %}{{ property.featured_image.url }}{% elif post and post.image %}{{ post.image.url }}{% elif product and product.main_image %}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.jpg{% endif %}">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_NG">
 
-{# Additional OG tags for specific content types #}
-{% if og_type == 'article' %}
-<meta property="article:published_time" content="{{ article_published_time|default:'' }}">
-<meta property="article:modified_time" content="{{ article_modified_time|default:'' }}">
-<meta property="article:author" content="{{ article_author|default:'' }}">
-<meta property="article:section" content="{{ article_section|default:'' }}">
-{% if article_tags %}
-{% for tag in article_tags %}
-<meta property="article:tag" content="{{ tag }}">
-{% endfor %}
-{% endif %}
-{% endif %}
-
-{% if og_type == 'product' %}
-<meta property="product:price:amount" content="{{ product_price|default:'' }}">
-<meta property="product:price:currency" content="NGN">
-<meta property="product:availability" content="{{ product_availability|default:'in stock' }}">
-<meta property="product:condition" content="{{ product_condition|default:'new' }}">
-{% endif %}
-
-{# Twitter Card Meta Tags #}
+{# 4. Twitter Card Meta Tags #}
 <meta name="twitter:card" content="{{ twitter_card|default:'summary_large_image' }}">
 <meta name="twitter:site" content="@Nestova">
-<meta name="twitter:title" content="{{ twitter_title|default:'Nestova - Your Premier Real Estate Platform' }}">
+<meta name="twitter:title"
+  content="{% if twitter_title %}{{ twitter_title }}{% elif property %}{{ property.title }}{% elif post %}{{ post.name }}{% elif product %}{{ product.name }}{% else %}Nestova - Your Premier Real Estate Platform{% endif %}">
 <meta name="twitter:description"
-  content="{{ twitter_description|default:'Find your dream property in Nigeria with Nestova.' }}">
+  content="{% if twitter_description %}{{ twitter_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova.{% endif %}">
 <meta name="twitter:image"
-  content="{{ twitter_image|default:'https://nestovaproperty.com/static/assets/img/og-default.jpg' }}">
-<meta name="twitter:image:alt" content="{{ twitter_image_alt|default:'Nestova Property' }}">
+  content="{% if twitter_image %}{{ twitter_image }}{% elif property and property.featured_image %}{{ property.featured_image.url }}{% elif post and post.image %}{{ post.image.url }}{% elif product and product.main_image %}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.jpg{% endif %}">
 
-{# Structured Data (JSON-LD) #}
-{% if structured_data %}
-<script type="application/ld+json">
-{{ structured_data|safe }}
-</script>
+{# 5. Type-Specific Tags #}
+{% if post %}
+<meta property="article:published_time" content="{{ article_published_time|default:post.publish|date:'c' }}">
+<meta property="article:modified_time" content="{{ article_modified_time|default:post.updated|date:'c' }}">
+<meta property="article:author" content="{{ article_author|default:post.author }}">
+<meta property="article:section" content="{{ article_section|default:post.category.name }}">
 {% endif %}
 
-{# Default Organization Structured Data #}
-{% if not structured_data or include_organization_schema %}
+{% if property or product %}
+<meta property="product:price:amount"
+  content="{% if product_price %}{{ product_price }}{% elif property %}{{ property.price }}{% elif product %}{{ product.discount_price|default:product.price }}{% endif %}">
+<meta property="product:price:currency" content="NGN">
+<meta property="product:availability"
+  content="{% if product_availability %}{{ product_availability }}{% elif product %}{{ product.is_in_stock|yesno:'in stock,out of stock' }}{% else %}in stock{% endif %}">
+{% endif %}
+
+{# 6. Structured Data (JSON-LD) - Fallback #}
+{% if not structured_data %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Nestova",
   "url": "https://nestovaproperty.com",
-  "logo": "https://nestovaproperty.com/static/assets/img/logo.png",
-  "description": "Nigeria's premier real estate platform connecting buyers, sellers, and agents",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "NG"
-  },
-  "sameAs": [
-    "https://facebook.com/nestova",
-    "https://twitter.com/nestova",
-    "https://linkedin.com/company/nestova"
-  ]
+  "logo": "https://nestovaproperty.com/static/assets/img/logo.png"
 }
 </script>
 {% endif %}
 
-{# Additional SEO Tags #}
+{# 7. Theme & Mobile #}
 <meta name="theme-color" content="#046A38">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
