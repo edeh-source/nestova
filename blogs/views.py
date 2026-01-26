@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, Category, Author, Comment
 from django.http import JsonResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def post_lists(request):
     # DEBUG: Check all posts and their statuses
@@ -42,41 +45,50 @@ def post_lists(request):
 def post_details(request, slug, year, month, day):
     """
     A method to get an object with its slug
-
+    
     Args:
         request (_type_): _description_
         slug (_type_): _description_
     """
-    comment_post = None
-    post = get_object_or_404(Post, slug=slug, publish__year=year, publish__month=month, publish__day=day)
-    comment_posts = post.comments.all()
-    comment_count = comment_posts.count()
-    if request.method == "POST":
-        comment = request.POST.get("comment", "").strip()
-        if not comment:
+    try:
+        comment_post = None
+        post = get_object_or_404(Post, slug=slug, publish__year=year, publish__month=month, publish__day=day)
+        comment_posts = post.comments.all()
+        comment_count = comment_posts.count()
+        
+        if request.method == "POST":
+            comment = request.POST.get("comment", "").strip()
+            if not comment:
+                return JsonResponse({
+                    "status": "error",
+                    "message": "You Cannot Submit An Empty Post"
+                })
+            else:
+                pass    
+            user = request.user
+            comment_post = Comment.objects.create(post=post, user=user, text=comment)
+            comment_data = {
+                "id": comment_post.id,
+                "user": comment_post.user.username,
+                "user_image": comment_post.user.get_users_image(),
+                "comment": comment_post.text,
+                "comment_post": comment_post.post,
+            }
             return JsonResponse({
-                "status": "error",
-                "message": "You Cannot Submit An Empty Post"
+                "status": "success",
+                "message": "Comment Created Successfully",
+                "comment_data": str(comment_data)
             })
-        else:
-            pass    
-        user = request.user
-        comment_post = Comment.objects.create(post=post, user=user, text=comment)
-        comment_data = {
-            "id": comment_post.id,
-            "user": comment_post.user.username,
-            "user_image": comment_post.user.get_users_image(),
-            "comment": comment_post.text,
-            "comment_post": comment_post.post,
-        }
-        return JsonResponse({
-            "status": "success",
-            "message": "Comment Created Successfully",
-            "comment_data": str(comment_data)
-        })
+        
+        
+        return render(request, "estate/blog-details.html", {"post": post, "comment_post": comment_post, "comment_posts": comment_posts, 'comment_count': comment_count})
     
-    
-    return render(request, "estate/blog-details.html", {"post": post, "comment_post": comment_post, "comment_posts": comment_posts, 'comment_count': comment_count})
+    except Post.DoesNotExist:
+        logger.error(f"Blog post not found: slug={slug}, date={year}/{month}/{day}")
+        raise
+    except Exception as e:
+        logger.error(f"Error in post_details view: {str(e)}", exc_info=True)
+        raise
 
 
 

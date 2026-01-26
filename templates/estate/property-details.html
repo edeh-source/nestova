@@ -185,9 +185,9 @@
           <!-- Property Overview -->
           <div class="property-overview sticky-top">
             <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
-            <div
-              class="property-status {% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
-              {{ property.status.get_name_display }}</div>
+            <div class="property-status{% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
+              {{ property.status.get_name_display }}
+            </div>
 
             <div class="property-address">
               <h4>{{ property.address }}</h4>

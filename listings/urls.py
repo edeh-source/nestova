@@ -8,4 +8,5 @@ urlpatterns = [
     path('post/', views.post_property, name='post_property'),
     path('pricing/', views.pricing_plans, name='pricing'),
     path('subscribe/<int:package_id>/', views.subscribe, name='subscribe'),
+    path("verify/listing/package/", views.verify_payment, name="verify_payment")
 ]

@@ -39,7 +39,7 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
     if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
-        ALLOWED_HOSTS = ['globaledge.fly.dev', 'globaledgeconsultz.com', 'nestova-v6ks.onrender.com', 'www.globaledgeconsultz.com', 'globaledge-6ppe.onrender.com']
+        ALLOWED_HOSTS = ['nestova-v6ks.onrender.com','nestovaproperty.com','www.nestovaproperty.com']
 
 
 
@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sitemaps',  # SEO: Sitemap framework
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'agents.apps.AgentsConfig',
@@ -87,7 +86,6 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Early: serves static files before app logic
-    'django.middleware.gzip.GZipMiddleware',  # SEO/Performance: Compress responses
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -340,10 +338,10 @@ else:
     CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
     if not CSRF_TRUSTED_ORIGINS or CSRF_TRUSTED_ORIGINS == ['']:
         CSRF_TRUSTED_ORIGINS = [
-            'https://globaledgeconsultz.com',
-            'https://www.globaledgeconsultz.com',
-            'https://globaledge.fly.dev',
-            'https://globaledge-6ppe.onrender.com'
+            'https://nestovaproperty.com',
+            'https://www.nestovaproperty.com',
+            'https://nestova-v6ks.onrender.com'
+            
         ]
     CSRF_COOKIE_SECURE = True
 
@@ -428,10 +426,8 @@ COMPANY_VERIFICATION_REQUIRED = ['cac', 'utility_bill']
 USER_VERIFICATION_REQUIRED = ['nin']  # Normal users must verify NIN to post properties
 
 
-# Site URL for email notifications and SEO
+# Site URL for email notifications
 SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000' if DEBUG else 'https://nestovaproperty.com')
-SITE_NAME = 'Nestova'
-SITE_DESCRIPTION = 'Find your dream property in Nigeria with Nestova. Browse verified listings from trusted agents across Lagos, Abuja, Port Harcourt and more.'
 
 
 # ==================================
@@ -555,10 +551,20 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 
-"""
-LOGS_DIR = BASE_DIR / 'logs'
-os.makedirs(LOGS_DIR, exist_ok=True)
 
+
+
+# ==================================
+# PERFORMANCE OPTIMIZATIONS
+# ==================================
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+
+# ==================================
+# LOGGING CONFIGURATION
+# ==================================
+"""
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -572,22 +578,26 @@ LOGGING = {
             'style': '{',
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'handlers': {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'verbose',
         },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': str(LOGS_DIR / 'django_errors.log'),  # Convert to string
+            'filename': BASE_DIR / 'logs' / 'django_errors.log',
             'formatter': 'verbose',
         },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
     },
     'loggers': {
         'django': {
@@ -595,17 +605,21 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'WARNING' if not DEBUG else 'INFO',
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'property': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'blogs': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
             'propagate': False,
         },
     },
 }
 """
-# ==================================
-# PERFORMANCE OPTIMIZATIONS
-# ==================================
-
-DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB

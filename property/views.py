@@ -3,48 +3,64 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Property, State, City, PropertyType
 from listings.models import SavedProperty
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 def homepage(request):
     """Homepage with property search"""
     
-    # Get all states for dropdown
-    states = State.objects.filter(is_active=True)
+    try:
+        # Get all states for dropdown
+        states = State.objects.filter(is_active=True)
+        
+        # Get property types
+        property_types = PropertyType.objects.all()
+        
+        # Featured properties
+        featured_properties = Property.objects.filter(
+            is_featured=True
+        ).select_related('state', 'city', 'property_type', 'status')[:6]
+        
+        # Get all properties for display
+        all_properties = Property.objects.select_related(
+            'state', 'city', 'property_type', 'status'
+        )[:10]
+        
+        # Get pricing packages for "Sell Your Properties" section
+        from listings.models import ListingPackage
+        pricing_packages = ListingPackage.objects.filter(is_active=True).order_by('price')[:4]
+        
+        # Get recent blog posts
+        from blogs.models import Post
+        from django.utils import timezone
+        recent_blog_posts = Post.objects.select_related('author', 'category').order_by('-publish')[:3]
+        print(f"{recent_blog_posts}")
+        
+        context = {
+            'states': states,
+            'property_types': property_types,
+            'featured_properties': featured_properties,
+            'all_properties': all_properties,
+            'pricing_packages': pricing_packages,
+            'recent_blog_posts': recent_blog_posts,
+        }
+        
+        return render(request, 'estate/index.html', context)
     
-    # Get property types
-    property_types = PropertyType.objects.all()
-    
-    # Featured properties
-    featured_properties = Property.objects.filter(
-        is_featured=True
-    ).select_related('state', 'city', 'property_type', 'status')[:6]
-    
-    # Get all properties for display
-    all_properties = Property.objects.select_related(
-        'state', 'city', 'property_type', 'status'
-    )[:10]
-    
-    # Get pricing packages for "Sell Your Properties" section
-    from listings.models import ListingPackage
-    pricing_packages = ListingPackage.objects.filter(is_active=True).order_by('price')[:4]
-    
-    # Get recent blog posts
-    from blogs.models import Post
-    from django.utils import timezone
-    recent_blog_posts = Post.objects.select_related('author', 'category').order_by('-publish')[:3]
-    print(f"{recent_blog_posts}")
-    
-    context = {
-        'states': states,
-        'property_types': property_types,
-        'featured_properties': featured_properties,
-        'all_properties': all_properties,
-        'pricing_packages': pricing_packages,
-        'recent_blog_posts': recent_blog_posts,
-    }
-    
-    return render(request, 'estate/index.html', context)
+    except Exception as e:
+        logger.error(f"Error in homepage view: {str(e)}", exc_info=True)
+        # Return a minimal context to prevent complete failure
+        return render(request, 'estate/index.html', {
+            'states': [],
+            'property_types': [],
+            'featured_properties': [],
+            'all_properties': [],
+            'pricing_packages': [],
+            'recent_blog_posts': [],
+            'error_message': 'Some content may not be available at the moment.'
+        })
 
 
 def get_cities_by_state(request):

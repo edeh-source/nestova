@@ -654,10 +654,14 @@
               {% else %}
               <span class="service-price">₦{{ pkg.price|floatformat:0|intcomma}}</span>
               {% endif %}
-              <a href="{% url 'listings:subscribe' pkg.id %}" class="service-btn">
+              <form method="post" action="{% url "listings:subscribe" pkg.id %}">
+                {% csrf_token %}
+                <a href="{% url 'listings:subscribe' pkg.id %}" class="service-btn">
                 <span>Get Package</span>
                 <i class="bi bi-arrow-right"></i>
               </a>
+              </form>
+              
             </div>
           </div>
         </div><!-- End Service Item -->

@@ -5,6 +5,10 @@ from .models import ListingPackage, UserSubscription
 from .forms import PropertyForm
 from property.models import Property
 from django.db.models import Count
+from django.conf import settings
+from django.urls import reverse
+import random
+import requests
 
 @login_required
 def dashboard(request):
@@ -111,13 +115,16 @@ def pricing_plans(request):
     }
     return render(request, 'listings/pricing.html', context)
 
-@login_required
+
 def subscribe(request, package_id):
     """
     Handle slot package purchase.
     In production, integrate Payment Gateway here (Paystack/Flutterwave).
     For now, simple slot addition for testing.
     """
+    if not request.user.is_authenticated:
+        return redirect("users:login")
+    
     pkg = get_object_or_404(ListingPackage, id=package_id)
     
     # Get or create user subscription
@@ -125,7 +132,58 @@ def subscribe(request, package_id):
     
     # TODO: In production, integrate payment gateway here
     # For now, simulate successful payment and add slots
+    url = "https://api.paystack.co/transaction/initialize"
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
     
+    # Convert amount to kobo (Paystack uses kobo, not naira)
+    amount_in_kobo = int(pkg.price * 100)
+    
+    # Construct dynamic callback URL
+    callback_url = request.build_absolute_uri(reverse('listings:verify_payment'))
+    
+    data = {
+        "email": request.user.email,
+        "amount": amount_in_kobo,
+        "currency": "NGN",
+        "reference": f"{pkg.id}",
+        "callback_url": callback_url,
+        "metadata": {
+            "listing_id": str(pkg.id),
+            "customer_name": request.user.get_full_name(),
+        }
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response_data = response.json()
+        
+        # Debug logging
+        print(f"Paystack Response Status Code: {response.status_code}")
+        print(f"Paystack Response Data: {response_data}")
+        
+        if response_data.get('status'):
+            # Redirect to Paystack payment page
+            authorization_url = response_data['data']['authorization_url']
+            print(f"Redirecting to: {authorization_url}")
+            return redirect(authorization_url)
+        else:
+            error_message = response_data.get('message', 'Unknown error')
+            print(f"Paystack Error: {error_message}")
+            messages.error(request, f'Payment initialization failed: {error_message}')
+            return redirect('shop:profile')
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Network Error: {str(e)}")
+        messages.error(request, f'Network error: Unable to connect to payment gateway. Please try again.')
+        return redirect('shop:profile')
+    except Exception as e:
+        print(f"Payment Error: {str(e)}")
+        messages.error(request, f'Payment initialization error: {str(e)}')
+        return redirect('shop:profile')
+    """
     # Add purchased slots to user's total (cumulative)
     sub.add_slots(pkg.slots_count)
     sub.package = pkg  # Update reference to last purchased package
@@ -137,3 +195,8 @@ def subscribe(request, package_id):
         f"You now have {sub.total_slots} total slots ({sub.remaining_slots} remaining)."
     )
     return redirect('listings:dashboard')
+    """
+    
+    
+def verify_payment(request):
+    pass    
