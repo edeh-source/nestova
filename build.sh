@@ -54,5 +54,7 @@ python manage.py create_sample_apartment --count 10 || echo "⚠️  Warning: Fa
 echo "  → Populating booking apartments..."
 python manage.py populate_bookings || echo "⚠️  Warning: Failed to populate bookings (may already exist)"
 
+python manage.py createsuperuser
+
 echo "✅ Build process completed successfully!"
 echo "🎉 Nestova is ready for deployment!"
