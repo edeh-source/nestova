@@ -37,9 +37,11 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots_txt'),
     
+    # IMPORTANT: Custom auth URLs MUST come BEFORE allauth to prevent override
+    path("", include("users.urls")),  # Custom login/register at /login/ and /register/
+    
     # App URLs
     path("", include("core.urls")),
-    path("", include("users.urls")),
     path('booking/', include('bookings.urls')),
     path("", include("agents.urls")),
     path("", include("property.urls")),
@@ -47,8 +49,14 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('blog/', include('blogs.urls')),
     path('', include("contact.urls")),
+    
+    # Allauth URLs (for social auth only - login/register handled by custom views)
     path('accounts/', include('allauth.urls')),
 ]
+
+# Custom error handlers
+handler404 = 'nestova.views.custom_404'
+handler500 = 'nestova.views.custom_500'
 
 
 if settings.DEBUG:

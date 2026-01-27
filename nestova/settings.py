@@ -532,16 +532,38 @@ CLIENT_ID = os.environ.get("CLIENT_ID")
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 
 
-# settings.py - Make sure this exists EXACTLY like this
+# ==================================
+# DJANGO ALLAUTH CONFIGURATION
+# ==================================
 
+# Use custom login page instead of Allauth default
+ACCOUNT_LOGIN_URL = '/login/'  # Your custom login URL
+ACCOUNT_SIGNUP_URL = '/register/'  # Your custom register URL
+ACCOUNT_LOGOUT_URL = '/logout/'  # Your custom logout URL
+
+# Redirect settings
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'shop:profile'
+ACCOUNT_LOGIN_REDIRECT_URL = 'shop:profile'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+
+# Email settings
 ACCOUNT_EMAIL_REQUIRED = True
-SOCIALACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # or 'mandatory' if you want to enforce email verification
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email for authentication
+ACCOUNT_USERNAME_REQUIRED = False  # Don't require username
 
+# Social account settings
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_AUTO_SIGNUP = True  # Auto-create account on social login
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Provider settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
             'profile',
-            'email',  # ✅ Must be here!
+            'email',
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
