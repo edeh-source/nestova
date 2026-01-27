@@ -16,6 +16,10 @@ python manage.py collectstatic --no-input
 echo "🗄️  Running database migrations..."
 python manage.py migrate
 
+# Update Django site to production domain
+echo "🌐 Updating site configuration..."
+python manage.py update_site
+
 # Setup Google OAuth for social login
 echo "🔐 Setting up Google OAuth..."
 python manage.py setup_google_oauth || echo "⚠️  Warning: Google OAuth setup failed (check environment variables)"
