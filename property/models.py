@@ -4,7 +4,7 @@ from django.urls import reverse
 import random
 import string
 from ckeditor.fields import RichTextField
-
+from embed_video.fields import EmbedVideoField
 User = get_user_model()
 
 
@@ -180,7 +180,7 @@ class Property(models.Model):
     
     # Media
     featured_image = models.ImageField(upload_to='properties/featured/', blank=True, null=True)
-    video_url = models.URLField(blank=True, help_text="YouTube or Vimeo URL")
+    video_url = EmbedVideoField(blank=True, help_text="YouTube or Vimeo URL")
     virtual_tour_url = models.URLField(blank=True, help_text="360° virtual tour URL")
     
     # Badges & Tags

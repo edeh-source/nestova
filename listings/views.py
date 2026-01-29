@@ -3,12 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import ListingPackage, UserSubscription
 from .forms import PropertyForm
-from property.models import Property
+from property.models import Property, PropertyImage
 from django.db.models import Count
 from django.conf import settings
 from django.urls import reverse
 import random
 import requests
+
+
+
 
 @login_required
 def dashboard(request):
@@ -76,6 +79,16 @@ def post_property(request):
             property_obj.listed_by = request.user
             property_obj.save()
             
+            # Handle secondary images
+            images = request.FILES.getlist('secondary_images')
+            for idx, image in enumerate(images):
+                PropertyImage.objects.create(
+                    property=property_obj,
+                    image=image,
+                    is_primary=False,
+                    order=idx
+                )
+            
             # Increment used slots
             sub.use_slot()
             
@@ -83,7 +96,7 @@ def post_property(request):
                 request, 
                 f"Property posted successfully! You have {sub.remaining_slots} slots remaining."
             )
-            return redirect('listings:dashboard')
+            return redirect('shop:profile')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
@@ -95,8 +108,61 @@ def post_property(request):
         'remaining_slots': sub.remaining_slots,
         'total_slots': sub.total_slots,
         'used_slots': sub.used_slots,
+        'is_edit': False,
     }
     return render(request, 'listings/post_property.html', context)
+
+
+@login_required
+def edit_property(request, slug):
+    """
+    View to edit an existing property.
+    """
+    property_obj = get_object_or_404(Property, slug=slug)
+    
+    # Ensure only the owner can edit
+    if property_obj.listed_by != request.user:
+        messages.error(request, "You don't have permission to edit this property.")
+        return redirect('shop:profile')
+    
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES, instance=property_obj)
+        if form.is_valid():
+            property_obj = form.save(commit=False)
+            property_obj.save()
+            
+            # Handle secondary images
+            images = request.FILES.getlist('secondary_images')
+            if images:
+                # Add new images
+                for idx, image in enumerate(images):
+                    # Get the current max order
+                    max_order = PropertyImage.objects.filter(property=property_obj).count()
+                    PropertyImage.objects.create(
+                        property=property_obj,
+                        image=image,
+                        is_primary=False,
+                        order=max_order + idx
+                    )
+            
+            messages.success(request, "Property updated successfully!")
+            return redirect('shop:profile')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = PropertyForm(instance=property_obj)
+    
+    # Get existing secondary images
+    existing_images = PropertyImage.objects.filter(property=property_obj, is_primary=False).order_by('order')
+    
+    context = {
+        'form': form,
+        'property': property_obj,
+        'existing_images': existing_images,
+        'is_edit': True,
+    }
+    return render(request, 'listings/post_property.html', context)
+
 
 def pricing_plans(request):
     """

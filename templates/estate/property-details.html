@@ -2,6 +2,9 @@
 
 {% load static %}
 {% load humanize %}
+{% load property_extras %}
+
+{% load embed_video_tags %}
 
 {% block seo_meta %}
 {% include 'includes/seo_meta.html' %}
@@ -175,7 +178,21 @@
             </div>
           </div><!-- End Amenities -->
 
-          <!-- Map Section -->
+          <!-- Video Section -->
+          {% if property.video_url %}
+          <div class="property-video" data-aos="fade-up" data-aos-delay="500">
+            <h3>Property Video Tour</h3>
+            <div class="ratio ratio-16x9">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/{{ property.video_url|youtube_id }}?rel=0&modestbranding=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+          {% endif %}
+
 
 
         </div>
@@ -185,7 +202,8 @@
           <!-- Property Overview -->
           <div class="property-overview sticky-top">
             <div class="price-tag">{{ property.formatted_price }}{% if property.status.name == 'for_rent' %}<span>/mo</span>{% endif %}</div>
-            <div class="property-status{% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
+            <div
+              class="property-status{% if property.status.name == 'for_rent' %}for-rent{% else %}for-sale{% endif %}">
               {{ property.status.get_name_display }}
             </div>
 

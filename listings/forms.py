@@ -1,7 +1,13 @@
 from django import forms
-from property.models import Property
+from property.models import Property, PropertyImage
+from ckeditor.widgets import CKEditorWidget
 
 class PropertyForm(forms.ModelForm):
+    secondary_images = forms.FileField(
+        required=False,
+        help_text='Upload multiple images (JPG, PNG, max 5MB each)'
+    )
+    
     class Meta:
         model = Property
         fields = [
@@ -16,7 +22,7 @@ class PropertyForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Property Title'}),
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Address'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'description': CKEditorWidget(config_name='default'),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0'}),
             'bedrooms': forms.NumberInput(attrs={'class': 'form-control'}),
             'bathrooms': forms.NumberInput(attrs={'class': 'form-control'}),

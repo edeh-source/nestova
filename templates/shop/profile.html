@@ -1237,9 +1237,9 @@
                                 <a href="{{ prop.get_absolute_url }}" class="btn-secondary btn-sm">
                                     <i class="bi bi-eye"></i> View
                                 </a>
-                                <button class="btn-secondary btn-sm">
+                                <a href="{% url 'listings:edit_property' prop.slug %}" class="btn-secondary btn-sm">
                                     <i class="bi bi-pencil"></i> Edit
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
