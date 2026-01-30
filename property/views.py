@@ -21,7 +21,7 @@ def homepage(request):
         # Featured properties
         featured_properties = Property.objects.filter(
             is_featured=True
-        ).select_related('state', 'city', 'property_type', 'status', 'agents', 'listed_by')[:6]
+        ).select_related('state', 'city', 'property_type', 'status', 'agent', 'listed_by')[:6]
         
         # Get all properties for display
         all_properties = Property.objects.select_related(

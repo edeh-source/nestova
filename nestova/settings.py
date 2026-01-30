@@ -42,6 +42,10 @@ else:
         ALLOWED_HOSTS = ['nestova-v6ks.onrender.com','nestovaproperty.com','www.nestovaproperty.com']
 
 
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
