@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 import uuid
 from phonenumber_field.modelfields import PhoneNumberField
-import cv2
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
@@ -106,19 +105,6 @@ class User(PermissionsMixin, AbstractBaseUser):
     
     def __str__(self):
         return self.username
-    
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        
-        if self.image:
-            image = cv2.imread(self.image.path)
-            image = cv2.resize(image, (100, 100), interpolation=cv2.INTER_AREA)
-            user_image = cv2.imwrite(self.image.path, image)
-            return user_image
-        
-        
-        else:
-            pass
     
     
     
