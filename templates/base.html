@@ -10,8 +10,10 @@
   <title>{% block title %}Nestova - Your Premier Real Estate Platform in Nigeria{% endblock %}</title>
 
   <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <!-- Favicons - Multiple sizes for best compatibility -->
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon-16x16.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/apple-touch-icon.png' %}">
 
   <!-- Performance: Preconnect to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
