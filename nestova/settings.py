@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'blogs.apps.BlogsConfig',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
