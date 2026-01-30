@@ -5,6 +5,7 @@ import random
 import string
 from ckeditor.fields import RichTextField
 from embed_video.fields import EmbedVideoField
+from agents.models import Agent
 User = get_user_model()
 
 
@@ -190,8 +191,8 @@ class Property(models.Model):
     is_new = models.BooleanField(default=False)
     is_exclusive = models.BooleanField(default=False)
     
-    # Agent Information (if you have agents)
-    # agent = models.ForeignKey('Agent', on_delete=models.SET_NULL, null=True, blank=True, related_name='properties')
+    
+    agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name='properties')
     
     # Owner (Admin who listed)
     listed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listed_properties')

@@ -915,6 +915,7 @@ def initialize_payment(request, order_id):
         messages.error(request, f'Payment initialization error: {str(e)}')
         return redirect('shop:order_confirmation', order_id=order.id)
 
+#2348039729536
 
 def verify_payment(request):
     """Verify Paystack payment callback - No login required as this is a callback from Paystack"""

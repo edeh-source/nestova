@@ -168,8 +168,7 @@
                   alt="{{ hero_prop.title }}" class="img-fluid">
                 <div class="property-tag">
                   <span class="price">{{ hero_prop.formatted_price }}</span>
-                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else
-                    %}Prime{% endif %}</span>
+                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else %}Prime{% endif %}</span>
                 </div>
                 {% endwith %}
                 {% else %}

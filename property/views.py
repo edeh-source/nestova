@@ -21,7 +21,7 @@ def homepage(request):
         # Featured properties
         featured_properties = Property.objects.filter(
             is_featured=True
-        ).select_related('state', 'city', 'property_type', 'status')[:6]
+        ).select_related('state', 'city', 'property_type', 'status', 'agents', 'listed_by')[:6]
         
         # Get all properties for display
         all_properties = Property.objects.select_related(
@@ -252,6 +252,18 @@ def property_list(request):
         properties_list = properties_list.filter(has_balcony=True)
     if request.GET.get('garden'):
         properties_list = properties_list.filter(has_garden=True)
+    if request.GET.get('security'):
+        properties_list = properties_list.filter(has_security=True)
+    if request.GET.get('gym'):
+        properties_list = properties_list.filter(has_gym=True)
+    if request.GET.get('furnished'):
+        properties_list = properties_list.filter(is_furnished=True)
+    if request.GET.get('ac'):
+        properties_list = properties_list.filter(has_ac=True)
+    if request.GET.get('has_heating'):
+        properties_list = properties_list.filter(has_heating=True)
+    if request.GET.get('pets'):
+        properties_list = properties_list.filter(pet_friendly=True)             
 
     # --- Sorting ---
     sort_by = request.GET.get('sort', 'newest')
