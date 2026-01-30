@@ -605,7 +605,7 @@
               </div>
               {% endif %}
 
-              <form id="registerForm" method="post" action="{% url " agents_signup" %}">
+              <form id="registerForm" method="post" action="{% url "agents:agents_signup" %}">
                 {% csrf_token %}
                 {% if request.GET.next %}
                 <input type="hidden" name="next" value="{{ request.GET.next }}">

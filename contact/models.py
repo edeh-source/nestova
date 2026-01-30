@@ -123,7 +123,7 @@ class ContactInfo(models.Model):
     weekend_hours = models.CharField(max_length=100, default="9 AM - 4 PM")
     
     # Map
-    google_maps_embed_url = models.URLField(blank=True, verbose_name="Google Maps Embed URL")
+    google_maps_embed_url = models.URLField(max_length=1000, blank=True, verbose_name="Google Maps Embed URL")
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     

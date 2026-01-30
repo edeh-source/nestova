@@ -3,11 +3,14 @@ from django.contrib import messages
 from django.views import View
 from django.views.generic import TemplateView
 from django.http import JsonResponse
-from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import send_mail, EmailMultiAlternatives, BadHeaderError
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from datetime import datetime
 from .models import ContactMessage, Newsletter, ContactInfo
 
 
@@ -23,7 +26,7 @@ def get_client_ip(request):
 
 class ContactView(TemplateView):
     """Main contact page view"""
-    template_name = 'contact.html'
+    template_name = 'estate/contact.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,56 +76,75 @@ class ContactView(TemplateView):
             # Send notification email to admin
             try:
                 admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
-                email_subject = f"New Contact Message: {subject}"
-                email_message = f"""
-New contact message received:
-
-From: {name}
-Email: {email}
-Subject: {subject}
-
-Message:
-{message_text}
-
----
-Submitted at: {contact_message.created_at}
-IP Address: {contact_message.ip_address}
-                """
+                contact_info = ContactInfo.get_active()
                 
-                send_mail(
-                    email_subject,
-                    email_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [admin_email],
-                    fail_silently=True,
+                # Prepare context for email template
+                email_context = {
+                    'name': name,
+                    'email': email,
+                    'subject': subject,
+                    'message': message_text,
+                    'submitted_at': contact_message.created_at,
+                    'ip_address': contact_message.ip_address,
+                    'site_name': contact_info.company_name if contact_info else 'Nestova',
+                    'admin_url': request.build_absolute_uri('/admin/contact/contactmessage/'),
+                    'current_year': datetime.now().year,
+                }
+                
+                # Render HTML email
+                html_message = render_to_string('emails/contact_admin_notification.html', email_context)
+                plain_message = strip_tags(html_message)
+                
+                # Send email with HTML
+                msg = EmailMultiAlternatives(
+                    subject=f"New Contact Message: {subject}",
+                    body=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[admin_email]
                 )
+                msg.attach_alternative(html_message, "text/html")
+                msg.send(fail_silently=True)
             except (BadHeaderError, Exception) as e:
                 # Log error but don't fail the submission
                 print(f"Error sending notification email: {e}")
             
             # Send confirmation email to user
             try:
-                confirmation_subject = "Thank you for contacting us"
-                confirmation_message = f"""
-Dear {name},
-
-Thank you for reaching out to us. We have received your message and will get back to you as soon as possible.
-
-Your message:
-Subject: {subject}
-{message_text}
-
-Best regards,
-The Team
-                """
+                contact_info = ContactInfo.get_active()
                 
-                send_mail(
-                    confirmation_subject,
-                    confirmation_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [email],
-                    fail_silently=True,
+                # Prepare context for email template
+                email_context = {
+                    'name': name,
+                    'email': email,
+                    'subject': subject,
+                    'message': message_text,
+                    'submitted_at': contact_message.created_at,
+                    'site_name': contact_info.company_name if contact_info else 'Nestova',
+                    'contact_phone': contact_info.phone if contact_info else None,
+                    'contact_email': contact_info.email if contact_info else None,
+                    'contact_address': contact_info.get_full_address() if contact_info else None,
+                    'current_year': datetime.now().year,
+                    'social_links': {
+                        'facebook': contact_info.facebook_url if contact_info else None,
+                        'twitter': contact_info.twitter_url if contact_info else None,
+                        'linkedin': contact_info.linkedin_url if contact_info else None,
+                        'instagram': contact_info.instagram_url if contact_info else None,
+                    } if contact_info else None,
+                }
+                
+                # Render HTML email
+                html_message = render_to_string('emails/contact_user_confirmation.html', email_context)
+                plain_message = strip_tags(html_message)
+                
+                # Send email with HTML
+                msg = EmailMultiAlternatives(
+                    subject="Thank you for contacting us",
+                    body=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[email]
                 )
+                msg.attach_alternative(html_message, "text/html")
+                msg.send(fail_silently=True)
             except (BadHeaderError, Exception) as e:
                 print(f"Error sending confirmation email: {e}")
             
@@ -167,25 +189,37 @@ class NewsletterSubscribeView(View):
             else:
                 # Send welcome email
                 try:
-                    welcome_subject = "Welcome to our Newsletter"
-                    welcome_message = f"""
-Thank you for subscribing to our newsletter!
-
-You'll now receive updates about our latest properties, market insights, and exclusive offers.
-
-If you wish to unsubscribe at any time, please click here: {request.build_absolute_uri('/newsletter/unsubscribe/')}
-
-Best regards,
-The Team
-                    """
+                    contact_info = ContactInfo.get_active()
                     
-                    send_mail(
-                        welcome_subject,
-                        welcome_message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [email],
-                        fail_silently=True,
+                    # Prepare context for email template
+                    email_context = {
+                        'site_name': contact_info.company_name if contact_info else 'Nestova',
+                        'site_url': request.build_absolute_uri('/'),
+                        'unsubscribe_url': request.build_absolute_uri('/newsletter/unsubscribe/'),
+                        'contact_email': contact_info.email if contact_info else None,
+                        'contact_address': contact_info.get_full_address() if contact_info else None,
+                        'current_year': datetime.now().year,
+                        'social_links': {
+                            'facebook': contact_info.facebook_url if contact_info else None,
+                            'twitter': contact_info.twitter_url if contact_info else None,
+                            'linkedin': contact_info.linkedin_url if contact_info else None,
+                            'instagram': contact_info.instagram_url if contact_info else None,
+                        } if contact_info else None,
+                    }
+                    
+                    # Render HTML email
+                    html_message = render_to_string('emails/newsletter_welcome.html', email_context)
+                    plain_message = strip_tags(html_message)
+                    
+                    # Send email with HTML
+                    msg = EmailMultiAlternatives(
+                        subject="Welcome to our Newsletter",
+                        body=plain_message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        to=[email]
                     )
+                    msg.attach_alternative(html_message, "text/html")
+                    msg.send(fail_silently=True)
                 except Exception as e:
                     print(f"Error sending welcome email: {e}")
                 
@@ -239,13 +273,34 @@ class ContactMessageAjaxView(View):
             # Send notification email
             try:
                 admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
-                send_mail(
-                    f"New Contact Message: {subject}",
-                    f"From: {name} ({email})\n\n{message_text}",
-                    settings.DEFAULT_FROM_EMAIL,
-                    [admin_email],
-                    fail_silently=True,
+                contact_info = ContactInfo.get_active()
+                
+                # Prepare context for email template
+                email_context = {
+                    'name': name,
+                    'email': email,
+                    'subject': subject,
+                    'message': message_text,
+                    'submitted_at': contact_message.created_at,
+                    'ip_address': contact_message.ip_address,
+                    'site_name': contact_info.company_name if contact_info else 'Nestova',
+                    'admin_url': request.build_absolute_uri('/admin/contact/contactmessage/'),
+                    'current_year': datetime.now().year,
+                }
+                
+                # Render HTML email
+                html_message = render_to_string('emails/contact_admin_notification.html', email_context)
+                plain_message = strip_tags(html_message)
+                
+                # Send email with HTML
+                msg = EmailMultiAlternatives(
+                    subject=f"New Contact Message: {subject}",
+                    body=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[admin_email]
                 )
+                msg.attach_alternative(html_message, "text/html")
+                msg.send(fail_silently=True)
             except Exception as e:
                 print(f"Error sending email: {e}")
             

@@ -12,7 +12,7 @@
           <div class="col-lg-8">
             <h1 class="heading-title">Contact Us</h1>
             <p class="mb-0">
-              Have questions or need assistance? We're here to help! Reach out to us 
+              Have questions or need assistance? We're here to help! Reach out to us
               and we'll get back to you as soon as possible.
             </p>
           </div>
@@ -110,13 +110,12 @@
     </div>
 
     <!-- Google Maps (Full Width) -->
+    {% if contact_info and contact_info.google_maps_embed_url %}
     <div class="map-section" data-aos="fade-up" data-aos-delay="200">
-      {% if contact_info and contact_info.google_maps_embed_url %}
-      <iframe src="{{ contact_info.google_maps_embed_url }}" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      {% else %}
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      {% endif %}
+      <iframe src="{{ contact_info.google_maps_embed_url }}" width="100%" height="500" style="border:0;"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
+    {% endif %}
 
     <!-- Contact Form Section (Overlapping) -->
     <div class="container form-container-overlap">
@@ -159,7 +158,8 @@
                   <div class="form-group">
                     <div class="input-with-icon">
                       <i class="bi bi-chat-dots message-icon"></i>
-                      <textarea class="form-control" name="message" placeholder="Write your message here..." style="height: 180px" required></textarea>
+                      <textarea class="form-control" name="message" placeholder="Write your message here..."
+                        style="height: 180px" required></textarea>
                     </div>
                   </div>
                 </div>
@@ -189,7 +189,8 @@
 
 
 <!-- Scroll Top -->
-<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
 
 <!-- Preloader -->
 <div id="preloader"></div>
