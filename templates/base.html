@@ -11,9 +11,9 @@
 
   <!-- Favicons -->
   <!-- Favicons - Multiple sizes for best compatibility -->
-<link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon-32x32.png' %}">
-<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon-16x16.png' %}">
-<link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon-16x16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/apple-touch-icon.png' %}">
 
   <!-- Performance: Preconnect to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -163,7 +163,8 @@
           <li><a href="{% url 'shop:product_list' %}">Shop</a></li>
           <li><a href="{% url 'agents' %}">Agents</a></li>
           <li><a href="{% url 'post_list' %}">Blog</a></li>
-          <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"
+                aria-label="Toggle Dropdown"></i></a>
             <ul>
               {% if not request.user.agent_profile and not request.user.is_authenticated %}
               <li><a href="{% url 'agents:agents_signup' %}">Become An Agent</a></li>
@@ -171,7 +172,8 @@
               <li><a href="{% url 'shop:profile' %}">My Dashboard</a></li>
             </ul>
           </li>
-          <li class="dropdown"><a><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"
+                aria-label="Toggle Dropdown"></i></a>
             <ul>
               <li><a href="{% url 'apartment_list' %}">Our Apartments</a></li>
             </ul>
@@ -184,15 +186,16 @@
       <div class="header-actions">
         <a class="btn-getstarted" href="{% url 'properties' %}">Get Started</a>
 
-        <a class="cart-link" href="{% url 'shop:cart' %}">
+        <a class="cart-link" href="{% url 'shop:cart' %}" aria-label="View Shopping Cart">
           <div class="cart-icon-wrapper">
-            <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+            <i class="bi bi-cart" style="font-size: 1.5rem;" aria-hidden="true"></i>
             <span class="cart-badge" id="cart-count">0</span>
           </div>
         </a>
 
         <!-- Mobile hamburger menu toggle -->
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list" role="button" tabindex="0"
+          aria-label="Toggle Navigation Menu"></i>
       </div>
 
     </div>
@@ -243,13 +246,14 @@
             </p>
 
             <div class="newsletter-form">
-              <h5>Stay Updated</h5>
+              <h4>Stay Updated</h4>
               <form method="post" action="{% url 'newsletter_subscribe' %}" class="" id="">
                 {% csrf_token %}
                 <div class="input-group">
-                  <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
-                  <button type="submit" class="btn-subscribe">
-                    <i class="bi bi-send"></i>
+                  <input type="email" name="email" class="form-control" placeholder="Enter your email" required
+                    aria-label="Email Address">
+                  <button type="submit" class="btn-subscribe" aria-label="Subscribe to Newsletter">
+                    <i class="bi bi-send" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div class="loading" style="display: none;">Loading</div>
@@ -295,7 +299,8 @@
               </div>
               <div class="contact-info">
                 {% if contact_info %}
-                <p>{{ contact_info.address_line1 }}<br>{{ contact_info.city }}, {{ contact_info.state }} {{ contact_info.postal_code }}<br>{{ contact_info.country }}</p>
+                <p>{{ contact_info.address_line1 }}<br>{{ contact_info.city }}, {{ contact_info.state }} {{
+                  contact_info.postal_code }}<br>{{ contact_info.country }}</p>
                 {% else %}
                 <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
                 {% endif %}
@@ -322,22 +327,22 @@
 
             <div class="social-links">
               {% if contact_info %}
-              {% if contact_info.facebook_url %}<a href="{{ contact_info.facebook_url }}" target="_blank"><i
-                  class="bi bi-facebook"></i></a>{% endif %}
-              {% if contact_info.twitter_url %}<a href="{{ contact_info.twitter_url }}" target="_blank"><i
-                  class="bi bi-twitter-x"></i></a>{% endif %}
-              {% if contact_info.linkedin_url %}<a href="{{ contact_info.linkedin_url }}" target="_blank"><i
-                  class="bi bi-linkedin"></i></a>{% endif %}
-              {% if contact_info.youtube_url %}<a href="{{ contact_info.youtube_url }}" target="_blank"><i
-                  class="bi bi-youtube"></i></a>{% endif %}
-              {% if contact_info.github_url %}<a href="{{ contact_info.github_url }}" target="_blank"><i
-                  class="bi bi-github"></i></a>{% endif %}
+              {% if contact_info.facebook_url %}<a href="{{ contact_info.facebook_url }}" target="_blank"
+                aria-label="Visit our Facebook page"><i class="bi bi-facebook" aria-hidden="true"></i></a>{% endif %}
+              {% if contact_info.twitter_url %}<a href="{{ contact_info.twitter_url }}" target="_blank"
+                aria-label="Visit our Twitter profile"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>{% endif %}
+              {% if contact_info.linkedin_url %}<a href="{{ contact_info.linkedin_url }}" target="_blank"
+                aria-label="Visit our LinkedIn profile"><i class="bi bi-linkedin" aria-hidden="true"></i></a>{% endif %}
+              {% if contact_info.youtube_url %}<a href="{{ contact_info.youtube_url }}" target="_blank"
+                aria-label="Visit our YouTube channel"><i class="bi bi-youtube" aria-hidden="true"></i></a>{% endif %}
+              {% if contact_info.github_url %}<a href="{{ contact_info.github_url }}" target="_blank"
+                aria-label="Visit our GitHub profile"><i class="bi bi-github" aria-hidden="true"></i></a>{% endif %}
               {% else %}
-              <a href="#"><i class="bi bi-facebook"></i></a>
-              <a href="#"><i class="bi bi-twitter-x"></i></a>
-              <a href="#"><i class="bi bi-linkedin"></i></a>
-              <a href="#"><i class="bi bi-youtube"></i></a>
-              <a href="#"><i class="bi bi-github"></i></a>
+              <a href="#" aria-label="Visit our Facebook page"><i class="bi bi-facebook" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Visit our Twitter profile"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Visit our LinkedIn profile"><i class="bi bi-linkedin" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Visit our YouTube channel"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+              <a href="#" aria-label="Visit our GitHub profile"><i class="bi bi-github" aria-hidden="true"></i></a>
               {% endif %}
             </div>
           </div>
@@ -351,7 +356,8 @@
         <div class="row align-items-center">
           <div class="col-lg-6">
             <div class="copyright">
-              <p>© <span>Copyright</span> <strong class="px-1 sitename">{% if contact_info %}{{ contact_info.company_name }}{% else %}Nestova{% endif %}</strong> <span>All Rights Reserved</span></p>
+              <p>© <span>Copyright</span> <strong class="px-1 sitename">{% if contact_info %}{{
+                  contact_info.company_name }}{% else %}Nestova{% endif %}</strong> <span>All Rights Reserved</span></p>
             </div>
           </div>
           <div class="col-lg-6">
@@ -368,15 +374,15 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"
+    aria-label="Scroll to top"><i class="bi bi-arrow-up-short" aria-hidden="true"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
 
   <!-- Vendor JS Files - Deferred for performance -->
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}" defer></script>
+
   <script src="{% static 'assets/vendor/aos/aos.js' %}" defer></script>
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}" defer></script>
   <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}" defer></script>

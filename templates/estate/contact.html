@@ -124,7 +124,7 @@
           <div class="contact-form-wrapper">
             <h2 class="text-center mb-4">Get in Touch</h2>
 
-            <form method="post" action="{% url 'contact' %}" class="php-email-form" id="contactForm">
+            <form method="post" action="{% url 'contact' %}" class="contact-form" id="contactForm">
               {% csrf_token %}
               <div class="row g-3">
                 <div class="col-md-6">
@@ -206,3 +206,62 @@
 <script src="{% static 'assets/js/main.js' %}"></script>
 
 {% endblock content %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const contactForm = document.getElementById('contactForm');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // UI Elements
+        const loading = this.querySelector('.loading');
+        const errorMessage = this.querySelector('.error-message');
+        const sentMessage = this.querySelector('.sent-message');
+        const submitBtn = this.querySelector('button[type="submit"]');
+
+        // Reset state
+        loading.style.display = 'block';
+        errorMessage.style.display = 'none';
+        sentMessage.style.display = 'none';
+        submitBtn.disabled = true;
+
+        // Prepare data
+        const formData = new FormData(this);
+
+        // Send request
+        fetch("{% url 'contact_ajax' %}", {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+
+            if (data.success) {
+              sentMessage.style.display = 'block';
+              sentMessage.innerText = data.message || 'Your message has been sent. Thank you!';
+              contactForm.reset();
+            } else {
+              errorMessage.style.display = 'block';
+              errorMessage.innerText = data.message || 'Something went wrong. Please try again.';
+            }
+          })
+          .catch(error => {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+            errorMessage.style.display = 'block';
+            errorMessage.innerText = 'An error occurred. Please try again later.';
+            console.error('Error:', error);
+          });
+      });
+    }
+  });
+</script>
+{% endblock %}

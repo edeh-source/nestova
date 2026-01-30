@@ -9,7 +9,7 @@ Disallow: /static/admin/
 
 # Disallow search result pages to avoid duplicate content
 Disallow: /search/
-Disallow: /*?*
+Disallow: /*?
 
 # Allow important static resources
 Allow: /static/
@@ -17,6 +17,3 @@ Allow: /media/
 
 # Sitemap location
 Sitemap: https://nestovaproperty.com/sitemap.xml
-
-# Crawl-delay (optional, adjust if needed)
-Crawl-delay: 1
