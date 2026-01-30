@@ -4,341 +4,351 @@
 
 
 {% block content %}
-  
 
-  
 
-  <main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1 class="heading-title">Services</h1>
-              <p class="mb-0">
-                Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
-                odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
-                debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
-                ipsum dolorem.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Services</li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
 
-    <!-- Services Section -->
-    <section class="real-estate-services-3 services section" id="services">
+<main class="main">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-6 col-md-12">
-            <div class="service-block" data-aos="fade-right" data-aos-delay="200">
-              <div class="service-content">
-                <div class="icon">
-                  <i class="bi bi-house-door"></i>
-                </div>
-                <h3>Buy Your Dream Home</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
-                <div class="stats">
-                  <div class="stat-item">
-                    <span class="number">2,500+</span>
-                    <span class="label">Properties Sold</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="number">98%</span>
-                    <span class="label">Client Satisfaction</span>
-                  </div>
-                </div>
-                <a href="service-details.html" class="btn-service" aria-label="Learn more about buying your dream home">Learn More <i class="bi bi-arrow-right"></i></a>
-              </div>
-              <div class="service-image">
-                <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Buy Property" class="img-fluid">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-12">
-            <div class="service-block" data-aos="fade-left" data-aos-delay="200">
-              <div class="service-content">
-                <div class="icon">
-                  <i class="bi bi-currency-dollar"></i>
-                </div>
-                <h3>Sell Your Property</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
-                <div class="stats">
-                  <div class="stat-item">
-                    <span class="number">45</span>
-                    <span class="label">Days Average Sale</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="number">$2.5M+</span>
-                    <span class="label">Highest Sale Price</span>
-                  </div>
-                </div>
-                <a href="service-details.html" class="btn-service">Get Valuation <i class="bi bi-arrow-right"></i></a>
-              </div>
-              <div class="service-image">
-                <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Sell Property" class="img-fluid">
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row gy-4 mt-4">
-
-          <div class="col-lg-4 col-md-6">
-            <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
-              <div class="card-icon">
-                <i class="bi bi-key"></i>
-              </div>
-              <h4>Rental Services</h4>
-              <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
-              <div class="feature-list">
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Tenant Screening</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Property Marketing</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Lease Management</span>
-                </div>
-              </div>
-              <a href="service-details.html" class="service-link">Explore Rentals <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
-              <div class="card-icon">
-                <i class="bi bi-graph-up"></i>
-              </div>
-              <h4>Investment Consulting</h4>
-              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id.</p>
-              <div class="feature-list">
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Market Analysis</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>ROI Calculations</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Portfolio Planning</span>
-                </div>
-              </div>
-              <a href="service-details.html" class="service-link">Start Investing <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
-              <div class="card-icon">
-                <i class="bi bi-tools"></i>
-              </div>
-              <h4>Property Management</h4>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-              <div class="feature-list">
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Maintenance Coordination</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>Rent Collection</span>
-                </div>
-                <div class="feature-item">
-                  <i class="bi bi-check2"></i>
-                  <span>24/7 Support</span>
-                </div>
-              </div>
-              <a href="service-details.html" class="service-link">Manage Property <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
-          <div class="row align-items-center">
-            <div class="col-lg-8">
-              <h3>Ready to Take the Next Step?</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam.</p>
-            </div>
-            <div class="col-lg-4 text-lg-end">
-              <a href="#contact" class="btn btn-cta">Get Free Consultation</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Services Section -->
-
-  </main>
-  {% endblock content %}
-
-  <footer id="footer" class="footer position-relative">
-
-    <div class="container">
-      <div class="row gy-5">
-
-        <div class="col-lg-4">
-          <div class="footer-content">
-            <a href="index.html" class="logo d-flex align-items-center mb-4">
-              <span class="sitename">Nestova</span>
-            </a>
-            <p class="mb-4">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Donec velit neque auctor sit amet aliquam vel ullamcorper sit amet ligula.</p>
-
-            <div class="newsletter-form">
-              <h5>Stay Updated</h5>
-              <form action="forms/newsletter.php" method="post" class="php-email-form">
-                <div class="input-group">
-                  <input type="email" name="email" class="form-control" placeholder="Enter your email" required="">
-                  <button type="submit" class="btn-subscribe">
-                    <i class="bi bi-send"></i>
-                  </button>
-                </div>
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Thank you for subscribing!</div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6">
-          <div class="footer-links">
-            <h4>Company</h4>
-            <ul>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> About</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Careers</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Press</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Blog</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6">
-          <div class="footer-links">
-            <h4>Solutions</h4>
-            <ul>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Digital Strategy</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Cloud Computing</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Data Analytics</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> AI Solutions</a></li>
-              <li><a href="#"><i class="bi bi-chevron-right"></i> Cybersecurity</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="footer-contact">
-            <h4>Get in Touch</h4>
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="bi bi-geo-alt"></i>
-              </div>
-              <div class="contact-info">
-                <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="bi bi-telephone"></i>
-              </div>
-              <div class="contact-info">
-                <p>+1 (555) 987-6543</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="bi bi-envelope"></i>
-              </div>
-              <div class="contact-info">
-                <p>contact@example.com</p>
-              </div>
-            </div>
-
-            <div class="social-links">
-              <a href="#"><i class="bi bi-facebook"></i></a>
-              <a href="#"><i class="bi bi-twitter-x"></i></a>
-              <a href="#"><i class="bi bi-linkedin"></i></a>
-              <a href="#"><i class="bi bi-youtube"></i></a>
-              <a href="#"><i class="bi bi-github"></i></a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="footer-bottom">
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
       <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6">
-            <div class="copyright">
-              <p>© <span>Copyright</span> <strong class="px-1 sitename">MyWebsite</strong> <span>All Rights Reserved</span></p>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="footer-bottom-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-              <a href="#">Cookie Policy</a>
-            </div>
-            <div class="credits">
-              <!-- All the links in the footer should remain intact. -->
-              <!-- You can delete the links only if you've purchased the pro version. -->
-              <!-- Licensing information: https://bootstrapmade.com/license/ -->
-              <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">Services</h1>
+            <p class="mb-0">
+              Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
+              odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
+              debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
+              ipsum dolorem.
+            </p>
           </div>
         </div>
       </div>
     </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li class="current">Services</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
 
-  </footer>
+  <!-- Services Section -->
+  <section class="real-estate-services-3 services section" id="services">
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+      <div class="row gy-4">
 
-  <!-- Vendor JS Files -->
-  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
-  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'assets/vendor/drift-zoom/Drift.min.js' %}"></script>
+        <div class="col-lg-6 col-md-12">
+          <div class="service-block" data-aos="fade-right" data-aos-delay="200">
+            <div class="service-content">
+              <div class="icon">
+                <i class="bi bi-house-door"></i>
+              </div>
+              <h3>Buy Your Dream Home</h3>
+              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
+              <div class="stats">
+                <div class="stat-item">
+                  <span class="number">2,500+</span>
+                  <span class="label">Properties Sold</span>
+                </div>
+                <div class="stat-item">
+                  <span class="number">98%</span>
+                  <span class="label">Client Satisfaction</span>
+                </div>
+              </div>
+              <a href="{% url 'service' %}" class="btn-service"
+                aria-label="Learn more about buying your dream home">Learn More <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="service-image">
+              <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Buy Property"
+                class="img-fluid">
+            </div>
+          </div>
+        </div>
 
-  <!-- Main JS File -->
-  <script src="{% static 'assets/js/main.js' %}"></script>
+        <div class="col-lg-6 col-md-12">
+          <div class="service-block" data-aos="fade-left" data-aos-delay="200">
+            <div class="service-content">
+              <div class="icon">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <h3>Sell Your Property</h3>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
+              <div class="stats">
+                <div class="stat-item">
+                  <span class="number">45</span>
+                  <span class="label">Days Average Sale</span>
+                </div>
+                <div class="stat-item">
+                  <span class="number">$2.5M+</span>
+                  <span class="label">Highest Sale Price</span>
+                </div>
+              </div>
+              <a href="{% url 'service' %}" class="btn-service">Get Valuation <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="service-image">
+              <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Sell Property"
+                class="img-fluid">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row gy-4 mt-4">
+
+        <div class="col-lg-4 col-md-6">
+          <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card-icon">
+              <i class="bi bi-key"></i>
+            </div>
+            <h4>Rental Services</h4>
+            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Tenant Screening</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Property Marketing</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Lease Management</span>
+              </div>
+            </div>
+            <a href="{% url 'service' %}" class="service-link">Explore Rentals <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card-icon">
+              <i class="bi bi-graph-up"></i>
+            </div>
+            <h4>Investment Consulting</h4>
+            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Market Analysis</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>ROI Calculations</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Portfolio Planning</span>
+              </div>
+            </div>
+            <a href="{% url 'service' %}" class="service-link">Start Investing <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card-icon">
+              <i class="bi bi-tools"></i>
+            </div>
+            <h4>Property Management</h4>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Maintenance Coordination</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>Rent Collection</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-check2"></i>
+                <span>24/7 Support</span>
+              </div>
+            </div>
+            <a href="{% url 'service' %}" class="service-link">Manage Property <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h3>Ready to Take the Next Step?</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua enim ad minim veniam.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a href="#contact" class="btn btn-cta">Get Free Consultation</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Services Section -->
+
+</main>
+{% endblock content %}
+
+<footer id="footer" class="footer position-relative">
+
+  <div class="container">
+    <div class="row gy-5">
+
+      <div class="col-lg-4">
+        <div class="footer-content">
+          <a href="index.html" class="logo d-flex align-items-center mb-4">
+            <span class="sitename">Nestova</span>
+          </a>
+          <p class="mb-4">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Donec
+            velit neque auctor sit amet aliquam vel ullamcorper sit amet ligula.</p>
+
+          <div class="newsletter-form">
+            <h5>Stay Updated</h5>
+            <form action="forms/newsletter.php" method="post" class="php-email-form">
+              <div class="input-group">
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" required="">
+                <button type="submit" class="btn-subscribe">
+                  <i class="bi bi-send"></i>
+                </button>
+              </div>
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Thank you for subscribing!</div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-6">
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> About</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Careers</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Press</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Blog</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-6">
+        <div class="footer-links">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Digital Strategy</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Cloud Computing</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Data Analytics</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> AI Solutions</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i> Cybersecurity</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="footer-contact">
+          <h4>Get in Touch</h4>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="bi bi-geo-alt"></i>
+            </div>
+            <div class="contact-info">
+              <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="bi bi-telephone"></i>
+            </div>
+            <div class="contact-info">
+              <p>+1 (555) 987-6543</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="bi bi-envelope"></i>
+            </div>
+            <div class="contact-info">
+              <p>contact@example.com</p>
+            </div>
+          </div>
+
+          <div class="social-links">
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-youtube"></i></a>
+            <a href="#"><i class="bi bi-github"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="copyright">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">MyWebsite</strong> <span>All Rights
+                Reserved</span></p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/vendor/drift-zoom/Drift.min.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
 
 </body>
 

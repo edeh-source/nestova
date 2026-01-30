@@ -35,7 +35,7 @@ urlpatterns = [
     
     # SEO URLs
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'), name='robots_txt'),
+    path('robots.txt', TemplateView.as_view(template_name='robots_seo.txt', content_type='text/plain'), name='robots_txt'),
     
     # IMPORTANT: Custom auth URLs MUST come BEFORE allauth to prevent override
     path("", include("users.urls")),  # Custom login/register at /login/ and /register/
