@@ -32,17 +32,38 @@
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
+  <!-- Vendor CSS Files -->
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-  <link href="{% static 'assets/vendor/drift-zoom/drift-basic.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  </noscript>
+
+  <!-- Non-critical CSS deferred -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <link href="{% static 'assets/vendor/drift-zoom/drift-basic.css' %}" rel="stylesheet" media="print"
+    onload="this.media='all'">
 
   <!-- Modern CSS Libraries via CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print"
+    onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print"
+    onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" media="print"
+    onload="this.media='all'" />
+
+  <noscript>
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </noscript>
 
   <!-- Main CSS File -->
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
@@ -172,7 +193,7 @@
               <li><a href="{% url 'shop:profile' %}">My Dashboard</a></li>
             </ul>
           </li>
-          <li class="dropdown"><a><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"
+          <li class="dropdown"><a href="#"><span>Our ShortLets</span> <i class="bi bi-chevron-down toggle-dropdown"
                 aria-label="Toggle Dropdown"></i></a>
             <ul>
               <li><a href="{% url 'apartment_list' %}">Our Apartments</a></li>

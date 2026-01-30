@@ -4,6 +4,17 @@
 {% load static %}
 {% load humanize %}
 
+{% block extra_head %}
+{% if featured_properties %}
+{% with featured_properties|first as hero_prop %}
+<link rel="preload" as="image"
+  href="{% if hero_prop.featured_image %}{{ hero_prop.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}">
+{% endwith %}
+{% else %}
+<link rel="preload" as="image" href="{% static 'assets/img/real-estate/property-exterior-3.webp' %}">
+{% endif %}
+{% endblock %}
+
 
 {% block content %}
 
@@ -165,15 +176,16 @@
                 {% with featured_properties|first as hero_prop %}
                 <img
                   src="{% if hero_prop.featured_image %}{{ hero_prop.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}"
-                  alt="{{ hero_prop.title }}" class="img-fluid">
+                  alt="{{ hero_prop.title }}" class="img-fluid" fetchpriority="high">
                 <div class="property-tag">
                   <span class="price">{{ hero_prop.formatted_price }}</span>
-                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else %}Prime{% endif %}</span>
+                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else
+                    %}Prime{% endif %}</span>
                 </div>
                 {% endwith %}
                 {% else %}
                 <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Luxury Property"
-                  class="img-fluid">
+                  class="img-fluid" fetchpriority="high">
                 <div class="property-tag">
                   <span class="price">$850,000</span>
                   <span class="type">Featured</span>
@@ -364,16 +376,20 @@
                 alt="{{ main_property.title }}" class="img-fluid">
             </a>
             <div class="quick-specs">
-              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize }}</span>
-              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize }}</span>
-              <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq ft</span>
+              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize
+                }}</span>
+              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize
+                }}</span>
+              <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq
+                ft</span>
             </div>
           </div>
           <div class="content">
             <div class="top">
               <div>
                 <h3><a href="{{ main_property.get_absolute_url }}">{{ main_property.title }}</a></h3>
-                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{ main_property.state.name }}</div>
+                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{
+                  main_property.state.name }}</div>
               </div>
               <div class="price">{{ main_property.formatted_price }}</div>
             </div>
@@ -383,7 +399,8 @@
               <a href="{{ main_property.get_absolute_url }}" class="btn-soft">More Photos</a>
               <div class="meta">
                 <span class="status {{ main_property.status.name }}">{{ main_property.status }}</span>
-                <span class="listed">Listed {{ main_property.get_days_listed }} day{{ main_property.get_days_listed|pluralize }} ago</span>
+                <span class="listed">Listed {{ main_property.get_days_listed }} day{{
+                  main_property.get_days_listed|pluralize }} ago</span>
               </div>
             </div>
           </div>
@@ -653,14 +670,14 @@
               {% else %}
               <span class="service-price">₦{{ pkg.price|floatformat:0|intcomma}}</span>
               {% endif %}
-              <form method="post" action="{% url "listings:subscribe" pkg.id %}">
+              <form method="post" action="{% url " listings:subscribe" pkg.id %}">
                 {% csrf_token %}
                 <a href="{% url 'listings:subscribe' pkg.id %}" class="service-btn">
-                <span>Get Package</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
+                  <span>Get Package</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
               </form>
-              
+
             </div>
           </div>
         </div><!-- End Service Item -->
@@ -1177,7 +1194,8 @@
 
             <div class="post-content d-flex flex-column">
               <h3 class="post-title">{{ recent.title }}</h3>
-              <a href="blog-details.html" class="readmore stretched-link"><span>Read More</span><i
+              <a href="{% url 'blog_detail' recent.slug %}" class="readmore stretched-link"
+                aria-label="Read more about {{ recent.title }}"><span>Read More</span><i
                   class="bi bi-arrow-right"></i></a>
             </div>
 
