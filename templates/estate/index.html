@@ -670,7 +670,7 @@
               {% else %}
               <span class="service-price">₦{{ pkg.price|floatformat:0|intcomma}}</span>
               {% endif %}
-              <form method="post" action="{% url " listings:subscribe" pkg.id %}">
+              <form method="post" action="{% url "listings:subscribe" pkg.id %}">
                 {% csrf_token %}
                 <a href="{% url 'listings:subscribe' pkg.id %}" class="service-btn">
                   <span>Get Package</span>
@@ -1194,7 +1194,7 @@
 
             <div class="post-content d-flex flex-column">
               <h3 class="post-title">{{ recent.title }}</h3>
-              <a href="{% url 'blog_detail' recent.slug %}" class="readmore stretched-link"
+              <a href="{{ recent.get_absolute_url }}" class="readmore stretched-link"
                 aria-label="Read more about {{ recent.title }}"><span>Read More</span><i
                   class="bi bi-arrow-right"></i></a>
             </div>
