@@ -94,8 +94,8 @@ def agents_signup(request):
         # Redirect to unified signup with agent type pre-selected
         upline_code = request.GET.get('ref', '')
         if upline_code:
-            return redirect(f"{reverse('register')}?type=agent&ref={upline_code}")
-        return redirect(f"{reverse('register')}?type=agent")
+            return redirect(f"{reverse('users:register')}?type=agent&ref={upline_code}")
+        return redirect(f"{reverse('users:register')}?type=agent")
 
 # Helper function for companies
 def company_required(view_func):
