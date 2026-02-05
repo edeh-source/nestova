@@ -43,7 +43,7 @@ urlpatterns = [
     # App URLs
     path("", include("core.urls")),
     path('booking/', include('bookings.urls')),
-    path("", include("agents.urls")),
+    path("agents/", include("agents.urls")),  # Agent URLs with prefix
     path("", include("property.urls")),
     path('shop/', include('shop.urls')),
     path('listings/', include('listings.urls')),

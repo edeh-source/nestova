@@ -296,14 +296,38 @@
             <!-- Agent Info -->
             <div class="agent-info">
               <div class="agent-avatar">
+                {% if property.agent %}
+                <a href="{% url 'agents:agent_profile' property.agent.slug %}">
+                  <img
+                    src="{% if property.agent.user.profile_image %}{{ property.agent.user.profile_image.url }}{% else %}{% static 'assets/img/real-estate/agent-3.webp' %}{% endif %}"
+                    alt="{{ property.agent.user.get_full_name }}" class="img-fluid">
+                </a>
+                {% else %}
                 <img src="{% static 'assets/img/real-estate/agent-3.webp' %}"
                   alt="{{ property.listed_by.get_full_name }}" class="img-fluid">
+                {% endif %}
               </div>
               <div class="agent-details">
+                {% if property.agent %}
+                <h4>
+                  <a href="{% url 'agents:agent_profile' property.agent.slug %}" class="text-decoration-none">
+                    {{ property.agent.user.get_full_name|default:property.agent.user.username }}
+                  </a>
+                </h4>
+                <p class="agent-title">Listing Agent</p>
+                {% if property.agent.verification_status == 'verified' %}
+                <span class="badge bg-success mb-2"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                {% endif %}
+                <div class="mt-2">
+                  <a href="{% url 'agents:agent_properties' property.agent.slug %}"
+                    class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-house-door"></i> View All Properties
+                  </a>
+                </div>
+                {% else %}
                 <h4>{{ property.listed_by.get_full_name|default:property.listed_by.username }}</h4>
                 <p class="agent-title">Listing Agent</p>
-                <!-- <p class="agent-phone"><i class="bi bi-telephone"></i>+1 (555) 123-4567</p>
-                  <p class="agent-email"><i class="bi bi-envelope"></i>{{ property.listed_by.email }}</p> -->
+                {% endif %}
               </div>
             </div><!-- End Agent Info -->
 
@@ -335,13 +359,13 @@
                 </a>
 
                 <!-- Twitter/X -->
-                <a href="https://twitter.com/intent/tweet?text={{ property.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}"
+                <a href="https://twitter.com/intent/tweet?text={{ property.title|urlencode }}%20-%20{{ property.formatted_price|urlencode }}&url={{ request.build_absolute_uri|urlencode }}"
                   target="_blank" rel="noopener noreferrer" class="share-btn twitter" aria-label="Share on Twitter">
                   <i class="bi bi-twitter-x"></i>
                 </a>
 
                 <!-- WhatsApp -->
-                <a href="https://wa.me/?text={{ property.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
+                <a href="https://wa.me/?text={{ property.title|urlencode }}%20-%20{{ property.formatted_price|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
                   target="_blank" rel="noopener noreferrer" class="share-btn whatsapp" aria-label="Share on WhatsApp">
                   <i class="bi bi-whatsapp"></i>
                 </a>
@@ -353,10 +377,15 @@
                 </a>
 
                 <!-- Email -->
-                <a href="mailto:?subject={{ property.title|urlencode }}&body=Check out this property: {{ request.build_absolute_uri }}"
+                <a href="mailto:?subject={{ property.title|urlencode }}&body=Check%20out%20this%20property:%20{{ property.title|urlencode }}%20-%20{{ property.formatted_price|urlencode }}%0A%0A{{ request.build_absolute_uri }}"
                   class="share-btn email" aria-label="Share via Email">
                   <i class="bi bi-envelope"></i>
                 </a>
+
+                <!-- Copy Link -->
+                <button type="button" class="share-btn copy-link" onclick="copyPropertyLink()" aria-label="Copy Link">
+                  <i class="bi bi-link-45deg"></i>
+                </button>
               </div>
 
               {% if not referral_link and user.is_authenticated and not user.agent_profile %}
@@ -377,6 +406,24 @@
                   alert("Referral link copied to clipboard!");
                 }, function (err) {
                   console.error('Could not copy text: ', err);
+                });
+              }
+
+              function copyPropertyLink() {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(function () {
+                  // Show success feedback
+                  const btn = event.target.closest('button');
+                  const originalHTML = btn.innerHTML;
+                  btn.innerHTML = '<i class="bi bi-check"></i>';
+                  btn.classList.add('copied');
+                  setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                  }, 2000);
+                }, function (err) {
+                  console.error('Could not copy link: ', err);
+                  alert('Failed to copy link');
                 });
               }
             </script>

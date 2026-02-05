@@ -45,7 +45,9 @@ class Agent(models.Model):
         ('voters_card', "Voter's Card"),
     ]
     
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='agent_profile')
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, help_text="URL-friendly identifier")
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     upline = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='downlines')
     commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=2.00)
@@ -98,6 +100,17 @@ class Agent(models.Model):
     
     
     def save(self, *args, **kwargs):
+        # Generate slug from username if not set
+        if not self.slug:
+            from django.utils.text import slugify
+            base_slug = slugify(self.user.username)
+            slug = base_slug
+            counter = 1
+            while Agent.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+            
         if not self.referral_code:
             self.referral_code = self.generate_referral_code()
         super().save(*args, **kwargs)

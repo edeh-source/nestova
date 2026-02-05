@@ -195,7 +195,7 @@ class Property(models.Model):
     agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name='properties')
     
     # Owner (Admin who listed)
-    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listed_properties')
+    listed_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='listed_properties')
     
     # Referral tracking - which agent referred the buyer
     referring_agent = models.ForeignKey('agents.Agent', on_delete=models.SET_NULL, null=True, blank=True, related_name='referred_properties', help_text="Agent who referred the buyer")

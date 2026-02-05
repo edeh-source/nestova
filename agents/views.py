@@ -401,3 +401,56 @@ def submit_company_verification(request):
 
     return render(request, 'agents/submit_company_verification.html', {'company': company})
 
+
+def agent_profile(request, slug):
+    """Display agent profile with their properties"""
+    from django.shortcuts import get_object_or_404
+    from property.models import Property
+    
+    agent = get_object_or_404(Agent, slug=slug)
+    
+    # Get recent properties by this agent (limit to 6 for profile page)
+    recent_properties = Property.objects.filter(
+        agent=agent,
+        is_active=True
+    ).select_related('state', 'city', 'property_type', 'status').order_by('-created_at')[:6]
+    
+    # Get agent statistics
+    total_properties = Property.objects.filter(agent=agent, is_active=True).count()
+    
+    context = {
+        'agent': agent,
+        'recent_properties': recent_properties,
+        'total_properties': total_properties,
+    }
+    
+    return render(request, 'agents/agent_profile_dynamic.html', context)
+
+
+def agent_properties(request, slug):
+    """Display all properties listed by a specific agent"""
+    from django.shortcuts import get_object_or_404
+    from django.core.paginator import Paginator
+    from property.models import Property
+    
+    agent = get_object_or_404(Agent, slug=slug)
+    
+    # Get all properties by this agent
+    properties_list = Property.objects.filter(
+        agent=agent,
+        is_active=True
+    ).select_related('state', 'city', 'property_type', 'status').order_by('-created_at')
+    
+    # Pagination
+    paginator = Paginator(properties_list, 12)  # 12 properties per page
+    page_number = request.GET.get('page')
+    properties = paginator.get_page(page_number)
+    
+    context = {
+        'agent': agent,
+        'properties': properties,
+        'total_properties': properties_list.count(),
+    }
+    
+    return render(request, 'agents/agent_properties.html', context)
+

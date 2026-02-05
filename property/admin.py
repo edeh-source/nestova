@@ -66,7 +66,7 @@ class PropertyAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'slug', 'description', 'listed_by')
+            'fields': ('title', 'slug', 'description', 'listed_by', 'agent')
         }),
         ('Location', {
             'fields': ('state', 'city', 'address', 'zip_code')
