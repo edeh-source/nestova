@@ -27,7 +27,31 @@ def properties_page(request):
 
 
 def agents(request):
-    return render(request, "estate/agents.html")
+    """Display all verified agents"""
+    from agents.models import Agent
+    from django.core.paginator import Paginator
+    
+    # Get all verified agents
+    agents_list = Agent.objects.filter(
+        is_active=True,
+        verification_status='verified'
+    ).select_related('user').order_by('-created')
+    
+    # Pagination
+    paginator = Paginator(agents_list, 12)  # 12 agents per page
+    page_number = request.GET.get('page')
+    agents = paginator.get_page(page_number)
+    
+    # Get featured agent (first verified agent or None)
+    featured_agent = agents_list.first() if agents_list.exists() else None
+    
+    context = {
+        'agents': agents,
+        'featured_agent': featured_agent,
+        'total_agents': agents_list.count(),
+    }
+    
+    return render(request, "estate/agents.html", context)
 
 
 def agents_details(request):

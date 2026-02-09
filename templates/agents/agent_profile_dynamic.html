@@ -48,7 +48,7 @@
 
                 <div class="profile-content">
                     <div class="agent-avatar">
-                        <img src="{% if agent.user.profile_image %}{{ agent.user.profile_image.url }}{% else %}{% static 'assets/img/real-estate/agent-3.webp' %}{% endif %}"
+                        <img src="{% if agent.user.get_users_image %}{{ agent.user.get_users_image }}{% else %}{% static 'assets/img/real-estate/agent-3.webp' %}{% endif %}"
                             alt="{{ agent.user.get_full_name }}" class="avatar-image">
                         <div class="status-indicator">
                             <i class="bi bi-circle-fill"></i>

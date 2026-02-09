@@ -18,10 +18,9 @@
           <div class="col-lg-8">
             <h1 class="heading-title">Services</h1>
             <p class="mb-0">
-              Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
-              odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
-              debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
-              ipsum dolorem.
+              Discover comprehensive real estate solutions tailored to meet your property needs in Nigeria. From buying
+              your dream home to managing investment properties, our professional services ensure a seamless and
+              rewarding experience at every step.
             </p>
           </div>
         </div>
@@ -51,8 +50,9 @@
                 <i class="bi bi-house-door"></i>
               </div>
               <h3>Buy Your Dream Home</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
+              <p>Find your perfect home with our extensive database of verified properties across Nigeria's major
+                cities. Our advanced search tools and expert guidance make property hunting effortless, whether you're
+                looking for a family home, investment property, or commercial space.</p>
               <div class="stats">
                 <div class="stat-item">
                   <span class="number">2,500+</span>
@@ -63,7 +63,7 @@
                   <span class="label">Client Satisfaction</span>
                 </div>
               </div>
-              <a href="{% url 'service' %}" class="btn-service"
+              <a href="{% url 'properties' %}" class="btn-service"
                 aria-label="Learn more about buying your dream home">Learn More <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="service-image">
@@ -80,8 +80,9 @@
                 <i class="bi bi-currency-dollar"></i>
               </div>
               <h3>Sell Your Property</h3>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
+              <p>List your property with confidence on Nigeria's premier real estate platform. We provide professional
+                photography, strategic marketing, and access to thousands of qualified buyers to ensure you get the best
+                value for your property in the shortest time possible.</p>
               <div class="stats">
                 <div class="stat-item">
                   <span class="number">45</span>
@@ -92,7 +93,7 @@
                   <span class="label">Highest Sale Price</span>
                 </div>
               </div>
-              <a href="{% url 'service' %}" class="btn-service">Get Valuation <i class="bi bi-arrow-right"></i></a>
+              <a href="{% url 'listings:pricing' %}" class="btn-service">Sell Your Properties <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="service-image">
               <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Sell Property"
@@ -108,35 +109,41 @@
         <div class="col-lg-4 col-md-6">
           <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
             <div class="card-icon">
-              <i class="bi bi-key"></i>
+              <i class="bi bi-palette"></i>
             </div>
-            <h4>Rental Services</h4>
-            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+            <h4>Interior Design</h4>
+            <p>Transform your living or work space with our premium interior design services. From concept to execution,
+              our expert designers create beautiful, functional environments tailored to your style and budget.</p>
             <div class="feature-list">
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
-                <span>Tenant Screening</span>
+                <span>Space Planning</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
-                <span>Property Marketing</span>
+                <span>3D Visualization</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
-                <span>Lease Management</span>
+                <span>Furniture Selection</span>
               </div>
             </div>
-            <a href="{% url 'service' %}" class="service-link">Explore Rentals <i class="bi bi-arrow-right"></i></a>
+            <a href="{% url 'services:interior_design_request' %}" class="service-link">Start Project <i
+                class="bi bi-arrow-right"></i></a>
           </div>
         </div>
 
+        
+
         <div class="col-lg-4 col-md-6">
-          <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
             <div class="card-icon">
               <i class="bi bi-graph-up"></i>
             </div>
             <h4>Investment Consulting</h4>
-            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id.</p>
+            <p>Make informed investment decisions with our expert market analysis and consulting services. We provide
+              detailed insights on property values, market trends, ROI projections, and investment strategies tailored
+              to Nigeria's market.</p>
             <div class="feature-list">
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
@@ -151,22 +158,23 @@
                 <span>Portfolio Planning</span>
               </div>
             </div>
-            <a href="{% url 'service' %}" class="service-link">Start Investing <i class="bi bi-arrow-right"></i></a>
+            <a href="{% url "contact" %}" class="service-link">Start Investing <i class="bi bi-arrow-right"></i></a>
           </div>
         </div>
 
         <div class="col-lg-4 col-md-6">
-          <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
             <div class="card-icon">
               <i class="bi bi-tools"></i>
             </div>
             <h4>Property Management</h4>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </p>
+            <p>Maximize your property's potential with our professional management services. From routine maintenance
+              and emergency repairs to tenant relations and financial reporting, we ensure your investment is
+              well-maintained.</p>
             <div class="feature-list">
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
-                <span>Maintenance Coordination</span>
+                <span>Maintenance</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check2"></i>
@@ -177,7 +185,7 @@
                 <span>24/7 Support</span>
               </div>
             </div>
-            <a href="{% url 'service' %}" class="service-link">Manage Property <i class="bi bi-arrow-right"></i></a>
+            <a href="{% url "properties" %}" class="service-link">Manage Property <i class="bi bi-arrow-right"></i></a>
           </div>
         </div>
 
@@ -187,11 +195,12 @@
         <div class="row align-items-center">
           <div class="col-lg-8">
             <h3>Ready to Take the Next Step?</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua enim ad minim veniam.</p>
+            <p>Ready to take the next step in your real estate journey? Whether you're buying, selling, or investing,
+              our team of experienced professionals is here to guide you every step of the way. Get personalized advice
+              tailored to your specific needs and goals.</p>
           </div>
           <div class="col-lg-4 text-lg-end">
-            <a href="#contact" class="btn btn-cta">Get Free Consultation</a>
+            <a href="{% url "contact" %}" class="btn btn-cta">Get Free Consultation</a>
           </div>
         </div>
       </div>

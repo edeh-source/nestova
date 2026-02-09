@@ -48,6 +48,7 @@ urlpatterns = [
     path('shop/', include('shop.urls')),
     path('listings/', include('listings.urls')),
     path('blog/', include('blogs.urls')),
+    path('services/', include('services.urls')),
     path('', include("contact.urls")),
     
     # Allauth URLs (for social auth only - login/register handled by custom views)

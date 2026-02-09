@@ -38,6 +38,13 @@ def homepage(request):
         recent_blog_posts = Post.objects.select_related('author', 'category').order_by('-publish')[:3]
         print(f"{recent_blog_posts}")
         
+        # Get featured agents for homepage
+        from agents.models import Agent
+        featured_agents = Agent.objects.filter(
+            is_active=True,
+            verification_status='verified'
+        ).select_related('user')[:6]
+        
         context = {
             'states': states,
             'property_types': property_types,
@@ -45,6 +52,7 @@ def homepage(request):
             'all_properties': all_properties,
             'pricing_packages': pricing_packages,
             'recent_blog_posts': recent_blog_posts,
+            'featured_agents': featured_agents,
         }
         
         return render(request, 'estate/index.html', context)
