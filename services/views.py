@@ -32,7 +32,7 @@ def interior_design_request(request):
                 'Thank you for your interest in our interior design services! '
                 'Our team will review your request and contact you within 24-48 hours.'
             )
-            return redirect('interior_design_request')
+            return redirect('services:interior_design_request')
         else:
             messages.error(
                 request,
