@@ -49,8 +49,7 @@
           <div class="featured-agent">
             <div class="agent-image">
               {% if featured_agent.user.profile_picture %}
-              <img src="{{ featured_agent.user.profile_picture.url }}" alt="{{ featured_agent.user.get_full_name }}"
-                class="img-fluid">
+              <img src="{{ featured_agent.user.profile_picture.url }}" alt="{{ featured_agent.user.get_full_name }}" class="img-fluid">
               {% else %}
               <img src="{% static 'assets/img/real-estate/agent-1.webp' %}" alt="Featured Agent" class="img-fluid">
               {% endif %}
@@ -81,8 +80,7 @@
                 <span class="label">Properties Listed</span>
               </div>
               <div class="stat-item">
-                <span class="number">{% if featured_agent.verification_status == 'verified' %}✓{% else %}-{% endif
-                  %}</span>
+                <span class="number">{% if featured_agent.verification_status == 'verified' %}✓{% else %}-{% endif %}</span>
                 <span class="label">Verified</span>
               </div>
               <div class="stat-item">
@@ -110,20 +108,16 @@
 
             <div class="social-links">
               {% if featured_agent.linkedin %}
-              <a href="{{ featured_agent.linkedin }}" class="social-link" target="_blank"><i
-                  class="bi bi-linkedin"></i></a>
+              <a href="{{ featured_agent.linkedin }}" class="social-link" target="_blank"><i class="bi bi-linkedin"></i></a>
               {% endif %}
               {% if featured_agent.facebook %}
-              <a href="{{ featured_agent.facebook }}" class="social-link" target="_blank"><i
-                  class="bi bi-facebook"></i></a>
+              <a href="{{ featured_agent.facebook }}" class="social-link" target="_blank"><i class="bi bi-facebook"></i></a>
               {% endif %}
               {% if featured_agent.instagram %}
-              <a href="{{ featured_agent.instagram }}" class="social-link" target="_blank"><i
-                  class="bi bi-instagram"></i></a>
+              <a href="{{ featured_agent.instagram }}" class="social-link" target="_blank"><i class="bi bi-instagram"></i></a>
               {% endif %}
               {% if featured_agent.twitter %}
-              <a href="{{ featured_agent.twitter }}" class="social-link" target="_blank"><i
-                  class="bi bi-twitter"></i></a>
+              <a href="{{ featured_agent.twitter }}" class="social-link" target="_blank"><i class="bi bi-twitter"></i></a>
               {% endif %}
             </div>
 
