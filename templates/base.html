@@ -49,6 +49,13 @@
   <link href="{% static 'assets/vendor/drift-zoom/drift-basic.css' %}" rel="stylesheet" media="print"
     onload="this.media='all'">
 
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    media="print" onload="this.media='all'" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" media="print"
+    onload="this.media='all'" />
+
   <!-- Modern CSS Libraries via CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print"
     onload="this.media='all'" />
@@ -320,7 +327,8 @@
               </div>
               <div class="contact-info">
                 {% if contact_info %}
-                <p>{{ contact_info.address_line1 }}<br>{{ contact_info.city }}, {{ contact_info.state }} {{ contact_info.postal_code }}<br>{{ contact_info.country }}</p>
+                <p>{{ contact_info.address_line1 }}<br>{{ contact_info.city }}, {{ contact_info.state }} {{
+                  contact_info.postal_code }}<br>{{ contact_info.country }}</p>
                 {% else %}
                 <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
                 {% endif %}
@@ -376,7 +384,8 @@
         <div class="row align-items-center">
           <div class="col-lg-6">
             <div class="copyright">
-              <p>© <span>Copyright</span> <strong class="px-1 sitename">{% if contact_info %}{{ contact_info.company_name }}{% else %}Nestova{% endif %}</strong> <span>All Rights Reserved</span></p>
+              <p>© <span>Copyright</span> <strong class="px-1 sitename">{% if contact_info %}{{
+                  contact_info.company_name }}{% else %}Nestova{% endif %}</strong> <span>All Rights Reserved</span></p>
             </div>
           </div>
           <div class="col-lg-6">

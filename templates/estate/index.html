@@ -141,31 +141,7 @@
 
 
 
-            <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
-              <div class="row">
-                <div class="col-4">
-                  <div class="stat-item">
-                    <h3><span data-purecounter-start="0" data-purecounter-end="2847" data-purecounter-duration="1"
-                        class="purecounter"></span>+</h3>
-                    <p>Properties Listed</p>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="stat-item">
-                    <h3><span data-purecounter-start="0" data-purecounter-end="156" data-purecounter-duration="1"
-                        class="purecounter"></span>+</h3>
-                    <p>Verified Agents</p>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="stat-item">
-                    <h3><span data-purecounter-start="0" data-purecounter-end="98" data-purecounter-duration="1"
-                        class="purecounter"></span>%</h3>
-                    <p>Client Satisfaction</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
 
           </div><!-- End Hero Text -->
 
@@ -198,23 +174,7 @@
                   class="img-fluid">
               </div>
 
-              <div class="floating-card">
-                <div class="agent-info">
-                  <img src="{% static 'assets/img/real-estate/agent-4.webp' %}" alt="Agent" class="agent-avatar">
-                  <div class="agent-details">
-                    <h5>Sarah Johnson</h5>
-                    <p>Top Real Estate Agent</p>
-                    <div class="rating">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <span>4.9 (127 reviews)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </div><!-- End Hero Images -->
 
@@ -237,18 +197,7 @@
             <div class="main-image-wrapper">
               <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Premium Property"
                 class="img-fluid main-image">
-              <div class="floating-card">
-                <div class="card-content">
-                  <div class="icon">
-                    <i class="bi bi-award"></i>
-                  </div>
-                  <div class="text">
-                    <span class="number"><span data-purecounter-start="0" data-purecounter-end="12"
-                        data-purecounter-duration="1" class="purecounter"></span>+</span>
-                    <span class="label">Awards Won</span>
-                  </div>
-                </div>
-              </div>
+              
             </div>
             <div class="secondary-images">
               <div class="small-image">
@@ -266,7 +215,7 @@
           <div class="content-wrapper">
             <div class="section-badge">
               <i class="bi bi-buildings"></i>
-              <span>Premium Real Estate</span>
+              <span>Our Real Estate Vision </span>
             </div>
 
             <h2>Transforming Real Estate Dreams Into Reality</h2>
@@ -276,31 +225,7 @@
               verified listings in Nigeria's prime locations.
             </p>
 
-            <div class="stats-grid">
-              <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
-                <div class="stat-number">
-                  <span data-purecounter-start="0" data-purecounter-end="2800" data-purecounter-duration="2"
-                    class="purecounter"></span>+
-                </div>
-                <div class="stat-label">Properties Listed</div>
-              </div>
-
-              <div class="stat-item" data-aos="zoom-in" data-aos-delay="450">
-                <div class="stat-number">
-                  <span data-purecounter-start="0" data-purecounter-end="95" data-purecounter-duration="1"
-                    class="purecounter"></span>%
-                </div>
-                <div class="stat-label">Success Rate</div>
-              </div>
-
-              <div class="stat-item" data-aos="zoom-in" data-aos-delay="500">
-                <div class="stat-number">
-                  <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1"
-                    class="purecounter"></span>/7
-                </div>
-                <div class="stat-label">Client Support</div>
-              </div>
-            </div>
+           
 
             <div class="features-list">
               <div class="feature-item">
@@ -326,7 +251,8 @@
                 <i class="bi bi-headset"></i>
                 <div class="contact-text">
                   <span>Need assistance?</span>
-                  <a href="tel:+15559876543">+1 (555) 987-6543</a>
+                  <a href="tel:+2348030824223">+2348030824223</a>
+                  
                 </div>
               </div>
             </div>
@@ -376,8 +302,10 @@
                 alt="{{ main_property.title }}" class="img-fluid">
             </a>
             <div class="quick-specs">
-              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize }}</span>
-              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize }}</span>
+              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize
+                }}</span>
+              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize
+                }}</span>
               <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq
                 ft</span>
             </div>
@@ -386,7 +314,8 @@
             <div class="top">
               <div>
                 <h3><a href="{{ main_property.get_absolute_url }}">{{ main_property.title }}</a></h3>
-                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{ main_property.state.name }}</div>
+                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{
+                  main_property.state.name }}</div>
               </div>
               <div class="price">{{ main_property.formatted_price }}</div>
             </div>
@@ -396,7 +325,8 @@
               <a href="{{ main_property.get_absolute_url }}" class="btn-soft">More Photos</a>
               <div class="meta">
                 <span class="status {{ main_property.status.name }}">{{ main_property.status }}</span>
-                <span class="listed">Listed {{ main_property.get_days_listed }} day{{ main_property.get_days_listed|pluralize }} ago</span>
+                <span class="listed">Listed {{ main_property.get_days_listed }} day{{
+                  main_property.get_days_listed|pluralize }} ago</span>
               </div>
             </div>
           </div>
@@ -492,138 +422,7 @@
   </section><!-- /Featured Properties Section -->
 
   <!-- Featured Services Section -->
-  <section id="featured-services" class="featured-services section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Our Expertise</h2>
-      <p>Comprehensive real estate solutions designed to help you navigate the market with confidence and ease.</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row g-4 justify-content-center">
-
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-          <div class="service-card">
-            <div class="service-header">
-              <div class="service-icon">
-                <i class="bi bi-search"></i>
-              </div>
-              <div class="service-number">01</div>
-            </div>
-            <div class="service-content">
-              <h3><a href="{% url 'service' %}">Property Search</a></h3>
-              <p>Utilize our advanced search tools to find properties that perfectly match your lifestyle, location
-                preferences, and budget across Nigeria's major cities.</p>
-              <ul class="service-features">
-                <li><i class="bi bi-check2"></i> Advanced Search Filters</li>
-                <li><i class="bi bi-check2"></i> 360° Virtual Tours</li>
-                <li><i class="bi bi-check2"></i> Real-time Updates</li>
-              </ul>
-            </div>
-            <div class="service-action">
-              <a href="{% url 'service' %}" class="service-btn">
-                <span>Explore Properties</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div><!-- End Service Item -->
-
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-          <div class="service-card featured">
-            <div class="service-header">
-              <div class="service-icon">
-                <i class="bi bi-graph-up"></i>
-              </div>
-              <div class="service-number">02</div>
-            </div>
-            <div class="service-content">
-              <h3><a href="{% url 'service' %}">Market Analysis</a></h3>
-              <p>Stay ahead of market trends with our data-driven insights. We provide professional valuations and
-                inventory analysis to help you make informed investment decisions.</p>
-              <ul class="service-features">
-                <li><i class="bi bi-check2"></i> Price Trend Reports</li>
-                <li><i class="bi bi-check2"></i> Investment Insights</li>
-                <li><i class="bi bi-check2"></i> Market Forecasting</li>
-              </ul>
-            </div>
-            <div class="service-action">
-              <a href="{% url 'service' %}" class="service-btn">
-                <span>Get Analysis</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div><!-- End Service Item -->
-
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
-          <div class="service-card">
-            <div class="service-header">
-              <div class="service-icon">
-                <i class="bi bi-key"></i>
-              </div>
-              <div class="service-number">03</div>
-            </div>
-            <div class="service-content">
-              <h3><a href="{% url 'service' %}">Property Management</a></h3>
-              <p>Maximize your property's value with our end-to-end management services, including tenant vetting,
-                maintenance, and seamless rent collection processes.</p>
-              <ul class="service-features">
-                <li><i class="bi bi-check2"></i> Tenant Screening</li>
-                <li><i class="bi bi-check2"></i> Rental Collection</li>
-                <li><i class="bi bi-check2"></i> Maintenance Services</li>
-              </ul>
-            </div>
-            <div class="service-action">
-              <a href="{% url 'service' %}" class="service-btn">
-                <span>Manage Now</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div><!-- End Service Item -->
-
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="500">
-          <div class="service-card">
-            <div class="service-header">
-              <div class="service-icon">
-                <i class="bi bi-shield-check"></i>
-              </div>
-              <div class="service-number">04</div>
-            </div>
-            <div class="service-content">
-              <h3><a href="{% url 'service' %}">Legal Support</a></h3>
-              <p>Navigate the complexities of real estate documentation with our legal experts, ensuring all your
-                transactions are secure, transparent, and fully compliant.</p>
-              <ul class="service-features">
-                <li><i class="bi bi-check2"></i> Contract Review</li>
-                <li><i class="bi bi-check2"></i> Title Verification</li>
-                <li><i class="bi bi-check2"></i> Legal Documentation</li>
-              </ul>
-            </div>
-            <div class="service-action">
-              <a href="{% url 'service' %}" class="service-btn" aria-label="Learn more about Legal Support">
-                <span>Learn More</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div><!-- End Service Item -->
-
-      </div>
-
-      <div class="text-center" data-aos="fade-up" data-aos-delay="600">
-        <a href="services.html" class="btn-all-services">
-          <span>Discover All Our Services</span>
-          <i class="bi bi-arrow-up-right"></i>
-        </a>
-      </div>
-
-    </div>
-
-  </section><!-- /Featured Services Section -->
+ 
   {% load humanize %}
 
   <section id="pricing-packages" class="featured-services section">
@@ -790,168 +589,82 @@
 
   </section><!-- /Featured Agents Section -->
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="testimonials section light-background">
+  <!-- Partners Section -->
+  <section id="partners" class="partners section">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>What Our Clients Say</h2>
-      <p>Hear from the families and investors who have found their perfect properties through Nestova.</p>
+      <h2>Our Trusted Partners</h2>
+      <p>Collaborating with industry leaders to deliver exceptional real estate services and solutions.</p>
     </div><!-- End Section Title -->
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-      <div class="testimonials-slider swiper init-swiper">
-        <script type="application/json" class="swiper-config">
-            {
-              "slidesPerView": 1,
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "navigation": {
-                "nextEl": ".swiper-button-next",
-                "prevEl": ".swiper-button-prev"
-              }
-            }
-          </script>
+      <div class="row g-4">
 
-        <div class="swiper-wrapper">
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h2>A Seamless Relocation Experience</h2>
-                  <p>
-                    Relocating to Lagos was a daunting prospect until I found Nestova. Their team provided not just
-                    listings, but a comprehensive overview of the neighborhoods that suited my lifestyle.
-                  </p>
-                  <p>
-                    The transparency in pricing and the verification of every property gave me the peace of mind I
-                    needed. I found a beautiful apartment in Ikoyi that exceeded all my expectations. Highly
-                    recommended!
-                  </p>
-                  <div class="profile d-flex align-items-center">
-                    <img src="{% static 'assets/img/person/person-m-7.webp' %}" class="profile-img" alt="">
-                    <div class="profile-info">
-                      <h3>Saul Goodman</h3>
-                      <span>Client</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 d-none d-lg-block">
-                  <div class="featured-img-wrapper">
-                    <img src="{% static 'assets/img/person/person-m-7.webp' %}" class="featured-img" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Testimonial Item -->
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h2>Expert Guidance for First-Time Buyers</h2>
-                  <p>
-                    As a first-time homebuyer in Abuja, I was overwhelmed by the options and paperwork. Nestova's agents
-                    walked me through every step, from initial search to final closing.
-                  </p>
-                  <p>
-                    Their dedication to finding a home within my budget without compromising on quality was truly
-                    impressive. The virtual tour feature saved me so much time during the initial screening process.
-                  </p>
-                  <div class="profile d-flex align-items-center">
-                    <img src="{% static 'assets/img/person/person-f-8.webp' %}" class="profile-img" alt="">
-                    <div class="profile-info">
-                      <h3>Sara Wilsson</h3>
-                      <span>Designer</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 d-none d-lg-block">
-                  <div class="featured-img-wrapper">
-                    <img src="{% static 'assets/img/person/person-f-8.webp' %}" class="featured-img" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Testimonial Item -->
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h2>Strategic Investment Opportunities</h2>
-                  <p>
-                    I've worked with several real estate platforms, but Nestova's market analysis is unparalleled. They
-                    helped me identify high-yield rental properties in emerging areas of Port Harcourt.
-                  </p>
-                  <p>
-                    The professionalism of their management services ensures my investments are well-maintained and
-                    profitable. It's a platform built for serious investors.
-                  </p>
-                  <div class="profile d-flex align-items-center">
-                    <img src="{% static 'assets/img/person/person-m-9.webp' %}" class="profile-img" alt="">
-                    <div class="profile-info">
-                      <h3>Matt Brandon</h3>
-                      <span>Freelancer</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 d-none d-lg-block">
-                  <div class="featured-img-wrapper">
-                    <img src="{% static 'assets/img/person/person-m-9.webp' %}" class="featured-img" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Testimonial Item -->
-
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h2>Exceptional Property Management</h2>
-                  <p>
-                    Managing multiple properties used to be a headache. Since migrating my portfolio to Nestova,
-                    everything from tenant vetting to maintenance is handled with absolute professionalism.
-                  </p>
-                  <p>
-                    The automated reporting and seamless payment systems have transformed how I manage my real estate
-                    assets. A truly world-class service.
-                  </p>
-                  <div class="profile d-flex align-items-center">
-                    <img src="{% static 'assets/img/person/person-f-10.webp' %}" class="profile-img" alt="">
-                    <div class="profile-info">
-                      <h3>Jena Karlis</h3>
-                      <span>Store Owner</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 d-none d-lg-block">
-                  <div class="featured-img-wrapper">
-                    <img src="{% static 'assets/img/person/person-f-10.webp' %}" class="featured-img" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Testimonial Item -->
-
+        <!-- Partner Card 1 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 1" class="img-fluid">
+          </div>
         </div>
 
-        <div class="swiper-navigation w-100 d-flex align-items-center justify-content-center">
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
+        <!-- Partner Card 2 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 2" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 3 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 3" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 4 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 4" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 5 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 5" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 6 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 6" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 7 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 7" class="img-fluid">
+          </div>
+        </div>
+
+        <!-- Partner Card 8 -->
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="partner-card">
+            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 8" class="img-fluid">
+          </div>
         </div>
 
       </div>
 
     </div>
+  </section><!-- /Partners Section -->
 
-  </section><!-- /Testimonials Section -->
+  <!-- Testimonials Section -->
+ 
 
   <!-- Why Us Section -->
   <section id="why-us" class="why-us section">
@@ -1252,6 +965,134 @@
         console.error('Error fetching cities:', error);
         citySelect.innerHTML = '<option value="">Error loading cities</option>';
       });
+  });
+</script>
+
+<style>
+  /* Partners Section Styling */
+  .partners.section {
+    background: #f8f9fa;
+    padding: 80px 0;
+  }
+
+  .partner-item {
+    padding: 10px;
+  }
+
+  .partner-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+  }
+
+  .partner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .partner-card img {
+    max-width: 100%;
+    height: auto;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .partner-card:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  /* Owl Carousel Custom Styling */
+  .partners-carousel .owl-nav {
+    margin-top: 30px;
+  }
+
+  .partners-carousel .owl-nav button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #ffffff !important;
+    color: #333 !important;
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin: 0 5px;
+  }
+
+  .partners-carousel .owl-nav button:hover {
+    background: #007bff !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  }
+
+  .partners-carousel .owl-dots {
+    margin-top: 25px;
+  }
+
+  .partners-carousel .owl-dot {
+    display: inline-block;
+    margin: 0 5px;
+  }
+
+  .partners-carousel .owl-dot span {
+    width: 12px;
+    height: 12px;
+    background: #d1d1d1;
+    border-radius: 50%;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .partners-carousel .owl-dot.active span,
+  .partners-carousel .owl-dot:hover span {
+    background: #007bff;
+    transform: scale(1.2);
+  }
+</style>
+
+<script>
+  // Initialize Owl Carousel for Partners Section
+  document.addEventListener('DOMContentLoaded', function () {
+    // Wait for jQuery and Owl Carousel to load
+    function initPartnersCarousel() {
+      if (typeof jQuery !== 'undefined' && typeof jQuery.fn.owlCarousel !== 'undefined') {
+        jQuery('.partners-carousel').owlCarousel({
+          loop: true,
+          margin: 20,
+          nav: true,
+          dots: true,
+          autoplay: true,
+          autoplayTimeout: 3000,
+          autoplayHoverPause: true,
+          responsive: {
+            0: {
+              items: 1
+            },
+            576: {
+              items: 2
+            },
+            768: {
+              items: 3
+            },
+            992: {
+              items: 4
+            }
+          }
+        });
+      } else {
+        // Retry after a short delay if libraries aren't loaded yet
+        setTimeout(initPartnersCarousel, 100);
+      }
+    }
+
+    initPartnersCarousel();
   });
 </script>
 
