@@ -83,6 +83,239 @@
     border-radius: 8px;
   }
 
+  /* Global Variables & World Class Design System */
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #e67e22;
+    --accent-color: #2980b9;
+    --text-dark: #2c3e50;
+    --text-light: #ecf0f1;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --card-hover-transform: translateY(-10px) scale(1.02);
+    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    background-color: #f8f9fa;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  /* Glassmorphism Utility */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+  }
+
+  /* 3D Tilt Effect Base */
+  .tilt-card {
+    transition: transform 0.1s;
+    transform-style: preserve-3d;
+  }
+
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Property Cards 3D Upgrade */
+  .property-item {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+  }
+
+  .property-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+    z-index: 2;
+  }
+
+  .property-item .card-img-top {
+    border-radius: 20px 20px 0 0;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .property-item:hover .card-img-top {
+    transform: scale(1.1);
+  }
+
+  .property-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+
+  /* Badge Variants */
+  .badge-premium {
+    background: linear-gradient(135deg, #FFD700, #FDB931);
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .badge-featured {
+    background: linear-gradient(135deg, #2980b9, #2c3e50);
+    color: #fff;
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Hero Section Modernization */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Why Us Video Container 3D */
+  .main-image-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .floating-video {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transform: rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.5s ease;
+  }
+
+  .main-image-wrapper:hover .floating-video {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+  }
+
+  /* Testimonials Glass Cards */
+  .testimonial-item {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    margin: 20px;
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .testimonial-item:hover {
+    transform: translateY(-5px);
+  }
+
+  .testimonial-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .testimonial-quote-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+    color: rgba(44, 62, 80, 0.1);
+  }
+
+  /* Scroll Down Animation */
+  .scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: #fff;
+    font-size: 24px;
+    opacity: 0.8;
+  }
+
+  @keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0) translateX(-50%);
+    }
+
+    40% {
+      transform: translateY(-10px) translateX(-50%);
+    }
+
+    60% {
+      transform: translateY(-5px) translateX(-50%);
+    }
+  }
+
+
   .clients .swiper-slide img {
     opacity: 0.5;
     transition: 0.3s;
@@ -631,153 +864,153 @@
   </div>
 
 
-<section id="why-us" class="why-us section">
+  <section id="why-us" class="why-us section">
 
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Why Nestova?</h2>
-    <p>Discover why we are the preferred choice for discerning property seekers and investors across Nigeria.</p>
-  </div>
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Why Nestova?</h2>
+      <p>Discover why we are the preferred choice for discerning property seekers and investors across Nigeria.</p>
+    </div>
 
-  <div class="container" data-aos="fade-up" data-aos-delay="100">
-    <div class="row align-items-center gy-5">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row align-items-center gy-5">
 
-      <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
-        <div class="image-showcase">
-          <div class="main-image-wrapper">
-            <div class="ratio ratio-4x3 main-image" style="position: relative;">
-              <iframe
-                id="yt-player"
-                src="https://www.youtube.com/embed/35cEKa_3hQo?autoplay=1&mute=1&loop=1&playlist=35cEKa_3hQo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
-                title="Nestova Real Estate" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" loading="lazy"
-                style="pointer-events: none; object-fit: cover; width: 100%; height: 100%; border-radius: 16px;">
-              </iframe>
+        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+          <div class="image-showcase">
+            <div class="main-image-wrapper">
+              <div class="ratio ratio-4x3 main-image" style="position: relative;">
+                
+                <iframe id="yt-player" class="floating-video"
+                  src="https://www.youtube.com/embed/35cEKa_3hQo?autoplay=1&mute=1&loop=1&playlist=35cEKa_3hQo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
+                  title="Nestova Real Estate" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin" loading="lazy"
+                  style="pointer-events: none; object-fit: cover; width: 100%; height: 100%; border-radius: 16px;">
+                </iframe>
 
-              <!-- Unmute Button -->
-              <button id="unmute-btn" onclick="toggleMute()" style="
+                <!-- Unmute Button -->
+                <button id="unmute-btn" onclick="toggleMute()" style="
                 position: absolute; bottom: 15px; right: 15px;
                 background: rgba(0,0,0,0.6); color: white;
                 border: none; border-radius: 50%;
                 width: 40px; height: 40px;
                 cursor: pointer; font-size: 16px;
                 z-index: 10; pointer-events: all;">
-                🔇
-              </button>
+                  🔇
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div class="floating-stats">
-            <div class="stat-badge">
-              <span class="stat-number">15+</span>
-              <span class="stat-text">Years Excellence</span>
+            <div class="floating-stats">
+              <div class="stat-badge">
+                <span class="stat-number">15+</span>
+                <span class="stat-text">Years Excellence</span>
+              </div>
+              <div class="stat-badge">
+                <span class="stat-number">3.2K</span>
+                <span class="stat-text">Happy Clients</span>
+              </div>
             </div>
-            <div class="stat-badge">
-              <span class="stat-number">3.2K</span>
-              <span class="stat-text">Happy Clients</span>
-            </div>
-          </div>
 
-          <div class="experience-card">
-            <div class="card-icon">
-              <i class="bi bi-gem"></i>
-            </div>
-            <div class="card-content">
-              <h5>Premier Service</h5>
-              <p>Luxury real estate expertise since 2009</p>
+            <div class="experience-card">
+              <div class="card-icon">
+                <i class="bi bi-gem"></i>
+              </div>
+              <div class="card-content">
+                <h5>Premier Service</h5>
+                <p>Luxury real estate expertise since 2009</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
-        <div class="content-wrapper">
-          <div class="section-badge">
-            <i class="bi bi-star-fill me-2"></i>
-            Why Nestova?
-          </div>
+        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+          <div class="content-wrapper">
+            <div class="section-badge">
+              <i class="bi bi-star-fill me-2"></i>
+              Why Nestova?
+            </div>
 
-          <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
-          <p class="lead-text">Nestova combines deep local market knowledge with international service standards. We
-            provide a secure and transparent marketplace for all your real estate needs.</p>
+            <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
+            <p class="lead-text">Nestova combines deep local market knowledge with international service standards. We
+              provide a secure and transparent marketplace for all your real estate needs.</p>
 
-          <div class="benefits-grid">
-            <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
-              <div class="benefit-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="benefit-content">
-                <h4>Prime Locations</h4>
-                <p>Exclusive access to the most sought-after neighborhoods and emerging markets.</p>
+            <div class="benefits-grid">
+              <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="benefit-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                <div class="benefit-content">
+                  <h4>Prime Locations</h4>
+                  <p>Exclusive access to the most sought-after neighborhoods and emerging markets.</p>
+                </div>
+              </div>
+
+              <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
+                <div class="benefit-icon"><i class="bi bi-shield-fill-check"></i></div>
+                <div class="benefit-content">
+                  <h4>Guaranteed Results</h4>
+                  <p>Our proven track record ensures successful transactions and satisfied clients.</p>
+                </div>
+              </div>
+
+              <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="benefit-icon"><i class="bi bi-clock-fill"></i></div>
+                <div class="benefit-content">
+                  <h4>Fast Processing</h4>
+                  <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
+                </div>
+              </div>
+
+              <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
+                <div class="benefit-icon"><i class="bi bi-people-fill"></i></div>
+                <div class="benefit-content">
+                  <h4>Expert Team</h4>
+                  <p>Certified professionals with deep market knowledge and client dedication.</p>
+                </div>
               </div>
             </div>
 
-            <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
-              <div class="benefit-icon"><i class="bi bi-shield-fill-check"></i></div>
-              <div class="benefit-content">
-                <h4>Guaranteed Results</h4>
-                <p>Our proven track record ensures successful transactions and satisfied clients.</p>
-              </div>
+            <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
+              <a href="{% url 'properties' %}" class="btn btn-primary">Explore Properties</a>
+              <a href="{% url 'contact' %}" class="btn btn-outline">Schedule Consultation</a>
             </div>
-
-            <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
-              <div class="benefit-icon"><i class="bi bi-clock-fill"></i></div>
-              <div class="benefit-content">
-                <h4>Fast Processing</h4>
-                <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
-              </div>
-            </div>
-
-            <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
-              <div class="benefit-icon"><i class="bi bi-people-fill"></i></div>
-              <div class="benefit-content">
-                <h4>Expert Team</h4>
-                <p>Certified professionals with deep market knowledge and client dedication.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
-            <a href="{% url 'properties' %}" class="btn btn-primary">Explore Properties</a>
-            <a href="{% url 'contact' %}" class="btn btn-outline">Schedule Consultation</a>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
 
-</section><!-- /Why Us Section -->
+  </section><!-- /Why Us Section -->
 
-<script>
-  let muted = true;
+  <script>
+    let muted = true;
 
-  function toggleMute() {
-    const iframe = document.getElementById('yt-player');
-    const btn = document.getElementById('unmute-btn');
-    if (muted) {
-      iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-      btn.innerText = '🔊';
-    } else {
-      iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-      btn.innerText = '🔇';
-    }
-    muted = !muted;
-  }
-
-  // Pause/play on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    function toggleMute() {
       const iframe = document.getElementById('yt-player');
-      if (entry.isIntersecting) {
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      const btn = document.getElementById('unmute-btn');
+      if (muted) {
+        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+        btn.innerText = '🔊';
       } else {
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        btn.innerText = '🔇';
       }
-    });
-  }, { threshold: 0.3 });
+      muted = !muted;
+    }
 
-  observer.observe(document.getElementById('yt-player'));
-</script>
+    // Pause/play on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const iframe = document.getElementById('yt-player');
+        if (entry.isIntersecting) {
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        } else {
+          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.getElementById('yt-player'));
+  </script>
   <!-- Home About Section -->
   <section id="home-about" class="home-about section">
 
@@ -788,17 +1021,17 @@
         <div class="col-lg-6 order-lg-2" data-aos="fade-left" data-aos-delay="200">
           <div class="image-section">
             <div class="main-image-wrapper">
-              <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Premium Property"
+              <img src="{% static 'assets/img/real-estate/real estate-1.jpg' %}" alt="Premium Property"
                 class="img-fluid main-image">
 
             </div>
             <div class="secondary-images">
               <div class="small-image">
-                <img src="{% static 'assets/img/real-estate/property-interior-8.webp' %}" alt="Interior Design"
+                <img src="{% static 'assets/img/real-estate/real-estate-2.jpeg' %}" alt="Interior Design"
                   class="img-fluid">
               </div>
               <div class="small-image">
-                <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="Expert Agent" class="img-fluid">
+                <img src="{% static 'assets/img/real-estate/real-estate-3.jpg' %}" alt="Expert Agent" class="img-fluid">
               </div>
             </div>
           </div>
@@ -892,11 +1125,13 @@
             <a href="{{ main_property.get_absolute_url }}" class="image-link">
               <img
                 src="{% if main_property.featured_image %}{{ main_property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-6.webp' %}{% endif %}"
-                alt="{{ main_property.title }}" class="img-fluid">
+                alt="{{ main_property.title }}" class="img-fluid card-img-top">
             </a>
             <div class="quick-specs">
-              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize }}</span>
-              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize }}</span>
+              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize
+                }}</span>
+              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize
+                }}</span>
               <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq
                 ft</span>
             </div>
@@ -905,7 +1140,8 @@
             <div class="top">
               <div>
                 <h3><a href="{{ main_property.get_absolute_url }}">{{ main_property.title }}</a></h3>
-                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{ main_property.state.name }}</div>
+                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{
+                  main_property.state.name }}</div>
               </div>
               <div class="price">{{ main_property.formatted_price }}</div>
             </div>
@@ -915,7 +1151,8 @@
               <a href="{{ main_property.get_absolute_url }}" class="btn-soft">More Photos</a>
               <div class="meta">
                 <span class="status {{ main_property.status.name }}">{{ main_property.status }}</span>
-                <span class="listed">Listed {{ main_property.get_days_listed }} day{{ main_property.get_days_listed|pluralize }} ago</span>
+                <span class="listed">Listed {{ main_property.get_days_listed }} day{{
+                  main_property.get_days_listed|pluralize }} ago</span>
               </div>
             </div>
           </div>
@@ -929,7 +1166,7 @@
             <a href="{{ property.get_absolute_url }}" class="thumb">
               <img
                 src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-interior-2.webp' %}{% endif %}"
-                alt="{{ property.title }}" class="img-fluid" loading="lazy">
+                alt="{{ property.title }}" class="img-fluid card-img-top tilt-card" loading="lazy">
               {% if property.is_hot %}
               <span class="label hot"><i class="bi bi-lightning-charge-fill"></i> Hot</span>
               {% elif property.is_new %}
@@ -968,7 +1205,7 @@
             <figure class="stack-media">
               <img
                 src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-8.webp' %}{% endif %}"
-                alt="{{ property.title }}" class="img-fluid" loading="lazy">
+                alt="{{ property.title }}" class="img-fluid card-img-top tilt-card" loading="lazy">
               <figcaption>
                 {% if property.is_exclusive %}
                 <span class="chip exclusive">Exclusive</span>
@@ -1227,17 +1464,17 @@
           <div class="swiper-slide"><img src="" class="img-fluid" alt=""></div>
           <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/fidelity.webp' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/billion.jpg' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/lagos.jpg' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/adozil.jpg' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/zental.jpg' %}" class="img-fluid"
               alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/harmony.jpg' %}" class="img-fluid"
               alt=""></div>
         </div>
         <div class="swiper-pagination"></div>
@@ -1260,56 +1497,56 @@
 
         <!-- Partner Card 1 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/real-estate/cubana.jpg' %}" alt="Partner 1" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 2 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 2" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 3 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 3" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 4 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 4" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 5 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 5" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 6 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 6" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 7 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 7" class="img-fluid">
           </div>
         </div>
 
         <!-- Partner Card 8 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="partner-card">
+          <div class="partner-card glass-card testimonial-item">
             <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 8" class="img-fluid">
           </div>
         </div>
