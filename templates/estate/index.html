@@ -18,173 +18,766 @@
 
 {% block content %}
 
+<style>
+  /* Rounded Prev/Next buttons */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+  }
 
+  /* Carousel indicators - make them circular */
+  .carousel-indicators button {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    border: 2px solid black !important;
+    background-color: transparent;
+    opacity: 0.5;
+  }
+
+  .carousel-indicators button.active {
+    background-color: black;
+    opacity: 1;
+  }
+
+  #partners .owl-dots {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #partners .owl-dot span {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: 2px solid #000 !important;
+    margin: 4px !important;
+    display: block;
+    transition: background 0.3s;
+  }
+
+  #partners .owl-dot.active span {
+    background: #000 !important;
+  }
+
+  /* Partner card styling */
+  #partners .partner-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    padding: 15px;
+    background: #fff;
+  }
+
+  #partners .partner-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .clients .swiper-slide img {
+    opacity: 0.5;
+    transition: 0.3s;
+  }
+
+  .clients .swiper-slide img:hover {
+    filter: none;
+    opacity: 1;
+  }
+
+  .clients .swiper-wrapper {
+    height: auto;
+  }
+
+  .clients .swiper-pagination {
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .clients .swiper-pagination .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    opacity: 1;
+    background-color: color-mix(in srgb, var(--default-color), transparent 80%);
+  }
+
+  .clients .swiper-pagination .swiper-pagination-bullet-active {
+    background-color: var(--accent-color);
+  }
+</style>
+
+<style>
+  /* Premium Hero Carousel Styling */
+  .premium-hero-carousel {
+    margin-top: 115px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .premium-hero-carousel .carousel-inner {
+    border-radius: 16px;
+  }
+
+  .premium-hero-carousel .carousel-item {
+    height: 600px;
+    position: relative;
+  }
+
+  .premium-hero-carousel .carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: 1;
+  }
+
+  .premium-hero-carousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .premium-hero-carousel .carousel-caption {
+    bottom: 50px;
+    left: 50px;
+    right: 50px;
+    text-align: left;
+    z-index: 2;
+    padding: 0;
+  }
+
+  .premium-hero-carousel .property-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    backdrop-filter: blur(10px);
+  }
+
+  .premium-hero-carousel .property-badge i {
+    color: #ffc107;
+    font-size: 16px;
+  }
+
+  .premium-hero-carousel .carousel-caption h2 {
+    color: #fff;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+  }
+
+  .premium-hero-carousel .property-features {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .premium-hero-carousel .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .premium-hero-carousel .feature-item i {
+    font-size: 20px;
+    color: #ffc107;
+  }
+
+  .premium-hero-carousel .property-location {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .premium-hero-carousel .property-location i {
+    color: #ffc107;
+  }
+
+  .premium-hero-carousel .carousel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #000;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .premium-hero-carousel .carousel-cta:hover {
+    background: #ffc107;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .premium-hero-carousel .carousel-cta i {
+    font-size: 18px;
+  }
+
+  /* Navigation Controls */
+  .premium-hero-carousel .carousel-control-prev,
+  .premium-hero-carousel .carousel-control-next {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+
+  .premium-hero-carousel .carousel-control-prev {
+    left: 30px;
+  }
+
+  .premium-hero-carousel .carousel-control-next {
+    right: 30px;
+  }
+
+  .premium-hero-carousel .carousel-control-prev:hover,
+  .premium-hero-carousel .carousel-control-next:hover {
+    opacity: 1;
+    background: #ffc107;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .premium-hero-carousel .carousel-control-prev-icon,
+  .premium-hero-carousel .carousel-control-next-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 100%;
+    filter: invert(1);
+  }
+
+  /* Indicators */
+  .premium-hero-carousel .carousel-indicators {
+    bottom: 20px;
+    margin-bottom: 0;
+  }
+
+  .premium-hero-carousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: transparent;
+    opacity: 0.6;
+    margin: 0 6px;
+    transition: all 0.3s ease;
+  }
+
+  .premium-hero-carousel .carousel-indicators button.active {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1199px) {
+    .premium-hero-carousel .carousel-item {
+      height: 500px;
+    }
+
+    .premium-hero-carousel .carousel-caption h2 {
+      font-size: 36px;
+    }
+
+    .premium-hero-carousel .carousel-caption {
+      bottom: 40px;
+      left: 40px;
+      right: 40px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .premium-hero-carousel .carousel-item {
+      height: 450px;
+    }
+
+    .premium-hero-carousel .carousel-caption h2 {
+      font-size: 32px;
+    }
+
+    .premium-hero-carousel .property-features {
+      gap: 15px;
+    }
+
+    .premium-hero-carousel .feature-item {
+      font-size: 14px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev,
+    .premium-hero-carousel .carousel-control-next {
+      width: 50px;
+      height: 50px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev {
+      left: 20px;
+    }
+
+    .premium-hero-carousel .carousel-control-next {
+      right: 20px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .premium-hero-carousel {
+      margin-top: 100px;
+    }
+
+    .premium-hero-carousel .carousel-item {
+      height: 400px;
+    }
+
+    .premium-hero-carousel .carousel-caption {
+      bottom: 30px;
+      left: 20px;
+      right: 20px;
+    }
+
+    .premium-hero-carousel .carousel-caption h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .premium-hero-carousel .property-badge {
+      font-size: 12px;
+      padding: 6px 12px;
+      margin-bottom: 10px;
+    }
+
+    .premium-hero-carousel .property-features {
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .premium-hero-carousel .feature-item {
+      font-size: 13px;
+    }
+
+    .premium-hero-carousel .feature-item i {
+      font-size: 16px;
+    }
+
+    .premium-hero-carousel .property-location {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .premium-hero-carousel .carousel-cta {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev,
+    .premium-hero-carousel .carousel-control-next {
+      width: 45px;
+      height: 45px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev {
+      left: 15px;
+    }
+
+    .premium-hero-carousel .carousel-control-next {
+      right: 15px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .premium-hero-carousel .carousel-item {
+      height: 350px;
+    }
+
+    .premium-hero-carousel .carousel-caption h2 {
+      font-size: 22px;
+    }
+
+    .premium-hero-carousel .property-features {
+      display: none;
+    }
+
+    .premium-hero-carousel .property-location {
+      font-size: 13px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev,
+    .premium-hero-carousel .carousel-control-next {
+      width: 40px;
+      height: 40px;
+    }
+
+    .premium-hero-carousel .carousel-control-prev {
+      left: 10px;
+    }
+
+    .premium-hero-carousel .carousel-control-next {
+      right: 10px;
+    }
+  }
+</style>
 
 <main class="main">
+  <div class="container premium-hero-carousel">
+    <div id="premiumCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+      {% if premium_properties %}
+      <div class="carousel-indicators">
+        {% for property in premium_properties %}
+        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %}
+          aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+      </div>
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero section">
+      <div class="carousel-inner">
+        {% for property in premium_properties %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img
+            src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-7.webp' %}{% endif %}"
+            class="d-block w-100" alt="{{ property.title }}">
+          <div class="carousel-caption">
+            <div class="property-badge">
+              <i class="bi bi-gem"></i>
+              <span>Premium Listing</span>
+            </div>
+            <h2>{{ property.title|truncatewords:8 }}</h2>
+            <div class="property-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>{{ property.city.name }}, {{ property.state.name }}</span>
+            </div>
+            <div class="property-features">
+              <div class="feature-item">
+                <i class="bi bi-door-open"></i>
+                <span>{{ property.bedrooms }} Bedroom{{ property.bedrooms|pluralize }}</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-droplet"></i>
+                <span>{{ property.bathrooms }} Bathroom{{ property.bathrooms|pluralize }}</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-aspect-ratio"></i>
+                <span>{{ property.square_feet|floatformat:0 }} sq ft</span>
+              </div>
+            </div>
+            <a href="{{ property.get_absolute_url }}" class="carousel-cta">
+              <span>View Details</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <!-- Fallback: Static content if no premium properties exist -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="carousel-inner">
+        <!-- Slide 1: Luxury Exterior Property -->
+        <div class="carousel-item active">
+          <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" class="d-block w-100"
+            alt="Luxury Modern Estate">
+          <div class="carousel-caption">
+            <div class="property-badge">
+              <i class="bi bi-gem"></i>
+              <span>Premium Listing</span>
+            </div>
+            <h2>Luxury Modern Estate with Pool</h2>
+            <div class="property-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Lekki Phase 1, Lagos</span>
+            </div>
+            <div class="property-features">
+              <div class="feature-item">
+                <i class="bi bi-door-open"></i>
+                <span>5 Bedrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-droplet"></i>
+                <span>6 Bathrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-aspect-ratio"></i>
+                <span>4,500 sq ft</span>
+              </div>
+            </div>
+            <a href="{% url 'properties' %}" class="carousel-cta">
+              <span>Browse Properties</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
 
-      <div class="hero-content">
-        <div class="row align-items-center">
-
-          <div class="col-lg-6 hero-text" data-aos="fade-right" data-aos-delay="200">
-            <div class="hero-badge">
+        <!-- Slide 2: Premium Exterior -->
+        <div class="carousel-item">
+          <img src="{% static 'assets/img/real-estate/property-exterior-8.webp' %}" class="d-block w-100"
+            alt="Contemporary Villa">
+          <div class="carousel-caption">
+            <div class="property-badge">
               <i class="bi bi-star-fill"></i>
-              <span>Premium Properties</span>
+              <span>Featured Property</span>
             </div>
-            <h1>Discover Your Perfect Home in the Heart of the City</h1>
-            <p>Experience seamless property search with Nigeria's most trusted real estate platform. From modern
-              apartments to luxury estates, find your dream property with verified listings from certified agents across
-              major cities.</p>
-
-            <div class="search-form" data-aos="fade-up" data-aos-delay="300">
-              <form action="{% url 'search_properties' %}" method="get">
-                <div class="row g-3">
-
-                  <!-- State Selection -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="state-type" name="state_type" required>
-                        <option value="">Select State</option>
-                        {% for state in states %}
-                        <option value="{{ state.id }}">{{ state.name }}</option>
-                        {% endfor %}
-                      </select>
-                      <label for="state-type">State</label>
-                    </div>
-                  </div>
-
-                  <!-- City Selection (Dynamically populated) -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="cities-type" name="city_type" required disabled>
-                        <option value="">Select State First</option>
-                      </select>
-                      <label for="cities-type">City</label>
-                    </div>
-                  </div>
-
-                  <!-- Property Type -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="property-type" name="property_type">
-                        <option value="">Select Type</option>
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="condo">Condo</option>
-                        <option value="townhouse">Townhouse</option>
-                        <option value="land">Land</option>
-                        <option value="duplex">Duplex</option>
-                        <option value="bungalow">Bungalow</option>
-                      </select>
-                      <label for="property-type">Property Type</label>
-                    </div>
-                  </div>
-
-                  <!-- Price Range -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="price-range" name="price_range">
-                        <option value="">Price Range</option>
-                        <option value="0-5000000">Under ₦5M</option>
-                        <option value="5000000-10000000">₦5M - ₦10M</option>
-                        <option value="10000000-20000000">₦10M - ₦20M</option>
-                        <option value="20000000-50000000">₦20M - ₦50M</option>
-                        <option value="50000000+">Above ₦50M</option>
-                      </select>
-                      <label for="price-range">Price Range</label>
-                    </div>
-                  </div>
-
-                  <!-- Bedrooms -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="bedrooms" name="bedrooms">
-                        <option value="">Bedrooms</option>
-                        <option value="1">1 Bedroom</option>
-                        <option value="2">2 Bedrooms</option>
-                        <option value="3">3 Bedrooms</option>
-                        <option value="4">4 Bedrooms</option>
-                        <option value="5+">5+ Bedrooms</option>
-                      </select>
-                      <label for="bedrooms">Bedrooms</label>
-                    </div>
-                  </div>
-
-                  <!-- Bathrooms -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="bathrooms" name="bathrooms">
-                        <option value="">Bathrooms</option>
-                        <option value="1">1 Bathroom</option>
-                        <option value="2">2 Bathrooms</option>
-                        <option value="3">3 Bathrooms</option>
-                        <option value="4+">4+ Bathrooms</option>
-                      </select>
-                      <label for="bathrooms">Bathrooms</label>
-                    </div>
-                  </div>
-
-                  <!-- Search Button -->
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-search w-100">
-                      <i class="bi bi-search"></i>
-                      Search Properties
-                    </button>
-                  </div>
-                </div>
-              </form>
+            <h2>Contemporary Villa with Garden</h2>
+            <div class="property-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Banana Island, Ikoyi</span>
             </div>
-
-
-
-            
-
-          </div><!-- End Hero Text -->
-
-          <div class="col-lg-6 hero-images" data-aos="fade-left" data-aos-delay="400">
-            <div class="image-stack">
-              <div class="main-image">
-                {% if featured_properties %}
-                {% with featured_properties|first as hero_prop %}
-                <img
-                  src="{% if hero_prop.featured_image %}{{ hero_prop.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}"
-                  alt="{{ hero_prop.title }}" class="img-fluid" fetchpriority="high">
-                <div class="property-tag">
-                  <span class="price">{{ hero_prop.formatted_price }}</span>
-                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else
-                    %}Prime{% endif %}</span>
-                </div>
-                {% endwith %}
-                {% else %}
-                <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Luxury Property"
-                  class="img-fluid" fetchpriority="high">
-                <div class="property-tag">
-                  <span class="price">$850,000</span>
-                  <span class="type">Featured</span>
-                </div>
-                {% endif %}
+            <div class="property-features">
+              <div class="feature-item">
+                <i class="bi bi-door-open"></i>
+                <span>4 Bedrooms</span>
               </div>
-
-              <div class="secondary-image">
-                <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}" alt="Property Interior"
-                  class="img-fluid">
+              <div class="feature-item">
+                <i class="bi bi-droplet"></i>
+                <span>5 Bathrooms</span>
               </div>
-
-              
+              <div class="feature-item">
+                <i class="bi bi-aspect-ratio"></i>
+                <span>3,800 sq ft</span>
+              </div>
             </div>
-          </div><!-- End Hero Images -->
+            <a href="{% url 'properties' %}" class="carousel-cta">
+              <span>View All Properties</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
 
+        <!-- Slide 3: Premium Interior -->
+        <div class="carousel-item">
+          <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}" class="d-block w-100"
+            alt="Elegant Interior Design">
+          <div class="carousel-caption">
+            <div class="property-badge">
+              <i class="bi bi-award"></i>
+              <span>Exclusive Interior</span>
+            </div>
+            <h2>Exquisite Interior Finishes</h2>
+            <div class="property-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Victoria Island, Lagos</span>
+            </div>
+            <div class="property-features">
+              <div class="feature-item">
+                <i class="bi bi-door-open"></i>
+                <span>3 Bedrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-droplet"></i>
+                <span>4 Bathrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-aspect-ratio"></i>
+                <span>2,800 sq ft</span>
+              </div>
+            </div>
+            <a href="{% url 'properties' %}" class="carousel-cta">
+              <span>Explore Listings</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#premiumCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#premiumCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+
+<section id="why-us" class="why-us section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Why Nestova?</h2>
+    <p>Discover why we are the preferred choice for discerning property seekers and investors across Nigeria.</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row align-items-center gy-5">
+
+      <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+        <div class="image-showcase">
+          <div class="main-image-wrapper">
+            <div class="ratio ratio-4x3 main-image" style="position: relative;">
+              <iframe
+                id="yt-player"
+                src="https://www.youtube.com/embed/35cEKa_3hQo?autoplay=1&mute=1&loop=1&playlist=35cEKa_3hQo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
+                title="Nestova Real Estate" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" loading="lazy"
+                style="pointer-events: none; object-fit: cover; width: 100%; height: 100%; border-radius: 16px;">
+              </iframe>
+
+              <!-- Unmute Button -->
+              <button id="unmute-btn" onclick="toggleMute()" style="
+                position: absolute; bottom: 15px; right: 15px;
+                background: rgba(0,0,0,0.6); color: white;
+                border: none; border-radius: 50%;
+                width: 40px; height: 40px;
+                cursor: pointer; font-size: 16px;
+                z-index: 10; pointer-events: all;">
+                🔇
+              </button>
+            </div>
+          </div>
+
+          <div class="floating-stats">
+            <div class="stat-badge">
+              <span class="stat-number">15+</span>
+              <span class="stat-text">Years Excellence</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-number">3.2K</span>
+              <span class="stat-text">Happy Clients</span>
+            </div>
+          </div>
+
+          <div class="experience-card">
+            <div class="card-icon">
+              <i class="bi bi-gem"></i>
+            </div>
+            <div class="card-content">
+              <h5>Premier Service</h5>
+              <p>Luxury real estate expertise since 2009</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+        <div class="content-wrapper">
+          <div class="section-badge">
+            <i class="bi bi-star-fill me-2"></i>
+            Why Nestova?
+          </div>
+
+          <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
+          <p class="lead-text">Nestova combines deep local market knowledge with international service standards. We
+            provide a secure and transparent marketplace for all your real estate needs.</p>
+
+          <div class="benefits-grid">
+            <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
+              <div class="benefit-icon"><i class="bi bi-geo-alt-fill"></i></div>
+              <div class="benefit-content">
+                <h4>Prime Locations</h4>
+                <p>Exclusive access to the most sought-after neighborhoods and emerging markets.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
+              <div class="benefit-icon"><i class="bi bi-shield-fill-check"></i></div>
+              <div class="benefit-content">
+                <h4>Guaranteed Results</h4>
+                <p>Our proven track record ensures successful transactions and satisfied clients.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
+              <div class="benefit-icon"><i class="bi bi-clock-fill"></i></div>
+              <div class="benefit-content">
+                <h4>Fast Processing</h4>
+                <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
+              <div class="benefit-icon"><i class="bi bi-people-fill"></i></div>
+              <div class="benefit-content">
+                <h4>Expert Team</h4>
+                <p>Certified professionals with deep market knowledge and client dedication.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
+            <a href="{% url 'properties' %}" class="btn btn-primary">Explore Properties</a>
+            <a href="{% url 'contact' %}" class="btn btn-outline">Schedule Consultation</a>
+          </div>
         </div>
       </div>
 
     </div>
+  </div>
 
-  </section><!-- /Hero Section -->
+</section><!-- /Why Us Section -->
 
+<script>
+  let muted = true;
+
+  function toggleMute() {
+    const iframe = document.getElementById('yt-player');
+    const btn = document.getElementById('unmute-btn');
+    if (muted) {
+      iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+      btn.innerText = '🔊';
+    } else {
+      iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+      btn.innerText = '🔇';
+    }
+    muted = !muted;
+  }
+
+  // Pause/play on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const iframe = document.getElementById('yt-player');
+      if (entry.isIntersecting) {
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      } else {
+        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(document.getElementById('yt-player'));
+</script>
   <!-- Home About Section -->
   <section id="home-about" class="home-about section">
 
@@ -197,7 +790,7 @@
             <div class="main-image-wrapper">
               <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" alt="Premium Property"
                 class="img-fluid main-image">
-              
+
             </div>
             <div class="secondary-images">
               <div class="small-image">
@@ -225,7 +818,7 @@
               verified listings in Nigeria's prime locations.
             </p>
 
-           
+
 
             <div class="features-list">
               <div class="feature-item">
@@ -252,7 +845,7 @@
                 <div class="contact-text">
                   <span>Need assistance?</span>
                   <a href="tel:+2348030824223">+2348030824223</a>
-                  
+
                 </div>
               </div>
             </div>
@@ -422,7 +1015,7 @@
   </section><!-- /Featured Properties Section -->
 
   <!-- Featured Services Section -->
- 
+
   {% load humanize %}
 
   <section id="pricing-packages" class="featured-services section">
@@ -590,11 +1183,78 @@
   </section><!-- /Featured Agents Section -->
 
   <!-- Partners Section -->
-  <section id="partners" class="partners section">
+  <section id="clients" class="clients section light-background">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
       <h2>Our Trusted Partners</h2>
+      <p>Collaborating with industry leaders to deliver exceptional real estate services and solutions.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="swiper init-swiper">
+        <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 2,
+                  "spaceBetween": 40
+                },
+                "480": {
+                  "slidesPerView": 3,
+                  "spaceBetween": 60
+                },
+                "640": {
+                  "slidesPerView": 4,
+                  "spaceBetween": 80
+                },
+                "992": {
+                  "slidesPerView": 6,
+                  "spaceBetween": 120
+                }
+              }
+            }
+          </script>
+        <div class="swiper-wrapper align-items-center">
+          <div class="swiper-slide"><img src="" class="img-fluid" alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
+              alt=""></div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+    </div>
+
+  </section><!-- /Clients Section -->
+  <section id="partners" class="partners section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>License</h2>
       <p>Collaborating with industry leaders to deliver exceptional real estate services and solutions.</p>
     </div><!-- End Section Title -->
 
@@ -605,7 +1265,7 @@
         <!-- Partner Card 1 -->
         <div class="col-lg-3 col-md-4 col-sm-6">
           <div class="partner-card">
-            <img src="{% static 'assets/img/person/person-m-7.webp' %}" alt="Partner 1" class="img-fluid">
+            <img src="{% static 'assets/img/real-estate/cubana.jpg' %}" alt="Partner 1" class="img-fluid">
           </div>
         </div>
 
@@ -664,144 +1324,169 @@
   </section><!-- /Partners Section -->
 
   <!-- Testimonials Section -->
- 
 
-  <!-- Why Us Section -->
-  <section id="why-us" class="why-us section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Why Nestova?</h2>
-      <p>Discover why we are the preferred choice for discerning property seekers and investors across Nigeria.</p>
-    </div><!-- End Section Title -->
-
+  <section id="hero" class="hero section">
     <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-      <div class="row align-items-center gy-5">
+      <div class="hero-content">
+        <div class="row align-items-center">
 
-        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
-          <div class="image-showcase">
-            <div class="main-image-wrapper">
-              <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Premium Property"
-                class="img-fluid main-image">
-              <div class="image-overlay">
-                <a href="" class="glightbox">
-                  <div class="overlay-content">
-                    <i class="bi bi-play-circle-fill play-icon"></i>
-                    <span>Watch Our Story</span>
+          <div class="col-lg-6 hero-text" data-aos="fade-right" data-aos-delay="200">
+            <div class="hero-badge">
+              <i class="bi bi-star-fill"></i>
+              <span>Premium Properties</span>
+            </div>
+            <h1>Discover Your Perfect Home in the Heart of the City</h1>
+            <p>Experience seamless property search with Nigeria's most trusted real estate platform. From modern
+              apartments to luxury estates, find your dream property with verified listings from certified agents across
+              major cities.</p>
+
+            <div class="search-form" data-aos="fade-up" data-aos-delay="300">
+              <form action="{% url 'search_properties' %}" method="get">
+                <div class="row g-3">
+
+                  <!-- State Selection -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="state-type" name="state_type" required>
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                        <option value="{{ state.id }}">{{ state.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="state-type">State</label>
+                    </div>
                   </div>
-                </a>
-              </div>
+
+                  <!-- City Selection (Dynamically populated) -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="cities-type" name="city_type" required disabled>
+                        <option value="">Select State First</option>
+                      </select>
+                      <label for="cities-type">City</label>
+                    </div>
+                  </div>
+
+                  <!-- Property Type -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="property-type" name="property_type">
+                        <option value="">Select Type</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="land">Land</option>
+                        <option value="duplex">Duplex</option>
+                        <option value="bungalow">Bungalow</option>
+                      </select>
+                      <label for="property-type">Property Type</label>
+                    </div>
+                  </div>
+
+                  <!-- Price Range -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="price-range" name="price_range">
+                        <option value="">Price Range</option>
+                        <option value="0-5000000">Under ₦5M</option>
+                        <option value="5000000-10000000">₦5M - ₦10M</option>
+                        <option value="10000000-20000000">₦10M - ₦20M</option>
+                        <option value="20000000-50000000">₦20M - ₦50M</option>
+                        <option value="50000000+">Above ₦50M</option>
+                      </select>
+                      <label for="price-range">Price Range</label>
+                    </div>
+                  </div>
+
+                  <!-- Bedrooms -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="bedrooms" name="bedrooms">
+                        <option value="">Bedrooms</option>
+                        <option value="1">1 Bedroom</option>
+                        <option value="2">2 Bedrooms</option>
+                        <option value="3">3 Bedrooms</option>
+                        <option value="4">4 Bedrooms</option>
+                        <option value="5+">5+ Bedrooms</option>
+                      </select>
+                      <label for="bedrooms">Bedrooms</label>
+                    </div>
+                  </div>
+
+                  <!-- Bathrooms -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="bathrooms" name="bathrooms">
+                        <option value="">Bathrooms</option>
+                        <option value="1">1 Bathroom</option>
+                        <option value="2">2 Bathrooms</option>
+                        <option value="3">3 Bathrooms</option>
+                        <option value="4+">4+ Bathrooms</option>
+                      </select>
+                      <label for="bathrooms">Bathrooms</label>
+                    </div>
+                  </div>
+
+                  <!-- Search Button -->
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-search w-100">
+                      <i class="bi bi-search"></i>
+                      Search Properties
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
 
-            <div class="floating-stats">
-              <div class="stat-badge">
-                <span class="stat-number">15+</span>
-                <span class="stat-text">Years Excellence</span>
-              </div>
-              <div class="stat-badge">
-                <span class="stat-number">3.2K</span>
-                <span class="stat-text">Happy Clients</span>
-              </div>
-            </div>
 
-            <div class="experience-card">
-              <div class="card-icon">
-                <i class="bi bi-gem"></i>
+
+
+
+          </div><!-- End Hero Text -->
+
+          <div class="col-lg-6 hero-images" data-aos="fade-left" data-aos-delay="400">
+            <div class="image-stack">
+              <div class="main-image">
+                {% if featured_properties %}
+                {% with featured_properties|first as hero_prop %}
+                <img
+                  src="{% if hero_prop.featured_image %}{{ hero_prop.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}"
+                  alt="{{ hero_prop.title }}" class="img-fluid" fetchpriority="high">
+                <div class="property-tag">
+                  <span class="price">{{ hero_prop.formatted_price }}</span>
+                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else
+                    %}Prime{% endif %}</span>
+                </div>
+                {% endwith %}
+                {% else %}
+                <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Luxury Property"
+                  class="img-fluid" fetchpriority="high">
+                <div class="property-tag">
+                  <span class="price">$850,000</span>
+                  <span class="type">Featured</span>
+                </div>
+                {% endif %}
               </div>
-              <div class="card-content">
-                <h5>Premier Service</h5>
-                <p>Luxury real estate expertise since 2009</p>
+
+              <div class="secondary-image">
+                <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}" alt="Property Interior"
+                  class="img-fluid">
               </div>
+
+
             </div>
-          </div>
+          </div><!-- End Hero Images -->
+
         </div>
-
-        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
-          <div class="content-wrapper">
-            <div class="section-badge">
-              <i class="bi bi-star-fill me-2"></i>
-              Why Nestova?
-            </div>
-
-            <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
-            <p class="lead-text">Nestova combines deep local market knowledge with international service standards. We
-              provide a secure and transparent marketplace for all your real estate needs.</p>
-
-            <div class="benefits-grid">
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
-                <div class="benefit-icon">
-                  <i class="bi bi-geo-alt-fill"></i>
-                </div>
-                <div class="benefit-content">
-                  <h4>Prime Locations</h4>
-                  <p>Exclusive access to the most sought-after neighborhoods and emerging markets.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
-                <div class="benefit-icon">
-                  <i class="bi bi-shield-fill-check"></i>
-                </div>
-                <div class="benefit-content">
-                  <h4>Guaranteed Results</h4>
-                  <p>Our proven track record ensures successful transactions and satisfied clients.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
-                <div class="benefit-icon">
-                  <i class="bi bi-clock-fill"></i>
-                </div>
-                <div class="benefit-content">
-                  <h4>Fast Processing</h4>
-                  <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
-                <div class="benefit-icon">
-                  <i class="bi bi-people-fill"></i>
-                </div>
-                <div class="benefit-content">
-                  <h4>Expert Team</h4>
-                  <p>Certified professionals with deep market knowledge and client dedication.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="achievement-highlights" data-aos="fade-up" data-aos-delay="600">
-              <div class="highlight-item">
-                <span class="highlight-number purecounter" data-purecounter-start="0" data-purecounter-end="94"
-                  data-purecounter-duration="2"></span>%
-                <span class="highlight-label">Success Rate</span>
-              </div>
-              <div class="highlight-divider"></div>
-              <div class="highlight-item">
-                <span class="highlight-number purecounter" data-purecounter-start="0" data-purecounter-end="1800"
-                  data-purecounter-duration="2"></span>+
-                <span class="highlight-label">Properties Sold</span>
-              </div>
-              <div class="highlight-divider"></div>
-              <div class="highlight-item">
-                <span class="highlight-number purecounter" data-purecounter-start="0" data-purecounter-end="24"
-                  data-purecounter-duration="2"></span>/7
-                <span class="highlight-label">Support Available</span>
-              </div>
-            </div>
-
-            <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
-              <a href="properties.html" class="btn btn-primary">Explore Properties</a>
-              <a href="contact.html" class="btn btn-outline">Schedule Consultation</a>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>
 
-  </section><!-- /Why Us Section -->
+  </section><!-- /Hero Section -->
+  <!-- Why Us Section -->
+
 
   <!-- Recent Blog Posts Section -->
   <section id="recent-blog-posts" class="recent-blog-posts section">

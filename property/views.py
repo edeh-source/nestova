@@ -23,6 +23,11 @@ def homepage(request):
             is_featured=True
         ).select_related('state', 'city', 'property_type', 'status', 'agent', 'listed_by')[:6]
         
+        # Premium properties for carousel
+        premium_properties = Property.objects.filter(
+            is_premium=True
+        ).select_related('state', 'city', 'property_type', 'status', 'agent', 'listed_by').order_by('-created_at')[:3]
+        print("This is premium properties", premium_properties)
         # Get all properties for display
         all_properties = Property.objects.select_related(
             'state', 'city', 'property_type', 'status'
@@ -49,6 +54,7 @@ def homepage(request):
             'states': states,
             'property_types': property_types,
             'featured_properties': featured_properties,
+            'premium_properties': premium_properties,
             'all_properties': all_properties,
             'pricing_packages': pricing_packages,
             'recent_blog_posts': recent_blog_posts,
