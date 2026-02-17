@@ -1128,10 +1128,8 @@
                 alt="{{ main_property.title }}" class="img-fluid card-img-top">
             </a>
             <div class="quick-specs">
-              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize
-                }}</span>
-              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize
-                }}</span>
+              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize }}</span>
+              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize }}</span>
               <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq
                 ft</span>
             </div>
@@ -1151,8 +1149,7 @@
               <a href="{{ main_property.get_absolute_url }}" class="btn-soft">More Photos</a>
               <div class="meta">
                 <span class="status {{ main_property.status.name }}">{{ main_property.status }}</span>
-                <span class="listed">Listed {{ main_property.get_days_listed }} day{{
-                  main_property.get_days_listed|pluralize }} ago</span>
+                <span class="listed">Listed {{ main_property.get_days_listed }} day{{ main_property.get_days_listed|pluralize }} ago</span>
               </div>
             </div>
           </div>
