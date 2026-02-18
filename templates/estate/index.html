@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% load static %}
 {% load humanize %}
 
@@ -13,1931 +12,1910 @@
 {% else %}
 <link rel="preload" as="image" href="{% static 'assets/img/real-estate/property-exterior-3.webp' %}">
 {% endif %}
-{% endblock %}
 
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   NESTOVA - LUXURY GLASSMORPHISM DESIGN SYSTEM
+   ============================================ */
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96E;
+  --gold-dark: #9A7A2E;
+  --obsidian: #0A0A0F;
+  --charcoal: #12121A;
+  --deep-blue: #0D1B3E;
+  --midnight: #060B1A;
+  --glass-white: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-highlight: rgba(255,255,255,0.18);
+  --glass-shadow: rgba(0,0,0,0.4);
+  --text-primary: #F5F0E8;
+  --text-muted: rgba(245,240,232,0.6);
+  --accent-glow: rgba(201,168,76,0.25);
+  --card-radius: 24px;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--obsidian);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* ============================================
+   AMBIENT BACKGROUND ORBS
+   ============================================ */
+.ambient-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  animation: orbFloat 20s ease-in-out infinite;
+  opacity: 0.15;
+}
+
+.orb-1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, #1a3a6e, transparent);
+  top: -200px; left: -200px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #C9A84C, transparent);
+  top: 40%; right: -150px;
+  animation-delay: -7s;
+  opacity: 0.08;
+}
+
+.orb-3 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #0D1B3E, transparent);
+  bottom: -100px; left: 30%;
+  animation-delay: -14s;
+  opacity: 0.2;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 40px) scale(0.95); }
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+.glass {
+  background: var(--glass-white);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--card-radius);
+}
+
+.glass-dark {
+  background: rgba(10,10,15,0.7);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--card-radius);
+}
+
+.glass-gold {
+  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: var(--card-radius);
+}
+
+/* ============================================
+   HERO CAROUSEL — IMMERSIVE 3D
+   ============================================ */
+.hero-universe {
+  position: relative;
+  margin-top: 80px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-scene {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  max-height: 900px;
+}
+
+.hero-carousel-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+}
+
+.carousel-3d-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Full-bleed background slide */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.hero-slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.08);
+  transition: transform 8s cubic-bezier(0.0, 0.0, 0.2, 1);
+  will-change: transform;
+}
+
+.hero-slide.active .hero-slide-bg {
+  transform: scale(1);
+}
+
+/* Multi-layer overlay for cinematic depth */
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(6,11,26,0.92) 0%, rgba(6,11,26,0.6) 50%, rgba(6,11,26,0.2) 100%),
+    linear-gradient(to top, rgba(6,11,26,0.85) 0%, transparent 50%);
+}
+
+/* Animated noise grain overlay */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Hero content */
+.hero-content-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.hero-content {
+  padding: 0 6vw;
+  max-width: 760px;
+  transform: translateY(30px);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 1s ease 0.3s;
+}
+
+.hero-slide.active .hero-content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+  border: 1px solid rgba(201,168,76,0.4);
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.6; }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 22px;
+  letter-spacing: -1px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-light);
+  font-weight: 400;
+}
+
+.hero-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.75);
+  font-size: 1rem;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+.hero-location i { color: var(--gold); }
+
+/* Hero features strip */
+.hero-features {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.hero-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.hero-feat:hover {
+  background: rgba(201,168,76,0.15);
+  border-color: rgba(201,168,76,0.4);
+  color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+.hero-feat i { color: var(--gold); font-size: 1rem; }
+
+/* Hero CTA */
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0A0A0F;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 30px rgba(201,168,76,0.3), 0 8px 24px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 50px rgba(201,168,76,0.5), 0 12px 32px rgba(0,0,0,0.4);
+  color: #0A0A0F;
+}
+
+.cta-primary:hover::before { left: 100%; }
+
+.cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cta-secondary:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Price pill — floating glass card */
+.hero-price-pill {
+  position: absolute;
+  top: 40%;
+  right: 6vw;
+  transform: translateY(-50%);
+  z-index: 20;
+  padding: 28px 32px;
+  width: 220px;
+  background: rgba(10,10,15,0.6);
+  backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  opacity: 0;
+  transition: opacity 1s ease 0.6s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+  transform: translateY(-50%) translateX(20px);
+}
+
+.hero-slide.active .hero-price-pill {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.price-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.price-amount {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.price-period {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.price-divider {
+  height: 1px;
+  background: linear-gradient(to right, rgba(201,168,76,0.4), transparent);
+  margin: 16px 0;
+}
+
+.price-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05));
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 50px;
+  color: var(--gold-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Carousel navigation */
+.hero-nav {
+  position: absolute;
+  bottom: 60px;
+  left: 6vw;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-nav-btn {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.hero-nav-btn:hover {
+  background: var(--gold);
+  color: #0A0A0F;
+  border-color: var(--gold);
+  transform: scale(1.1);
+}
+
+/* Slide counter */
+.hero-counter {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.hero-counter span { color: #fff; font-weight: 700; }
+
+/* Scroll indicator */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 60px;
+  right: 6vw;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Dots indicator */
+.hero-dots {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+
+.hero-dot {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  width: 24px;
+}
+
+.hero-dot.active {
+  background: var(--gold);
+  width: 48px;
+}
+
+/* ============================================
+   FLOATING STATS BAR
+   ============================================ */
+.stats-float-bar {
+  position: relative;
+  z-index: 30;
+  margin-top: -60px;
+  padding: 0 5vw 80px;
+}
+
+.stats-bar-inner {
+  background: rgba(12,12,18,0.85);
+  backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 32px 48px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  position: relative;
+  flex: 1;
+  min-width: 120px;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 10%;
+  height: 80%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+  display: block;
+}
+
+.stat-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ============================================
+   SECTION SYSTEM
+   ============================================ */
+.section-wrap {
+  padding: 100px 5vw;
+  position: relative;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.section-title-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.section-title-xl em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.section-subtitle {
+  color: rgba(255,255,255,0.45);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 580px;
+  margin-top: 14px;
+}
+
+/* ============================================
+   PROPERTY CARDS — 3D GLASSMORPHISM
+   ============================================ */
+.properties-section {
+  background: var(--obsidian);
+}
+
+.prop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 28px;
+  margin-top: 52px;
+}
+
+.prop-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(18,18,26,0.8);
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.prop-card:hover {
+  transform: translateY(-14px) rotateX(2deg);
+  box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.12);
+  border-color: rgba(201,168,76,0.25);
+}
+
+.prop-card-img {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.prop-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.prop-card:hover .prop-card-img img {
+  transform: scale(1.12);
+}
+
+/* Image overlay with gradient */
+.prop-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.9) 0%, rgba(10,10,15,0.2) 50%, transparent 100%);
+}
+
+/* Status badge */
+.prop-status {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 7px 16px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(16px);
+  z-index: 2;
+}
+
+.prop-status.for-sale {
+  background: rgba(201,168,76,0.2);
+  border: 1px solid rgba(201,168,76,0.5);
+  color: var(--gold-light);
+}
+
+.prop-status.for-rent {
+  background: rgba(30, 100, 200, 0.2);
+  border: 1px solid rgba(60, 130, 255, 0.4);
+  color: #7EB8FF;
+}
+
+.prop-status.premium {
+  background: rgba(180,30,100,0.2);
+  border: 1px solid rgba(220,60,130,0.4);
+  color: #FF7EB8;
+}
+
+/* Wishlist button */
+.prop-wishlist {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(10,10,15,0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.prop-wishlist:hover {
+  background: rgba(220,50,50,0.3);
+  border-color: rgba(220,50,50,0.5);
+  color: #ff6b6b;
+  transform: scale(1.1);
+}
+
+/* Card body */
+.prop-card-body {
+  padding: 24px 26px 26px;
+}
+
+.prop-price {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.prop-price small {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  font-weight: 400;
+}
+
+.prop-title {
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.prop-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.prop-location i { color: var(--gold); font-size: 0.85rem; }
+
+/* Feature row */
+.prop-features {
+  display: flex;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+
+.prop-feat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.82rem;
+}
+
+.prop-feat i {
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   WHY US — CINEMATIC SECTION
+   ============================================ */
+.why-section {
+  position: relative;
+  padding: 120px 0;
+  overflow: hidden;
+}
+
+.why-bg-accent {
+  position: absolute;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,27,62,0.6), transparent);
+  top: -200px; right: -200px;
+  pointer-events: none;
+}
+
+.why-video-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.2),
+    0 30px 80px rgba(0,0,0,0.6),
+    0 0 120px rgba(201,168,76,0.06);
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.why-video-frame:hover {
+  transform: perspective(1200px) rotateY(-4deg) rotateX(2deg) scale(1.02);
+}
+
+.why-video-frame iframe {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: block;
+  pointer-events: none;
+}
+
+.unmute-btn-glass {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: rgba(10,10,15,0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  z-index: 10;
+  pointer-events: all;
+  transition: all 0.3s ease;
+}
+
+.unmute-btn-glass:hover {
+  background: rgba(201,168,76,0.3);
+  border-color: rgba(201,168,76,0.5);
+}
+
+/* Floating stat cards on video */
+.video-stat-card {
+  position: absolute;
+  padding: 16px 22px;
+  background: rgba(10,10,15,0.75);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+.video-stat-card.card-years {
+  bottom: -24px;
+  left: -24px;
+}
+
+.video-stat-card.card-clients {
+  top: -24px;
+  right: -24px;
+}
+
+.vsc-number {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+}
+
+.vsc-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Benefits */
+.benefit-item-3d {
+  padding: 28px 30px;
+  border-radius: 18px;
+  background: rgba(18,18,26,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.benefit-item-3d::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.benefit-item-3d:hover {
+  transform: translateX(8px);
+  border-color: rgba(201,168,76,0.2);
+  background: rgba(25,25,35,0.8);
+}
+
+.benefit-item-3d:hover::before { opacity: 1; }
+
+.benefit-icon-3d {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05));
+  border: 1px solid rgba(201,168,76,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+
+.benefit-text h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 6px;
+}
+
+.benefit-text p {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+
+/* ============================================
+   TESTIMONIALS — GLASS CARDS
+   ============================================ */
+.testimonials-section {
+  padding: 100px 5vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 52px;
+}
+
+.testi-card {
+  padding: 36px;
+  background: rgba(18,18,26,0.7);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.testi-card::after {
+  content: '"';
+  position: absolute;
+  top: 20px; right: 24px;
+  font-family: var(--font-display);
+  font-size: 8rem;
+  color: rgba(201,168,76,0.07);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.testi-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.2);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+/* Star rating */
+.testi-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.testi-stars i { color: var(--gold); font-size: 0.85rem; }
+
+.testi-text {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 28px;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.testi-avatar {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(201,168,76,0.3);
+}
+
+.testi-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.testi-role {
+  font-size: 0.78rem;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+/* ============================================
+   CTA BAND
+   ============================================ */
+.cta-band {
+  margin: 0 5vw 100px;
+  padding: 80px 60px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(13,27,62,0.9), rgba(10,10,15,0.8));
+  border: 1px solid rgba(201,168,76,0.2);
+  backdrop-filter: blur(32px);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.cta-band::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(201,168,76,0.03) 60deg, transparent 120deg);
+  animation: rotateConic 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateConic {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cta-band h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 18px;
+}
+
+.cta-band h2 em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.cta-band p {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-bottom: 40px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-band-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   SEARCH PANEL
+   ============================================ */
+.search-section {
+  padding: 0 5vw 80px;
+  position: relative;
+  z-index: 40;
+}
+
+.search-panel {
+  background: rgba(12,12,18,0.85);
+  backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 40px 44px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+.search-panel h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 28px;
+}
+
+.search-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  background: rgba(255,255,255,0.04);
+  padding: 4px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.search-tab {
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.search-tab.active {
+  background: var(--gold);
+  color: #0A0A0F;
+}
+
+.search-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.search-field label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.search-field input,
+.search-field select {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  color: rgba(255,255,255,0.85);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+}
+
+.search-field input::placeholder { color: rgba(255,255,255,0.25); }
+
+.search-field input:focus,
+.search-field select:focus {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(201,168,76,0.4);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+}
+
+.search-field select option { background: #12121A; color: #fff; }
+
+.search-btn-main {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none;
+  border-radius: 12px;
+  color: #0A0A0F;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.search-btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(201,168,76,0.3);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1199px) {
+  .hero-price-pill { display: none; }
+  .search-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 991px) {
+  .hero-scene { max-height: 700px; }
+  .stats-bar-inner { padding: 28px 32px; }
+  .why-video-frame { margin-bottom: 48px; }
+  .section-wrap { padding: 80px 5vw; }
+}
+
+@media (max-width: 767px) {
+  .hero-features { gap: 10px; }
+  .hero-feat { padding: 10px 16px; font-size: 0.82rem; }
+  .hero-title { font-size: clamp(2rem, 8vw, 3rem); }
+  .stats-bar-inner { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 24px; }
+  .stat-item::after { display: none; }
+  .stat-item { min-width: 100px; }
+  .prop-grid { grid-template-columns: 1fr; }
+  .search-row { grid-template-columns: 1fr; }
+  .search-panel { padding: 28px 24px; }
+  .cta-band { padding: 60px 30px; }
+  .hero-scroll-hint { display: none; }
+  .section-wrap { padding: 60px 5vw; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .stats-float-bar { margin-top: -30px; }
+}
+
+@media (max-width: 575px) {
+  .hero-scene { max-height: 580px; }
+  .hero-cta-row { flex-direction: column; align-items: flex-start; }
+  .hero-content { padding: 0 24px; }
+  .hero-features { display: none; }
+  .stats-bar-inner { padding: 20px; }
+  .stat-number { font-size: 2rem; }
+  .cta-band-btns { flex-direction: column; align-items: center; }
+  .cta-band { margin: 0 4vw 60px; }
+}
+
+/* ============================================
+   UTILITY ANIMATIONS
+   ============================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-reveal-delay="100"] { transition-delay: 0.1s; }
+[data-reveal-delay="200"] { transition-delay: 0.2s; }
+[data-reveal-delay="300"] { transition-delay: 0.3s; }
+[data-reveal-delay="400"] { transition-delay: 0.4s; }
+[data-reveal-delay="500"] { transition-delay: 0.5s; }
+</style>
+{% endblock %}
 
 {% block content %}
 
-<style>
-  /* Rounded Prev/Next buttons */
-  .carousel-control-prev,
-  .carousel-control-next {
-    width: 45px;
-    height: 45px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 1;
-  }
-
-  /* Carousel indicators - make them circular */
-  .carousel-indicators button {
-    width: 12px !important;
-    height: 12px !important;
-    border-radius: 50% !important;
-    border: 2px solid black !important;
-    background-color: transparent;
-    opacity: 0.5;
-  }
-
-  .carousel-indicators button.active {
-    background-color: black;
-    opacity: 1;
-  }
-
-  #partners .owl-dots {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  #partners .owl-dot span {
-    width: 12px !important;
-    height: 12px !important;
-    border-radius: 50% !important;
-    background: transparent !important;
-    border: 2px solid #000 !important;
-    margin: 4px !important;
-    display: block;
-    transition: background 0.3s;
-  }
-
-  #partners .owl-dot.active span {
-    background: #000 !important;
-  }
-
-  /* Partner card styling */
-  #partners .partner-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    padding: 15px;
-    background: #fff;
-  }
-
-  #partners .partner-card img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
-  /* Global Variables & World Class Design System */
-  :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #e67e22;
-    --accent-color: #2980b9;
-    --text-dark: #2c3e50;
-    --text-light: #ecf0f1;
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    --card-hover-transform: translateY(-10px) scale(1.02);
-    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  body {
-    font-family: var(--font-body);
-    color: var(--text-dark);
-    background-color: #f8f9fa;
-    overflow-x: hidden;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-
-  /* Glassmorphism Utility */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 16px;
-  }
-
-  /* 3D Tilt Effect Base */
-  .tilt-card {
-    transition: transform 0.1s;
-    transform-style: preserve-3d;
-  }
-
-  /* Smooth Scroll */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Property Cards 3D Upgrade */
-  .property-item {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: none;
-    background: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    position: relative;
-    z-index: 1;
-  }
-
-  .property-item:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
-    z-index: 2;
-  }
-
-  .property-item .card-img-top {
-    border-radius: 20px 20px 0 0;
-    height: 250px;
-    object-fit: cover;
-    transition: transform 0.8s ease;
-  }
-
-  .property-item:hover .card-img-top {
-    transform: scale(1.1);
-  }
-
-  .property-badge {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(5px);
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-weight: 600;
-    color: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 2;
-  }
-
-  /* Badge Variants */
-  .badge-premium {
-    background: linear-gradient(135deg, #FFD700, #FDB931);
-    color: #fff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  .badge-featured {
-    background: linear-gradient(135deg, #2980b9, #2c3e50);
-    color: #fff;
-  }
-
-  /* Floating Animation */
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
-
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  .floating-element {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  /* Hero Section Modernization */
-  .hero-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-badge {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 16px;
-    border-radius: 50px;
-    margin-bottom: 20px;
-    color: #fff;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Why Us Video Container 3D */
-  .main-image-wrapper {
-    position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-  }
-
-  .floating-video {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    transform: rotateY(-5deg) rotateX(5deg);
-    transition: transform 0.5s ease;
-  }
-
-  .main-image-wrapper:hover .floating-video {
-    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
-  }
-
-  /* Testimonials Glass Cards */
-  .testimonial-item {
-    background: #fff;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-    margin: 20px;
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-
-  .testimonial-item:hover {
-    transform: translateY(-5px);
-  }
-
-  .testimonial-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #fff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-
-  .testimonial-quote-icon {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 40px;
-    color: rgba(44, 62, 80, 0.1);
-  }
-
-  /* Scroll Down Animation */
-  .scroll-down {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: bounce 2s infinite;
-    color: #fff;
-    font-size: 24px;
-    opacity: 0.8;
-  }
-
-  @keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-      transform: translateY(0) translateX(-50%);
-    }
-
-    40% {
-      transform: translateY(-10px) translateX(-50%);
-    }
-
-    60% {
-      transform: translateY(-5px) translateX(-50%);
-    }
-  }
-
-
-  .clients .swiper-slide img {
-    opacity: 0.5;
-    transition: 0.3s;
-  }
-
-  .clients .swiper-slide img:hover {
-    filter: none;
-    opacity: 1;
-  }
-
-  .clients .swiper-wrapper {
-    height: auto;
-  }
-
-  .clients .swiper-pagination {
-    margin-top: 20px;
-    position: relative;
-  }
-
-  .clients .swiper-pagination .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
-    opacity: 1;
-    background-color: color-mix(in srgb, var(--default-color), transparent 80%);
-  }
-
-  .clients .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: var(--accent-color);
-  }
-</style>
-
-<style>
-  /* Premium Hero Carousel Styling */
-  .premium-hero-carousel {
-    margin-top: 115px;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  }
-
-  .premium-hero-carousel .carousel-inner {
-    border-radius: 16px;
-  }
-
-  .premium-hero-carousel .carousel-item {
-    height: 600px;
-    position: relative;
-  }
-
-  .premium-hero-carousel .carousel-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
-    z-index: 1;
-  }
-
-  .premium-hero-carousel .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .premium-hero-carousel .carousel-caption {
-    bottom: 50px;
-    left: 50px;
-    right: 50px;
-    text-align: left;
-    z-index: 2;
-    padding: 0;
-  }
-
-  .premium-hero-carousel .property-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.95);
-    color: #000;
-    padding: 8px 16px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    backdrop-filter: blur(10px);
-  }
-
-  .premium-hero-carousel .property-badge i {
-    color: #ffc107;
-    font-size: 16px;
-  }
-
-  .premium-hero-carousel .carousel-caption h2 {
-    color: #fff;
-    font-size: 42px;
-    font-weight: 800;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    line-height: 1.2;
-  }
-
-  .premium-hero-carousel .property-features {
-    display: flex;
-    gap: 25px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  .premium-hero-carousel .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .premium-hero-carousel .feature-item i {
-    font-size: 20px;
-    color: #ffc107;
-  }
-
-  .premium-hero-carousel .property-location {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 18px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .premium-hero-carousel .property-location i {
-    color: #ffc107;
-  }
-
-  .premium-hero-carousel .carousel-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: #fff;
-    color: #000;
-    padding: 14px 32px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 16px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .premium-hero-carousel .carousel-cta:hover {
-    background: #ffc107;
-    color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .premium-hero-carousel .carousel-cta i {
-    font-size: 18px;
-  }
-
-  /* Navigation Controls */
-  .premium-hero-carousel .carousel-control-prev,
-  .premium-hero-carousel .carousel-control-next {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.9;
-    transition: all 0.3s ease;
-  }
-
-  .premium-hero-carousel .carousel-control-prev {
-    left: 30px;
-  }
-
-  .premium-hero-carousel .carousel-control-next {
-    right: 30px;
-  }
-
-  .premium-hero-carousel .carousel-control-prev:hover,
-  .premium-hero-carousel .carousel-control-next:hover {
-    opacity: 1;
-    background: #ffc107;
-    transform: translateY(-50%) scale(1.1);
-  }
-
-  .premium-hero-carousel .carousel-control-prev-icon,
-  .premium-hero-carousel .carousel-control-next-icon {
-    width: 24px;
-    height: 24px;
-    background-size: 100%;
-    filter: invert(1);
-  }
-
-  /* Indicators */
-  .premium-hero-carousel .carousel-indicators {
-    bottom: 20px;
-    margin-bottom: 0;
-  }
-
-  .premium-hero-carousel .carousel-indicators button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    background-color: transparent;
-    opacity: 0.6;
-    margin: 0 6px;
-    transition: all 0.3s ease;
-  }
-
-  .premium-hero-carousel .carousel-indicators button.active {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1199px) {
-    .premium-hero-carousel .carousel-item {
-      height: 500px;
-    }
-
-    .premium-hero-carousel .carousel-caption h2 {
-      font-size: 36px;
-    }
-
-    .premium-hero-carousel .carousel-caption {
-      bottom: 40px;
-      left: 40px;
-      right: 40px;
-    }
-  }
-
-  @media (max-width: 991px) {
-    .premium-hero-carousel .carousel-item {
-      height: 450px;
-    }
-
-    .premium-hero-carousel .carousel-caption h2 {
-      font-size: 32px;
-    }
-
-    .premium-hero-carousel .property-features {
-      gap: 15px;
-    }
-
-    .premium-hero-carousel .feature-item {
-      font-size: 14px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev,
-    .premium-hero-carousel .carousel-control-next {
-      width: 50px;
-      height: 50px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev {
-      left: 20px;
-    }
-
-    .premium-hero-carousel .carousel-control-next {
-      right: 20px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .premium-hero-carousel {
-      margin-top: 100px;
-    }
-
-    .premium-hero-carousel .carousel-item {
-      height: 400px;
-    }
-
-    .premium-hero-carousel .carousel-caption {
-      bottom: 30px;
-      left: 20px;
-      right: 20px;
-    }
-
-    .premium-hero-carousel .carousel-caption h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .premium-hero-carousel .property-badge {
-      font-size: 12px;
-      padding: 6px 12px;
-      margin-bottom: 10px;
-    }
-
-    .premium-hero-carousel .property-features {
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .premium-hero-carousel .feature-item {
-      font-size: 13px;
-    }
-
-    .premium-hero-carousel .feature-item i {
-      font-size: 16px;
-    }
-
-    .premium-hero-carousel .property-location {
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    .premium-hero-carousel .carousel-cta {
-      padding: 12px 24px;
-      font-size: 14px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev,
-    .premium-hero-carousel .carousel-control-next {
-      width: 45px;
-      height: 45px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev {
-      left: 15px;
-    }
-
-    .premium-hero-carousel .carousel-control-next {
-      right: 15px;
-    }
-  }
-
-  @media (max-width: 575px) {
-    .premium-hero-carousel .carousel-item {
-      height: 350px;
-    }
-
-    .premium-hero-carousel .carousel-caption h2 {
-      font-size: 22px;
-    }
-
-    .premium-hero-carousel .property-features {
-      display: none;
-    }
-
-    .premium-hero-carousel .property-location {
-      font-size: 13px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev,
-    .premium-hero-carousel .carousel-control-next {
-      width: 40px;
-      height: 40px;
-    }
-
-    .premium-hero-carousel .carousel-control-prev {
-      left: 10px;
-    }
-
-    .premium-hero-carousel .carousel-control-next {
-      right: 10px;
-    }
-  }
-</style>
-
-<main class="main">
-  <div class="container premium-hero-carousel">
-    <div id="premiumCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
-      {% if premium_properties %}
-      <div class="carousel-indicators">
-        {% for property in premium_properties %}
-        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true" {% endif %}
-          aria-label="Slide {{ forloop.counter }}"></button>
-        {% endfor %}
-      </div>
-
-      <div class="carousel-inner">
-        {% for property in premium_properties %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <img
-            src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-7.webp' %}{% endif %}"
-            class="d-block w-100" alt="{{ property.title }}">
-          <div class="carousel-caption">
-            <div class="property-badge">
-              <i class="bi bi-gem"></i>
-              <span>Premium Listing</span>
-            </div>
-            <h2>{{ property.title|truncatewords:8 }}</h2>
-            <div class="property-location">
-              <i class="bi bi-geo-alt-fill"></i>
-              <span>{{ property.city.name }}, {{ property.state.name }}</span>
-            </div>
-            <div class="property-features">
-              <div class="feature-item">
-                <i class="bi bi-door-open"></i>
-                <span>{{ property.bedrooms }} Bedroom{{ property.bedrooms|pluralize }}</span>
+<!-- ======================== AMBIENT BACKGROUND ======================== -->
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<main class="main" style="position: relative; z-index: 1;">
+
+  <!-- ======================== HERO SECTION ======================== -->
+  <section class="hero-universe">
+    <div class="hero-scene">
+      <div class="hero-carousel-wrap">
+        <div class="carousel-3d-track">
+
+          {% if premium_properties %}
+            {% for property in premium_properties %}
+            <div class="hero-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+              <div class="hero-slide-bg" style="background-image: url('{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-7.webp' %}{% endif %}');"></div>
+              <div class="hero-slide-overlay"></div>
+              <div class="hero-grain"></div>
+              <div class="hero-content-wrap">
+                <div class="hero-content">
+                  <div class="hero-eyebrow">Premium Listing</div>
+                  <h1 class="hero-title">{{ property.title|truncatewords:7 }}</h1>
+                  <div class="hero-location">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>{{ property.city.name }}, {{ property.state.name }}</span>
+                  </div>
+                  <div class="hero-features">
+                    <div class="hero-feat"><i class="bi bi-door-open"></i><span>{{ property.bedrooms }} Bed{{ property.bedrooms|pluralize }}</span></div>
+                    <div class="hero-feat"><i class="bi bi-droplet"></i><span>{{ property.bathrooms }} Bath{{ property.bathrooms|pluralize }}</span></div>
+                    <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>{{ property.square_feet|floatformat:0 }} sq ft</span></div>
+                  </div>
+                  <div class="hero-cta-row">
+                    <a href="{{ property.get_absolute_url }}" class="cta-primary">
+                      View Property <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'properties' %}" class="cta-secondary">
+                      <i class="bi bi-grid-3x3-gap"></i> Browse All
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div class="feature-item">
-                <i class="bi bi-droplet"></i>
-                <span>{{ property.bathrooms }} Bathroom{{ property.bathrooms|pluralize }}</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-aspect-ratio"></i>
-                <span>{{ property.square_feet|floatformat:0 }} sq ft</span>
+              <div class="hero-price-pill">
+                <div class="price-label">Listing Price</div>
+                <div class="price-amount">₦{{ property.price|intcomma }}</div>
+                <div class="price-period">Negotiable</div>
+                <div class="price-divider"></div>
+                <div class="price-tag">{% if property.listing_type %}{{ property.listing_type }}{% else %}For Sale{% endif %}</div>
               </div>
             </div>
-            <a href="{{ property.get_absolute_url }}" class="carousel-cta">
-              <span>View Details</span>
+            {% endfor %}
+          {% else %}
+            <!-- Fallback slides -->
+            <div class="hero-slide active" data-index="0">
+              <div class="hero-slide-bg" style="background-image: url('{% static 'assets/img/real-estate/property-exterior-7.webp' %}');"></div>
+              <div class="hero-slide-overlay"></div>
+              <div class="hero-grain"></div>
+              <div class="hero-content-wrap">
+                <div class="hero-content">
+                  <div class="hero-eyebrow">Premium Listing</div>
+                  <h1 class="hero-title">Luxury Modern <em>Estate</em> with Pool</h1>
+                  <div class="hero-location">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Lekki Phase 1, Lagos</span>
+                  </div>
+                  <div class="hero-features">
+                    <div class="hero-feat"><i class="bi bi-door-open"></i><span>5 Bedrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-droplet"></i><span>6 Bathrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>4,500 sq ft</span></div>
+                  </div>
+                  <div class="hero-cta-row">
+                    <a href="{% url 'properties' %}" class="cta-primary">Browse Properties <i class="bi bi-arrow-right"></i></a>
+                    <a href="{% url 'about' %}" class="cta-secondary"><i class="bi bi-play-circle"></i> Our Story</a>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-price-pill">
+                <div class="price-label">Starting From</div>
+                <div class="price-amount">₦280M</div>
+                <div class="price-period">Negotiable</div>
+                <div class="price-divider"></div>
+                <div class="price-tag">For Sale</div>
+              </div>
+            </div>
+
+            <div class="hero-slide" data-index="1">
+              <div class="hero-slide-bg" style="background-image: url('{% static 'assets/img/real-estate/property-exterior-8.webp' %}');"></div>
+              <div class="hero-slide-overlay"></div>
+              <div class="hero-grain"></div>
+              <div class="hero-content-wrap">
+                <div class="hero-content">
+                  <div class="hero-eyebrow">Featured Property</div>
+                  <h1 class="hero-title">Contemporary <em>Villa</em> with Garden</h1>
+                  <div class="hero-location">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Banana Island, Ikoyi</span>
+                  </div>
+                  <div class="hero-features">
+                    <div class="hero-feat"><i class="bi bi-door-open"></i><span>4 Bedrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-droplet"></i><span>5 Bathrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>3,800 sq ft</span></div>
+                  </div>
+                  <div class="hero-cta-row">
+                    <a href="{% url 'properties' %}" class="cta-primary">View All Properties <i class="bi bi-arrow-right"></i></a>
+                    <a href="{% url 'contact' %}" class="cta-secondary"><i class="bi bi-telephone"></i> Contact Us</a>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-price-pill">
+                <div class="price-label">Starting From</div>
+                <div class="price-amount">₦195M</div>
+                <div class="price-period">Negotiable</div>
+                <div class="price-divider"></div>
+                <div class="price-tag">For Sale</div>
+              </div>
+            </div>
+
+            <div class="hero-slide" data-index="2">
+              <div class="hero-slide-bg" style="background-image: url('{% static 'assets/img/real-estate/property-interior-7.webp' %}');"></div>
+              <div class="hero-slide-overlay"></div>
+              <div class="hero-grain"></div>
+              <div class="hero-content-wrap">
+                <div class="hero-content">
+                  <div class="hero-eyebrow">Exclusive Interior</div>
+                  <h1 class="hero-title">Exquisite <em>Interior</em> Finishes</h1>
+                  <div class="hero-location">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Victoria Island, Lagos</span>
+                  </div>
+                  <div class="hero-features">
+                    <div class="hero-feat"><i class="bi bi-door-open"></i><span>3 Bedrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-droplet"></i><span>4 Bathrooms</span></div>
+                    <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>2,800 sq ft</span></div>
+                  </div>
+                  <div class="hero-cta-row">
+                    <a href="{% url 'properties' %}" class="cta-primary">Explore Listings <i class="bi bi-arrow-right"></i></a>
+                    <a href="{% url 'agents' %}" class="cta-secondary"><i class="bi bi-person-check"></i> Find Agent</a>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-price-pill">
+                <div class="price-label">Starting From</div>
+                <div class="price-amount">₦120M</div>
+                <div class="price-period">Per annum</div>
+                <div class="price-divider"></div>
+                <div class="price-tag">For Rent</div>
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Navigation -->
+          <div class="hero-nav">
+            <button class="hero-nav-btn" id="heroPrev" aria-label="Previous slide">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+            <div class="hero-counter">
+              <span id="currentSlide">1</span> / <span id="totalSlides">3</span>
+            </div>
+            <button class="hero-nav-btn" id="heroNext" aria-label="Next slide">
               <i class="bi bi-arrow-right"></i>
-            </a>
+            </button>
           </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% else %}
-      <!-- Fallback: Static content if no premium properties exist -->
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-          aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#premiumCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      </div>
 
-      <div class="carousel-inner">
-        <!-- Slide 1: Luxury Exterior Property -->
-        <div class="carousel-item active">
-          <img src="{% static 'assets/img/real-estate/property-exterior-7.webp' %}" class="d-block w-100"
-            alt="Luxury Modern Estate">
-          <div class="carousel-caption">
-            <div class="property-badge">
-              <i class="bi bi-gem"></i>
-              <span>Premium Listing</span>
-            </div>
-            <h2>Luxury Modern Estate with Pool</h2>
-            <div class="property-location">
-              <i class="bi bi-geo-alt-fill"></i>
-              <span>Lekki Phase 1, Lagos</span>
-            </div>
-            <div class="property-features">
-              <div class="feature-item">
-                <i class="bi bi-door-open"></i>
-                <span>5 Bedrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-droplet"></i>
-                <span>6 Bathrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-aspect-ratio"></i>
-                <span>4,500 sq ft</span>
-              </div>
-            </div>
-            <a href="{% url 'properties' %}" class="carousel-cta">
-              <span>Browse Properties</span>
-              <i class="bi bi-arrow-right"></i>
-            </a>
-          </div>
-        </div>
+          <!-- Dots -->
+          <div class="hero-dots" id="heroDots"></div>
 
-        <!-- Slide 2: Premium Exterior -->
-        <div class="carousel-item">
-          <img src="{% static 'assets/img/real-estate/property-exterior-8.webp' %}" class="d-block w-100"
-            alt="Contemporary Villa">
-          <div class="carousel-caption">
-            <div class="property-badge">
-              <i class="bi bi-star-fill"></i>
-              <span>Featured Property</span>
-            </div>
-            <h2>Contemporary Villa with Garden</h2>
-            <div class="property-location">
-              <i class="bi bi-geo-alt-fill"></i>
-              <span>Banana Island, Ikoyi</span>
-            </div>
-            <div class="property-features">
-              <div class="feature-item">
-                <i class="bi bi-door-open"></i>
-                <span>4 Bedrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-droplet"></i>
-                <span>5 Bathrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-aspect-ratio"></i>
-                <span>3,800 sq ft</span>
-              </div>
-            </div>
-            <a href="{% url 'properties' %}" class="carousel-cta">
-              <span>View All Properties</span>
-              <i class="bi bi-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Slide 3: Premium Interior -->
-        <div class="carousel-item">
-          <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}" class="d-block w-100"
-            alt="Elegant Interior Design">
-          <div class="carousel-caption">
-            <div class="property-badge">
-              <i class="bi bi-award"></i>
-              <span>Exclusive Interior</span>
-            </div>
-            <h2>Exquisite Interior Finishes</h2>
-            <div class="property-location">
-              <i class="bi bi-geo-alt-fill"></i>
-              <span>Victoria Island, Lagos</span>
-            </div>
-            <div class="property-features">
-              <div class="feature-item">
-                <i class="bi bi-door-open"></i>
-                <span>3 Bedrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-droplet"></i>
-                <span>4 Bathrooms</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-aspect-ratio"></i>
-                <span>2,800 sq ft</span>
-              </div>
-            </div>
-            <a href="{% url 'properties' %}" class="carousel-cta">
-              <span>Explore Listings</span>
-              <i class="bi bi-arrow-right"></i>
-            </a>
+          <!-- Scroll hint -->
+          <div class="hero-scroll-hint">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
           </div>
         </div>
       </div>
-      {% endif %}
+    </div>
+  </section>
 
-      <button class="carousel-control-prev" type="button" data-bs-target="#premiumCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#premiumCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+  <!-- ======================== STATS BAR ======================== -->
+  <div class="stats-float-bar">
+    <div class="stats-bar-inner" data-reveal>
+      <div class="stat-item">
+        <span class="stat-number">2,400+</span>
+        <span class="stat-label">Properties Listed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Years of Excellence</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">3.2K</span>
+        <span class="stat-label">Happy Clients</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">98%</span>
+        <span class="stat-label">Client Satisfaction</span>
+      </div>
     </div>
   </div>
 
-
-  <section id="why-us" class="why-us section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Why Nestova?</h2>
-      <p>Discover why we are the preferred choice for discerning property seekers and investors across Nigeria.</p>
-    </div>
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row align-items-center gy-5">
-
-        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
-          <div class="image-showcase">
-            <div class="main-image-wrapper">
-              <div class="ratio ratio-4x3 main-image" style="position: relative;">
-                
-                <iframe id="yt-player" class="floating-video"
-                  src="https://www.youtube.com/embed/35cEKa_3hQo?autoplay=1&mute=1&loop=1&playlist=35cEKa_3hQo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
-                  title="Nestova Real Estate" frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin" loading="lazy"
-                  style="pointer-events: none; object-fit: cover; width: 100%; height: 100%; border-radius: 16px;">
-                </iframe>
-
-                <!-- Unmute Button -->
-                <button id="unmute-btn" onclick="toggleMute()" style="
-                position: absolute; bottom: 15px; right: 15px;
-                background: rgba(0,0,0,0.6); color: white;
-                border: none; border-radius: 50%;
-                width: 40px; height: 40px;
-                cursor: pointer; font-size: 16px;
-                z-index: 10; pointer-events: all;">
-                  🔇
-                </button>
-              </div>
-            </div>
-
-            <div class="floating-stats">
-              <div class="stat-badge">
-                <span class="stat-number">15+</span>
-                <span class="stat-text">Years Excellence</span>
-              </div>
-              <div class="stat-badge">
-                <span class="stat-number">3.2K</span>
-                <span class="stat-text">Happy Clients</span>
-              </div>
-            </div>
-
-            <div class="experience-card">
-              <div class="card-icon">
-                <i class="bi bi-gem"></i>
-              </div>
-              <div class="card-content">
-                <h5>Premier Service</h5>
-                <p>Luxury real estate expertise since 2009</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
-          <div class="content-wrapper">
-            <div class="section-badge">
-              <i class="bi bi-star-fill me-2"></i>
-              Why Nestova?
-            </div>
-
-            <h2>Your Gateway to Exceptional Real Estate Experiences</h2>
-            <p class="lead-text">Nestova combines deep local market knowledge with international service standards. We
-              provide a secure and transparent marketplace for all your real estate needs.</p>
-
-            <div class="benefits-grid">
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
-                <div class="benefit-icon"><i class="bi bi-geo-alt-fill"></i></div>
-                <div class="benefit-content">
-                  <h4>Prime Locations</h4>
-                  <p>Exclusive access to the most sought-after neighborhoods and emerging markets.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="450">
-                <div class="benefit-icon"><i class="bi bi-shield-fill-check"></i></div>
-                <div class="benefit-content">
-                  <h4>Guaranteed Results</h4>
-                  <p>Our proven track record ensures successful transactions and satisfied clients.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="500">
-                <div class="benefit-icon"><i class="bi bi-clock-fill"></i></div>
-                <div class="benefit-content">
-                  <h4>Fast Processing</h4>
-                  <p>Streamlined processes and expert negotiation to close deals efficiently.</p>
-                </div>
-              </div>
-
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="550">
-                <div class="benefit-icon"><i class="bi bi-people-fill"></i></div>
-                <div class="benefit-content">
-                  <h4>Expert Team</h4>
-                  <p>Certified professionals with deep market knowledge and client dedication.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="action-buttons" data-aos="fade-up" data-aos-delay="650">
-              <a href="{% url 'properties' %}" class="btn btn-primary">Explore Properties</a>
-              <a href="{% url 'contact' %}" class="btn btn-outline">Schedule Consultation</a>
-            </div>
-          </div>
-        </div>
-
+  <!-- ======================== SEARCH PANEL ======================== -->
+  <section class="search-section">
+    <div class="search-panel" data-reveal>
+      <h3>Find Your Perfect Property</h3>
+      <div class="search-tabs">
+        <div class="search-tab active">Buy</div>
+        <div class="search-tab">Rent</div>
+        <div class="search-tab">ShortLet</div>
+        <div class="search-tab">Commercial</div>
       </div>
-    </div>
-
-  </section><!-- /Why Us Section -->
-
-  <script>
-    let muted = true;
-
-    function toggleMute() {
-      const iframe = document.getElementById('yt-player');
-      const btn = document.getElementById('unmute-btn');
-      if (muted) {
-        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-        btn.innerText = '🔊';
-      } else {
-        iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-        btn.innerText = '🔇';
-      }
-      muted = !muted;
-    }
-
-    // Pause/play on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const iframe = document.getElementById('yt-player');
-        if (entry.isIntersecting) {
-          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        } else {
-          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observer.observe(document.getElementById('yt-player'));
-  </script>
-  <!-- Home About Section -->
-  <section id="home-about" class="home-about section">
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row align-items-center gy-5">
-
-        <div class="col-lg-6 order-lg-2" data-aos="fade-left" data-aos-delay="200">
-          <div class="image-section">
-            <div class="main-image-wrapper">
-              <img src="{% static 'assets/img/real-estate/real estate-1.jpg' %}" alt="Premium Property"
-                class="img-fluid main-image">
-
-            </div>
-            <div class="secondary-images">
-              <div class="small-image">
-                <img src="{% static 'assets/img/real-estate/real-estate-2.jpeg' %}" alt="Interior Design"
-                  class="img-fluid">
-              </div>
-              <div class="small-image">
-                <img src="{% static 'assets/img/real-estate/real-estate-3.jpg' %}" alt="Expert Agent" class="img-fluid">
-              </div>
-            </div>
+      <form method="get" action="{% url 'properties' %}">
+        <div class="search-row">
+          <div class="search-field">
+            <label>Location</label>
+            <input type="text" name="location" placeholder="City, state or area...">
+          </div>
+          <div class="search-field">
+            <label>Property Type</label>
+            <select name="property_type">
+              <option value="">All Types</option>
+              <option value="house">House</option>
+              <option value="apartment">Apartment</option>
+              <option value="villa">Villa</option>
+              <option value="land">Land</option>
+              <option value="commercial">Commercial</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>Price Range</label>
+            <select name="price_range">
+              <option value="">Any Budget</option>
+              <option value="0-50000000">Under ₦50M</option>
+              <option value="50000000-150000000">₦50M – ₦150M</option>
+              <option value="150000000-500000000">₦150M – ₦500M</option>
+              <option value="500000000+">₦500M+</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>&nbsp;</label>
+            <button type="submit" class="search-btn-main">
+              <i class="bi bi-search"></i> Search
+            </button>
           </div>
         </div>
+      </form>
+    </div>
+  </section>
 
-        <div class="col-lg-6 order-lg-1" data-aos="fade-right" data-aos-delay="300">
-          <div class="content-wrapper">
-            <div class="section-badge">
-              <i class="bi bi-buildings"></i>
-              <span>Our Real Estate Vision </span>
-            </div>
-
-            <h2>Transforming Real Estate Dreams Into Reality</h2>
-
-            <p>At Nestova, we believe that finding a home is more than just a transaction; it's about discovering a
-              space where memories are made and futures are built. Our platform connects you with the most exclusive and
-              verified listings in Nigeria's prime locations.
-            </p>
-
-
-
-            <div class="features-list">
-              <div class="feature-item">
-                <i class="bi bi-check-circle"></i>
-                <span>Expert market analysis and pricing strategies</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-check-circle"></i>
-                <span>Personalized property matching services</span>
-              </div>
-              <div class="feature-item">
-                <i class="bi bi-check-circle"></i>
-                <span>Professional photography and virtual tours</span>
-              </div>
-            </div>
-
-            <div class="cta-wrapper">
-              <a href="about.html" class="btn-primary">
-                <span>Learn More About Us</span>
-                <i class="bi bi-arrow-right-circle"></i>
-              </a>
-              <div class="contact-quick">
-                <i class="bi bi-headset"></i>
-                <div class="contact-text">
-                  <span>Need assistance?</span>
-                  <a href="tel:+2348030824223">+2348030824223</a>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
+  <!-- ======================== FEATURED PROPERTIES ======================== -->
+  <section class="properties-section section-wrap">
+    <div data-reveal>
+      <div class="section-badge"><i class="bi bi-gem"></i> Curated Selection</div>
+      <h2 class="section-title-xl">Featured <em>Properties</em></h2>
+      <p class="section-subtitle">Hand-picked luxury properties from Nigeria's most prestigious neighbourhoods.</p>
     </div>
 
-  </section><!-- /Home About Section -->
-
-  <!-- Featured Properties Section -->
-  <section id="featured-properties" class="featured-properties section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Featured Properties</h2>
-      <p>Discover our handpicked selection of premium properties in prime locations</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
+    <div class="prop-grid">
       {% if featured_properties %}
-      <div class="grid-featured" data-aos="zoom-in" data-aos-delay="150">
-
-        {% with featured_properties|first as main_property %}
-        <article class="highlight-card">
-          <div class="media">
-            <div class="badge-set">
-              {% if main_property.is_featured %}
-              <span class="flag featured">Featured</span>
-              {% endif %}
-              {% if main_property.is_premium %}
-              <span class="flag premium">Premium</span>
-              {% endif %}
-              {% if main_property.is_hot %}
-              <span class="flag hot">Hot</span>
-              {% endif %}
-              {% if main_property.is_new %}
-              <span class="flag new">New</span>
-              {% endif %}
+        {% for property in featured_properties %}
+        <div class="prop-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
+          <div class="prop-card-img">
+            <img src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}" alt="{{ property.title }}" loading="lazy">
+            <div class="prop-img-overlay"></div>
+            <div class="prop-status {% if property.listing_type == 'rent' %}for-rent{% elif property.is_premium %}premium{% else %}for-sale{% endif %}">
+              {% if property.listing_type == 'rent' %}For Rent{% elif property.is_premium %}Premium{% else %}For Sale{% endif %}
             </div>
-            <a href="{{ main_property.get_absolute_url }}" class="image-link">
-              <img
-                src="{% if main_property.featured_image %}{{ main_property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-6.webp' %}{% endif %}"
-                alt="{{ main_property.title }}" class="img-fluid card-img-top">
-            </a>
-            <div class="quick-specs">
-              <span><i class="bi bi-door-open"></i> {{ main_property.bedrooms }} Bed{{ main_property.bedrooms|pluralize }}</span>
-              <span><i class="bi bi-droplet"></i> {{ main_property.bathrooms }} Bath{{ main_property.bathrooms|pluralize }}</span>
-              <span><i class="bi bi-aspect-ratio"></i> {{ main_property.square_feet|floatformat:0|intcomma }} sq
-                ft</span>
+            <div class="prop-wishlist"><i class="bi bi-heart"></i></div>
+          </div>
+          <div class="prop-card-body">
+            <div class="prop-price">
+              ₦{{ property.price|intcomma }}
+              {% if property.listing_type == 'rent' %}<small>/month</small>{% endif %}
+            </div>
+            <div class="prop-title">{{ property.title }}</div>
+            <div class="prop-location">
+              <i class="bi bi-geo-alt-fill"></i>
+              {{ property.city.name }}, {{ property.state.name }}
+            </div>
+            <div class="prop-features">
+              <div class="prop-feat"><i class="bi bi-door-open"></i> {{ property.bedrooms }} Bed{{ property.bedrooms|pluralize }}</div>
+              <div class="prop-feat"><i class="bi bi-droplet"></i> {{ property.bathrooms }} Bath{{ property.bathrooms|pluralize }}</div>
+              <div class="prop-feat"><i class="bi bi-aspect-ratio"></i> {{ property.square_feet|floatformat:0 }} sq ft</div>
             </div>
           </div>
-          <div class="content">
-            <div class="top">
-              <div>
-                <h3><a href="{{ main_property.get_absolute_url }}">{{ main_property.title }}</a></h3>
-                <div class="loc"><i class="bi bi-geo-alt-fill"></i> {{ main_property.city.name }}, {{ main_property.state.name }}</div>
-              </div>
-              <div class="price">{{ main_property.formatted_price }}</div>
-            </div>
-            <p class="excerpt">{{ main_property.description|striptags|truncatewords:20 }}</p>
-            <div class="cta">
-              <a href="{{ main_property.get_absolute_url }}" class="btn-main">View Details</a>
-              <a href="{{ main_property.get_absolute_url }}" class="btn-soft">More Photos</a>
-              <div class="meta">
-                <span class="status {{ main_property.status.name }}">{{ main_property.status }}</span>
-                <span class="listed">Listed {{ main_property.get_days_listed }} day{{ main_property.get_days_listed|pluralize }} ago</span>
-              </div>
-            </div>
-          </div>
-        </article><!-- End Highlight Card -->
-        {% endwith %}
-
-        <div class="mini-list">
-
-          {% for property in featured_properties|slice:"1:4" %}
-          <article class="mini-card" data-aos="fade-up" data-aos-delay="{% cycle '200' '250' '300' %}">
-            <a href="{{ property.get_absolute_url }}" class="thumb">
-              <img
-                src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-interior-2.webp' %}{% endif %}"
-                alt="{{ property.title }}" class="img-fluid card-img-top tilt-card" loading="lazy">
-              {% if property.is_hot %}
-              <span class="label hot"><i class="bi bi-lightning-charge-fill"></i> Hot</span>
-              {% elif property.is_new %}
-              <span class="label new"><i class="bi bi-star-fill"></i> New</span>
-              {% elif property.is_featured %}
-              <span class="label featured"><i class="bi bi-gem"></i> Featured</span>
-              {% elif property.is_exclusive %}
-              <span class="label exclusive"><i class="bi bi-award"></i> Exclusive</span>
-              {% endif %}
-            </a>
-            <div class="mini-body">
-              <h4><a href="{{ property.get_absolute_url }}">{{ property.title|truncatewords:6 }}</a></h4>
-              <div class="mini-loc"><i class="bi bi-geo"></i> {{ property.city.name }}, {{ property.state.code }}</div>
-              <div class="mini-specs">
-                <span><i class="bi bi-door-open"></i> {{ property.bedrooms }}</span>
-                <span><i class="bi bi-droplet"></i> {{ property.bathrooms }}</span>
-                <span><i class="bi bi-rulers"></i> {{ property.square_feet|floatformat:0|intcomma }} sq ft</span>
-              </div>
-              <div class="mini-foot">
-                <div class="mini-price">{{ property.formatted_price }}</div>
-                <a href="{{ property.get_absolute_url }}" class="mini-btn">Details</a>
-              </div>
-            </div>
-          </article><!-- End Mini Card -->
-          {% endfor %}
-
-        </div><!-- End Mini List -->
-
-      </div>
-
-      <div class="row gy-4 mt-4">
-
-        {% for property in featured_properties|slice:"4:7" %}
-        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="{% cycle '300' '350' '400' %}">
-          <article class="stack-card">
-            <figure class="stack-media">
-              <img
-                src="{% if property.featured_image %}{{ property.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-8.webp' %}{% endif %}"
-                alt="{{ property.title }}" class="img-fluid card-img-top tilt-card" loading="lazy">
-              <figcaption>
-                {% if property.is_exclusive %}
-                <span class="chip exclusive">Exclusive</span>
-                {% elif property.is_hot %}
-                <span class="chip hot">Hot</span>
-                {% elif property.is_new %}
-                <span class="chip new">New</span>
-                {% elif property.is_premium %}
-                <span class="chip premium">Premium</span>
-                {% endif %}
-              </figcaption>
-            </figure>
-            <div class="stack-body">
-              <h5><a href="{{ property.get_absolute_url }}">{{ property.title|truncatewords:5 }}</a></h5>
-              <div class="stack-loc"><i class="bi bi-geo-alt"></i> {{ property.city.name }}, {{ property.state.code }}
-              </div>
-              <ul class="stack-specs">
-                <li><i class="bi bi-door-open"></i> {{ property.bedrooms }}</li>
-                <li><i class="bi bi-droplet"></i> {{ property.bathrooms }}</li>
-                <li><i class="bi bi-aspect-ratio"></i> {{ property.square_feet|floatformat:0|intcomma }} sq ft</li>
-              </ul>
-              <div class="stack-foot">
-                <span class="stack-price">{{ property.formatted_price }}</span>
-                <a href="{{ property.get_absolute_url }}" class="stack-link">View</a>
-              </div>
-            </div>
-          </article>
+          <a href="{{ property.get_absolute_url }}" class="stretched-link" aria-label="View {{ property.title }}"></a>
         </div>
         {% endfor %}
-
-      </div>
       {% else %}
-      <div class="text-center">
-        <p>No featured properties available at the moment. Check back soon!</p>
-      </div>
+        <!-- Fallback cards -->
+        {% for i in "123" %}
+        <div class="prop-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
+          <div class="prop-card-img">
+            <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Property" loading="lazy">
+            <div class="prop-img-overlay"></div>
+            <div class="prop-status for-sale">For Sale</div>
+            <div class="prop-wishlist"><i class="bi bi-heart"></i></div>
+          </div>
+          <div class="prop-card-body">
+            <div class="prop-price">₦185,000,000</div>
+            <div class="prop-title">Stunning 5-Bedroom Duplex in Lekki</div>
+            <div class="prop-location"><i class="bi bi-geo-alt-fill"></i> Lekki Phase 1, Lagos</div>
+            <div class="prop-features">
+              <div class="prop-feat"><i class="bi bi-door-open"></i> 5 Beds</div>
+              <div class="prop-feat"><i class="bi bi-droplet"></i> 6 Baths</div>
+              <div class="prop-feat"><i class="bi bi-aspect-ratio"></i> 4,200 sq ft</div>
+            </div>
+          </div>
+          <a href="{% url 'properties' %}" class="stretched-link"></a>
+        </div>
+        {% endfor %}
       {% endif %}
-
     </div>
 
-  </section><!-- /Featured Properties Section -->
-
-  <!-- Featured Services Section -->
-
-  {% load humanize %}
-
-  <section id="pricing-packages" class="featured-services section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Sell Your Properties With Us</h2>
-      <p>Choose the perfect package to post your properties and reach potential buyers</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row g-4 justify-content-center">
-
-        {% if pricing_packages %}
-        {% for pkg in pricing_packages %}
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="{% cycle '200' '300' '400' '500' %}">
-          <div class="service-card {% if pkg.slots_count == 10 %}featured{% endif %}">
-            <div class="service-header">
-              <div class="service-icon">
-                <i class="bi bi-building"></i>
-              </div>
-              <div class="service-number">{{ pkg.slots_count }}</div>
-            </div>
-            <div class="service-content">
-              <h3><a href="{% url 'listings:subscribe' pkg.id %}">{{ pkg.name }}</a></h3>
-              <p>{{ pkg.description|default:"Post your properties and connect with buyers instantly" }}</p>
-              <ul class="service-features">
-                <li><i class="bi bi-check2"></i> {{ pkg.slots_count }} Property Slot{{ pkg.slots_count|pluralize }}</li>
-                <li><i class="bi bi-check2"></i> Never Expires</li>
-                <li><i class="bi bi-check2"></i> Dashboard Management</li>
-                {% if pkg.slots_count >= 10 %}
-                <li><i class="bi bi-star-fill"></i> Priority Support</li>
-                {% endif %}
-              </ul>
-            </div>
-            <div class="service-action">
-              {% if pkg.price == 0 %}
-              <span class="service-price">Free</span>
-              {% else %}
-              <span class="service-price">₦{{ pkg.price|floatformat:0|intcomma}}</span>
-              {% endif %}
-              <form method="post" action="{% url "listings:subscribe" pkg.id %}">
-                {% csrf_token %}
-                <a href="{% url 'listings:subscribe' pkg.id %}" class="service-btn">
-                  <span>Get Package</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </form>
-
-            </div>
-          </div>
-        </div><!-- End Service Item -->
-        {% endfor %}
-        {% else %}
-        <!-- Fallback if no packages -->
-        <div class="col-12 text-center">
-          <p>No pricing packages available at the moment. Please check back later.</p>
-        </div>
-        {% endif %}
-
-      </div>
-
-      <div class="text-center" data-aos="fade-up" data-aos-delay="600">
-        <a href="{% url 'listings:pricing' %}" class="btn-all-services">
-          <span>View All Pricing Plans</span>
-          <i class="bi bi-arrow-up-right"></i>
-        </a>
-      </div>
-
+    <div style="text-align: center; margin-top: 52px;" data-reveal>
+      <a href="{% url 'properties' %}" class="cta-primary">
+        View All Properties <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
+  </section>
 
-  </section><!-- /Pricing Packages Section -->
-  <!-- Featured Agents Section -->
-  <section id="featured-agents" class="featured-agents section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Our Trusted Agents</h2>
-      <p>Work with the industry's most dedicated professionals who are committed to your success and satisfaction.</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row gy-5 justify-content-center">
-
-        {% if featured_agents %}
-        {% for agent in featured_agents|slice:":3" %}
-        <div class="col-lg-6 col-xl-4" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' %}">
-          <div class="agent-card">
-            <div class="agent-image">
-              {% if agent.user.get_users_image %}
-              <img src="{{ agent.user.get_users_image }}" alt="{{ agent.user.get_full_name }}" class="img-fluid">
-              {% else %}
-              <img src="{% static 'assets/img/real-estate/agent-5.webp' %}" alt="{{ agent.user.get_full_name }}"
-                class="img-fluid">
-              {% endif %}
-              <div class="agent-overlay">
-                <div class="contact-buttons">
-                  {% if agent.user.phone %}
-                  <a href="tel:{{ agent.user.phone }}" class="btn-contact" title="Call Agent">
-                    <i class="bi bi-telephone"></i>
-                  </a>
-                  {% endif %}
-                  <a href="mailto:{{ agent.user.email }}" class="btn-contact" title="Email Agent">
-                    <i class="bi bi-envelope"></i>
-                  </a>
-                  {% if agent.user.phone %}
-                  <a href="https://wa.me/{{ agent.user.phone }}" class="btn-contact" title="WhatsApp" target="_blank">
-                    <i class="bi bi-whatsapp"></i>
-                  </a>
-                  {% endif %}
-                </div>
-              </div>
-              <div class="status-badge {% if forloop.first %}top-agent{% else %}certified{% endif %}">
-                {% if forloop.first %}Top Agent{% else %}Verified{% endif %}
-              </div>
-            </div>
-            <div class="agent-info">
-              <div class="agent-meta">
-                <h3 class="agent-name">{{ agent.user.get_full_name|default:agent.user.username }}</h3>
-                <p class="agent-title">Real Estate Professional</p>
-              </div>
-              <div class="agent-stats">
-                <div class="stat-item">
-                  <span class="stat-number">{{ agent.user.properties.count }}+</span>
-                  <span class="stat-label">Properties Listed</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                  <span class="stat-number">{% if agent.verification_status == 'verified' %}✓{% else %}-{% endif %}</span>
-                  <span class="stat-label">Verified</span>
-                </div>
-              </div>
-              <div class="location-tag">
-                <i class="bi bi-geo-alt"></i>
-                <span>Nigeria</span>
-              </div>
-              <div class="specialties">
-                <span class="specialty-tag">Residential</span>
-                <span class="specialty-tag">Commercial</span>
-              </div>
-              <a href="{% url 'agents:agent_profile' agent.slug %}" class="profile-link">View Full Profile</a>
-            </div>
-          </div>
-        </div><!-- End Agent Card -->
-        {% endfor %}
-        {% else %}
-        <div class="col-12 text-center">
-          <p>No verified agents available at the moment. Check back soon!</p>
-        </div>
-        {% endif %}
-
-      </div>
-
-      <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
-        <a href="{% url 'agents' %}" class="explore-agents-btn">
-          <span>Explore All Our Agents</span>
-          <i class="bi bi-arrow-right-circle"></i>
-        </a>
-      </div>
-
-    </div>
-
-  </section><!-- /Featured Agents Section -->
-
-  <!-- Partners Section -->
-  <section id="clients" class="clients section light-background">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Our Trusted Partners</h2>
-      <p>Collaborating with industry leaders to deliver exceptional real estate services and solutions.</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="swiper init-swiper">
-        <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              },
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 2,
-                  "spaceBetween": 40
-                },
-                "480": {
-                  "slidesPerView": 3,
-                  "spaceBetween": 60
-                },
-                "640": {
-                  "slidesPerView": 4,
-                  "spaceBetween": 80
-                },
-                "992": {
-                  "slidesPerView": 6,
-                  "spaceBetween": 120
-                }
-              }
-            }
-          </script>
-        <div class="swiper-wrapper align-items-center">
-          <div class="swiper-slide"><img src="" class="img-fluid" alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/fidelity.webp' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/billion.jpg' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/lagos.jpg' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/adozil.jpg' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/zental.jpg' %}" class="img-fluid"
-              alt=""></div>
-          <div class="swiper-slide"><img src="{% static 'assets/img/real-estate/harmony.jpg' %}" class="img-fluid"
-              alt=""></div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
-
-    </div>
-
-  </section><!-- /Clients Section -->
-  
-
-  <!-- Testimonials Section -->
-
-  <section id="hero" class="hero section">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="hero-content">
-        <div class="row align-items-center">
-
-          <div class="col-lg-6 hero-text" data-aos="fade-right" data-aos-delay="200">
-            <div class="hero-badge">
-              <i class="bi bi-star-fill"></i>
-              <span>Premium Properties</span>
-            </div>
-            <h1>Discover Your Perfect Home in the Heart of the City</h1>
-            <p>Experience seamless property search with Nigeria's most trusted real estate platform. From modern
-              apartments to luxury estates, find your dream property with verified listings from certified agents across
-              major cities.</p>
-
-            <div class="search-form" data-aos="fade-up" data-aos-delay="300">
-              <form action="{% url 'search_properties' %}" method="get">
-                <div class="row g-3">
-
-                  <!-- State Selection -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="state-type" name="state_type" required>
-                        <option value="">Select State</option>
-                        {% for state in states %}
-                        <option value="{{ state.id }}">{{ state.name }}</option>
-                        {% endfor %}
-                      </select>
-                      <label for="state-type">State</label>
-                    </div>
-                  </div>
-
-                  <!-- City Selection (Dynamically populated) -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="cities-type" name="city_type" required disabled>
-                        <option value="">Select State First</option>
-                      </select>
-                      <label for="cities-type">City</label>
-                    </div>
-                  </div>
-
-                  <!-- Property Type -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="property-type" name="property_type">
-                        <option value="">Select Type</option>
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="condo">Condo</option>
-                        <option value="townhouse">Townhouse</option>
-                        <option value="land">Land</option>
-                        <option value="duplex">Duplex</option>
-                        <option value="bungalow">Bungalow</option>
-                      </select>
-                      <label for="property-type">Property Type</label>
-                    </div>
-                  </div>
-
-                  <!-- Price Range -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="price-range" name="price_range">
-                        <option value="">Price Range</option>
-                        <option value="0-5000000">Under ₦5M</option>
-                        <option value="5000000-10000000">₦5M - ₦10M</option>
-                        <option value="10000000-20000000">₦10M - ₦20M</option>
-                        <option value="20000000-50000000">₦20M - ₦50M</option>
-                        <option value="50000000+">Above ₦50M</option>
-                      </select>
-                      <label for="price-range">Price Range</label>
-                    </div>
-                  </div>
-
-                  <!-- Bedrooms -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="bedrooms" name="bedrooms">
-                        <option value="">Bedrooms</option>
-                        <option value="1">1 Bedroom</option>
-                        <option value="2">2 Bedrooms</option>
-                        <option value="3">3 Bedrooms</option>
-                        <option value="4">4 Bedrooms</option>
-                        <option value="5+">5+ Bedrooms</option>
-                      </select>
-                      <label for="bedrooms">Bedrooms</label>
-                    </div>
-                  </div>
-
-                  <!-- Bathrooms -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="bathrooms" name="bathrooms">
-                        <option value="">Bathrooms</option>
-                        <option value="1">1 Bathroom</option>
-                        <option value="2">2 Bathrooms</option>
-                        <option value="3">3 Bathrooms</option>
-                        <option value="4+">4+ Bathrooms</option>
-                      </select>
-                      <label for="bathrooms">Bathrooms</label>
-                    </div>
-                  </div>
-
-                  <!-- Search Button -->
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-search w-100">
-                      <i class="bi bi-search"></i>
-                      Search Properties
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-
-
-
-
-          </div><!-- End Hero Text -->
-
-          <div class="col-lg-6 hero-images" data-aos="fade-left" data-aos-delay="400">
-            <div class="image-stack">
-              <div class="main-image">
-                {% if featured_properties %}
-                {% with featured_properties|first as hero_prop %}
-                <img
-                  src="{% if hero_prop.featured_image %}{{ hero_prop.featured_image.url }}{% else %}{% static 'assets/img/real-estate/property-exterior-3.webp' %}{% endif %}"
-                  alt="{{ hero_prop.title }}" class="img-fluid" fetchpriority="high">
-                <div class="property-tag">
-                  <span class="price">{{ hero_prop.formatted_price }}</span>
-                  <span class="type">{% if hero_prop.is_featured %}Featured{% elif hero_prop.is_premium %}Premium{% else
-                    %}Prime{% endif %}</span>
-                </div>
-                {% endwith %}
-                {% else %}
-                <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Luxury Property"
-                  class="img-fluid" fetchpriority="high">
-                <div class="property-tag">
-                  <span class="price">$850,000</span>
-                  <span class="type">Featured</span>
-                </div>
-                {% endif %}
-              </div>
-
-              <div class="secondary-image">
-                <img src="{% static 'assets/img/real-estate/property-interior-7.webp' %}" alt="Property Interior"
-                  class="img-fluid">
-              </div>
-
-
-            </div>
-          </div><!-- End Hero Images -->
-
-        </div>
-      </div>
-
-    </div>
-
-  </section><!-- /Hero Section -->
-  <!-- Why Us Section -->
-
-
-  <!-- Recent Blog Posts Section -->
-  <section id="recent-blog-posts" class="recent-blog-posts section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Market Insights & News</h2>
-      <p>Stay informed with the latest trends and advice from our real estate experts.</p>
-    </div><!-- End Section Title -->
-
+  <!-- ======================== WHY NESTOVA ======================== -->
+  <section class="why-section">
+    <div class="why-bg-accent"></div>
     <div class="container">
-
-      <div class="row gy-5">
-        {% for recent in recent_blog_posts %}
-        <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-          <div class="post-item position-relative h-100">
-
-            <div class="post-img position-relative overflow-hidden">
-              <img src="{% static 'assets/img/blog/blog-post-1.webp' %}" class="img-fluid" alt="">
-              <span class="post-date">December 12</span>
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-5" data-reveal>
+          <div style="position: relative; padding: 30px;">
+            <div class="why-video-frame">
+              <iframe id="yt-player"
+                src="https://www.youtube-nocookie.com/embed/35cEKa_3hQo?autoplay=1&mute=1&loop=1&playlist=35cEKa_3hQo&controls=0&rel=0&playsinline=1"
+                title="Nestova Real Estate" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                loading="lazy">
+              </iframe>
+              <button class="unmute-btn-glass" onclick="toggleMute()" id="unmute-btn" title="Toggle sound">🔇</button>
             </div>
 
-            <div class="post-content d-flex flex-column">
-              <h3 class="post-title">{{ recent.title }}</h3>
-              <a href="{{ recent.get_absolute_url }}" class="readmore stretched-link"
-                aria-label="Read more about {{ recent.title }}"><span>Read More</span><i
-                  class="bi bi-arrow-right"></i></a>
+            <!-- Floating stat cards -->
+            <div class="video-stat-card card-years">
+              <div class="vsc-number">15+</div>
+              <div class="vsc-label">Years Excellence</div>
             </div>
-
+            <div class="video-stat-card card-clients">
+              <div class="vsc-number">3.2K</div>
+              <div class="vsc-label">Happy Clients</div>
+            </div>
           </div>
-        </div><!-- End post item -->
+        </div>
+
+        <div class="col-lg-7" data-reveal data-reveal-delay="200">
+          <div style="padding: 0 40px 0 20px;">
+            <div class="section-badge"><i class="bi bi-star-fill"></i> Why Choose Us</div>
+            <h2 class="section-title-xl" style="margin-bottom: 16px; color: #060B1A;">Your Gateway to <em>Exceptional</em> Real Estate</h2>
+            <p class="section-subtitle" style="margin-bottom: 36px; color: #060B1A;">Nestova combines deep local market knowledge with international service standards, providing a secure and transparent marketplace for all your real estate needs.</p>
+
+            <div class="benefit-item-3d">
+              <div class="benefit-icon-3d"><i class="bi bi-geo-alt-fill"></i></div>
+              <div class="benefit-text">
+                <h4>Prime Locations</h4>
+                <p>Exclusive access to the most sought-after neighbourhoods and emerging markets across Nigeria.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item-3d">
+              <div class="benefit-icon-3d"><i class="bi bi-shield-fill-check"></i></div>
+              <div class="benefit-text">
+                <h4>Guaranteed Results</h4>
+                <p>Our proven track record ensures successful transactions and fully satisfied clients every time.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item-3d">
+              <div class="benefit-icon-3d"><i class="bi bi-person-check-fill"></i></div>
+              <div class="benefit-text">
+                <h4>Expert Agents</h4>
+                <p>A dedicated team of certified professionals committed to finding your perfect property match.</p>
+              </div>
+            </div>
+
+            <div class="benefit-item-3d">
+              <div class="benefit-icon-3d"><i class="bi bi-graph-up-arrow"></i></div>
+              <div class="benefit-text">
+                <h4>Investment Insights</h4>
+                <p>Real-time market data and expert analysis to help you make smarter investment decisions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== TESTIMONIALS ======================== -->
+  <section class="testimonials-section">
+    <div style="text-align: center;" data-reveal>
+      <div class="section-badge"><i class="bi bi-chat-quote-fill"></i> Testimonials</div>
+      <h2 class="section-title-xl">What Our <em>Clients</em> Say</h2>
+      <p class="section-subtitle" style="margin: 14px auto 0;">Real stories from real people who found their dream homes with Nestova.</p>
+    </div>
+
+    <div class="testi-grid">
+      {% if testimonials %}
+        {% for testimonial in testimonials %}
+        <div class="testi-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
+          <div class="testi-stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testi-text">{{ testimonial.message }}</p>
+          <div class="testi-author">
+            {% if testimonial.image %}
+            <img src="{{ testimonial.image.url }}" class="testi-avatar" alt="{{ testimonial.name }}">
+            {% else %}
+            <div class="testi-avatar" style="background: linear-gradient(135deg, rgba(201,168,76,0.3), rgba(201,168,76,0.1)); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color: var(--gold);">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            {% endif %}
+            <div>
+              <div class="testi-name">{{ testimonial.name }}</div>
+              <div class="testi-role">{{ testimonial.role|default:"Verified Client" }}</div>
+            </div>
+          </div>
+        </div>
         {% endfor %}
+      {% else %}
+        <!-- Fallback testimonials -->
+        <div class="testi-card" data-reveal data-reveal-delay="100">
+          <div class="testi-stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testi-text">"Working with Nestova was an absolute pleasure. They found us our dream home in Lekki within two weeks. The process was seamless and their team was incredibly professional."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.1));display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--gold);">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+              <div class="testi-name">Adaeze Okafor</div>
+              <div class="testi-role">Property Buyer, Lagos</div>
+            </div>
+          </div>
+        </div>
 
-      </div>
+        <div class="testi-card" data-reveal data-reveal-delay="200">
+          <div class="testi-stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testi-text">"Nestova's market insights helped me make a brilliant investment decision. My property value has grown 40% in just 18 months. Truly exceptional guidance and support."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,rgba(30,100,200,0.3),rgba(30,100,200,0.1));display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#7EB8FF;">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+              <div class="testi-name">Emeka Nwosu</div>
+              <div class="testi-role">Real Estate Investor, Abuja</div>
+            </div>
+          </div>
+        </div>
 
+        <div class="testi-card" data-reveal data-reveal-delay="300">
+          <div class="testi-stars">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testi-text">"From shortlisting to closing, Nestova handled everything flawlessly. Their knowledge of the VI market is unmatched. We couldn't be happier with our new home."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,rgba(180,30,100,0.3),rgba(180,30,100,0.1));display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#FF7EB8;">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+              <div class="testi-name">Tunde & Bisi Adeleke</div>
+              <div class="testi-role">Homeowners, Victoria Island</div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
+  </section>
 
-  </section><!-- /Recent Blog Posts Section -->
-
-  <!-- Call To Action Section -->
-  <section class="call-to-action-2 call-to-action section light-background" id="call-to-action">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row align-items-center">
-        <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-right" data-aos-delay="200">
-
-          <div class="cta-content">
-            <div class="section-badge">Your Property Journey Starts Here</div>
-            <h2>Ready to Find Your Perfect Investment?</h2>
-            <p>Whether you're looking for your first home, a luxury estate, or a high-yield investment property, our
-              team is here to guide you every step of the way.</p>
-
-            <div class="benefits-list">
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="300">
-                <i class="bi bi-check-circle-fill"></i>
-                <span>Expert market analysis and insights</span>
-              </div>
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="350">
-                <i class="bi bi-check-circle-fill"></i>
-                <span>Personalized property recommendations</span>
-              </div>
-              <div class="benefit-item" data-aos="fade-up" data-aos-delay="400">
-                <i class="bi bi-check-circle-fill"></i>
-                <span>End-to-end transaction support</span>
-              </div>
-            </div>
-
-            <div class="cta-actions">
-              <a href="contact.html" class="btn btn-primary">
-                <i class="bi bi-person-lines-fill"></i>
-                Get Free Consultation
-              </a>
-              <a href="contact.html" class="btn btn-secondary">
-                <i class="bi bi-telephone-fill"></i>
-                Call (555) 123-4567
-              </a>
-            </div>
-
-          </div><!-- End CTA Content -->
-
-        </div><!-- End Left Column -->
-
-        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="250">
-
-          <div class="cta-visual">
-            <div class="main-image">
-              <img src="{% static 'assets/img/real-estate/property-exterior-5.webp' %}" alt="Property Investment"
-                class="img-fluid">
-              <div class="overlay-badge">
-                <i class="bi bi-star-fill"></i>
-                <span>Trusted by 500+ Clients</span>
-              </div>
-            </div>
-
-            <div class="floating-stats">
-              <div class="stat-card" data-aos="zoom-in" data-aos-delay="450">
-                <div class="stat-icon">
-                  <i class="bi bi-house-heart-fill"></i>
-                </div>
-                <div class="stat-info">
-                  <span class="stat-number">850+</span>
-                  <span class="stat-label">Properties Sold</span>
-                </div>
-              </div>
-
-              <div class="stat-card" data-aos="zoom-in" data-aos-delay="500">
-                <div class="stat-icon">
-                  <i class="bi bi-trophy-fill"></i>
-                </div>
-                <div class="stat-info">
-                  <span class="stat-number">15</span>
-                  <span class="stat-label">Years Experience</span>
-                </div>
-              </div>
-            </div>
-
-          </div><!-- End CTA Visual -->
-
-        </div><!-- End Right Column -->
-      </div>
-
+  <!-- ======================== CTA BAND ======================== -->
+  <div class="cta-band" data-reveal>
+    <h2>Ready to Find Your <em>Dream Property?</em></h2>
+    <p>Join thousands of satisfied clients who trusted Nestova with their most important real estate decisions.</p>
+    <div class="cta-band-btns">
+      <a href="{% url 'properties' %}" class="cta-primary">
+        Browse Properties <i class="bi bi-arrow-right"></i>
+      </a>
+      <a href="{% url 'contact' %}" class="cta-secondary">
+        <i class="bi bi-telephone"></i> Speak to an Expert
+      </a>
     </div>
-  </section><!-- /Call To Action Section -->
+  </div>
 
 </main>
 
+<!-- ======================== HERO CAROUSEL JS ======================== -->
 <script>
-  // Smart City Filter - Dynamically load cities based on selected state
-  document.getElementById('state-type').addEventListener('change', function () {
-    const stateId = this.value;
-    const citySelect = document.getElementById('cities-type');
+(function() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const totalEl = document.getElementById('totalSlides');
+  const currentEl = document.getElementById('currentSlide');
+  const dotsWrap = document.getElementById('heroDots');
+  let current = 0;
+  let autoTimer;
 
-    // Reset city dropdown
-    citySelect.innerHTML = '<option value="">Loading cities...</option>';
-    citySelect.disabled = true;
+  if (!slides.length) return;
 
-    if (!stateId) {
-      citySelect.innerHTML = '<option value="">Select State First</option>';
-      return;
-    }
+  totalEl.textContent = slides.length;
 
-    // Fetch cities for selected state
-    fetch(`/api/get-cities/?state_id=${stateId}`)
-      .then(response => response.json())
-      .then(data => {
-        citySelect.innerHTML = '<option value="">Select City</option>';
-
-        if (data.cities && data.cities.length > 0) {
-          data.cities.forEach(city => {
-            const option = document.createElement('option');
-            option.value = city.id;
-            option.textContent = city.name;
-            citySelect.appendChild(option);
-          });
-          citySelect.disabled = false;
-        } else {
-          citySelect.innerHTML = '<option value="">No cities available</option>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching cities:', error);
-        citySelect.innerHTML = '<option value="">Error loading cities</option>';
-      });
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
   });
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dotsWrap.children[current].classList.remove('active');
+    current = (idx + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dotsWrap.children[current].classList.add('active');
+    currentEl.textContent = current + 1;
+    resetAuto();
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 7000);
+  }
+
+  document.getElementById('heroPrev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('heroNext').addEventListener('click', () => goTo(current + 1));
+
+  resetAuto();
+
+  // Touch swipe
+  let startX = 0;
+  const track = document.querySelector('.carousel-3d-track');
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) goTo(dx < 0 ? current + 1 : current - 1);
+  }, { passive: true });
+})();
+
+// Toggle mute
+let muted = true;
+function toggleMute() {
+  const iframe = document.getElementById('yt-player');
+  const btn = document.getElementById('unmute-btn');
+  if (!iframe) return;
+  const src = iframe.src;
+  if (muted) {
+    iframe.src = src.replace('&mute=1', '&mute=0');
+    btn.textContent = '🔊';
+  } else {
+    iframe.src = src.replace('&mute=0', '&mute=1');
+    btn.textContent = '🔇';
+  }
+  muted = !muted;
+}
+
+// Search tab switching
+document.querySelectorAll('.search-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// Reveal on scroll
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+// Property card 3D tilt effect
+document.querySelectorAll('.prop-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -10;
+    card.style.transform = `translateY(-14px) rotateX(${y}deg) rotateY(${x}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
 </script>
 
-<style>
-  /* Partners Section Styling */
-  .partners.section {
-    background: #f8f9fa;
-    padding: 80px 0;
-  }
-
-  .partner-item {
-    padding: 10px;
-  }
-
-  .partner-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 30px 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 150px;
-  }
-
-  .partner-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  }
-
-  .partner-card img {
-    max-width: 100%;
-    height: auto;
-    filter: grayscale(100%);
-    opacity: 0.7;
-    transition: all 0.3s ease;
-  }
-
-  .partner-card:hover img {
-    filter: grayscale(0%);
-    opacity: 1;
-  }
-
-  /* Owl Carousel Custom Styling */
-  .partners-carousel .owl-nav {
-    margin-top: 30px;
-  }
-
-  .partners-carousel .owl-nav button {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #ffffff !important;
-    color: #333 !important;
-    font-size: 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    margin: 0 5px;
-  }
-
-  .partners-carousel .owl-nav button:hover {
-    background: #007bff !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-  }
-
-  .partners-carousel .owl-dots {
-    margin-top: 25px;
-  }
-
-  .partners-carousel .owl-dot {
-    display: inline-block;
-    margin: 0 5px;
-  }
-
-  .partners-carousel .owl-dot span {
-    width: 12px;
-    height: 12px;
-    background: #d1d1d1;
-    border-radius: 50%;
-    display: block;
-    transition: all 0.3s ease;
-  }
-
-  .partners-carousel .owl-dot.active span,
-  .partners-carousel .owl-dot:hover span {
-    background: #007bff;
-    transform: scale(1.2);
-  }
-</style>
-
-<script>
-  // Initialize Owl Carousel for Partners Section
-  document.addEventListener('DOMContentLoaded', function () {
-    // Wait for jQuery and Owl Carousel to load
-    function initPartnersCarousel() {
-      if (typeof jQuery !== 'undefined' && typeof jQuery.fn.owlCarousel !== 'undefined') {
-        jQuery('.partners-carousel').owlCarousel({
-          loop: true,
-          margin: 20,
-          nav: true,
-          dots: true,
-          autoplay: true,
-          autoplayTimeout: 3000,
-          autoplayHoverPause: true,
-          responsive: {
-            0: {
-              items: 1
-            },
-            576: {
-              items: 2
-            },
-            768: {
-              items: 3
-            },
-            992: {
-              items: 4
-            }
-          }
-        });
-      } else {
-        // Retry after a short delay if libraries aren't loaded yet
-        setTimeout(initPartnersCarousel, 100);
-      }
-    }
-
-    initPartnersCarousel();
-  });
-</script>
-
-
-{% endblock content %}
+{% endblock %}
