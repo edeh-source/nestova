@@ -342,7 +342,7 @@ def add_to_cart(request, product_id):
         })
     
     messages.success(request, message)
-    return redirect('cart')
+    return redirect('shop:cart')
 
 
 @require_POST
