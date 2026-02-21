@@ -1857,6 +1857,21 @@
     line-height: 1.75;
   }
 
+  .license-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 48px;
+    margin-bottom: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 36px;
+  }
+
+  .license-cards-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
   .compliance-badge {
     display: inline-flex;
     align-items: center;
@@ -2102,12 +2117,25 @@
     .licensed-header-text h2 {
       font-size: 1.65rem;
     }
+
+    .license-body-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .license-cards-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 480px) {
     .licensed-glass {
       padding: 28px 18px;
       border-radius: 18px;
+    }
+
+    .license-cards-row {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -2274,378 +2302,446 @@
     transition-delay: 0.5s;
   }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    BLOG POSTS SECTION
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.blog-section {
-  position: relative;
-  z-index: 10;
-  padding: 100px 5vw;
-}
+  .blog-section {
+    position: relative;
+    z-index: 10;
+    padding: 100px 5vw;
+  }
 
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  margin-top: 52px;
-}
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 52px;
+  }
 
-.blog-card {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  background: rgba(18,18,26,0.8);
-  border: 1px solid rgba(255,255,255,0.07);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  transition: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-}
+  .blog-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(18, 18, 26, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
 
-.blog-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.1);
-  border-color: rgba(201,168,76,0.22);
-  color: inherit;
-  text-decoration: none;
-}
+  .blog-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 168, 76, 0.1);
+    border-color: rgba(201, 168, 76, 0.22);
+    color: inherit;
+    text-decoration: none;
+  }
 
-.blog-img {
-  position: relative;
-  height: 230px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
+  .blog-img {
+    position: relative;
+    height: 230px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
 
-.blog-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
-}
+  .blog-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
 
-.blog-card:hover .blog-img img { transform: scale(1.1); }
+  .blog-card:hover .blog-img img {
+    transform: scale(1.1);
+  }
 
-.blog-img-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.85) 0%, rgba(10,10,15,0.15) 60%, transparent 100%);
-}
+  .blog-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 10, 15, 0.85) 0%, rgba(10, 10, 15, 0.15) 60%, transparent 100%);
+  }
 
-.blog-cat {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  padding: 6px 16px;
-  border-radius: 50px;
-  background: linear-gradient(135deg,rgba(201,168,76,0.25),rgba(201,168,76,0.08));
-  border: 1px solid rgba(201,168,76,0.4);
-  color: var(--gold-light);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-  z-index: 2;
-}
+  .blog-cat {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.25), rgba(201, 168, 76, 0.08));
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    color: var(--gold-light);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+    z-index: 2;
+  }
 
-.blog-read-time {
-  position: absolute;
-  bottom: 14px;
-  right: 16px;
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.5);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  z-index: 2;
-}
+  .blog-read-time {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 2;
+  }
 
-.blog-body {
-  padding: 26px 26px 28px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
+  .blog-body {
+    padding: 26px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
 
-.blog-date {
-  font-size: 0.72rem;
-  color: var(--gold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
+  .blog-date {
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
 
-.blog-title {
-  font-family: var(--font-display);
-  font-size: 1.22rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.92);
-  line-height: 1.4;
-  margin-bottom: 12px;
-  transition: color 0.3s ease;
-}
+  .blog-title {
+    font-family: var(--font-display);
+    font-size: 1.22rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.4;
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+  }
 
-.blog-card:hover .blog-title { color: var(--gold-light); }
+  .blog-card:hover .blog-title {
+    color: var(--gold-light);
+  }
 
-.blog-excerpt {
-  font-size: 0.86rem;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.7;
-  flex: 1;
-  margin-bottom: 22px;
-}
+  .blog-excerpt {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.7;
+    flex: 1;
+    margin-bottom: 22px;
+  }
 
-.blog-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
+  .blog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
 
-.blog-author {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  .blog-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-.blog-author-avatar {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid rgba(201,168,76,0.3);
-}
+  .blog-author-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid rgba(201, 168, 76, 0.3);
+  }
 
-.blog-author-avatar-default {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg,rgba(201,168,76,0.25),rgba(201,168,76,0.08));
-  border: 1.5px solid rgba(201,168,76,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold);
-  font-size: 0.85rem;
-}
+  .blog-author-avatar-default {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.25), rgba(201, 168, 76, 0.08));
+    border: 1.5px solid rgba(201, 168, 76, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 0.85rem;
+  }
 
-.blog-author-name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
-}
+  .blog-author-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+  }
 
-.blog-read-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  transition: gap 0.3s ease, color 0.3s ease;
-  text-decoration: none;
-}
+  .blog-read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: gap 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+  }
 
-.blog-card:hover .blog-read-link {
-  gap: 10px;
-  color: var(--gold-light);
-}
+  .blog-card:hover .blog-read-link {
+    gap: 10px;
+    color: var(--gold-light);
+  }
 
-@media (max-width: 1100px) { .blog-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 680px) { .blog-grid { grid-template-columns: 1fr; } .blog-section { padding: 70px 16px; } }
+  @media (max-width: 1100px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  @media (max-width: 680px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-section {
+      padding: 70px 16px;
+    }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EVENTS GALLERY SECTION
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.events-section {
-  position: relative;
-  z-index: 10;
-  padding: 100px 5vw;
-  background: rgba(6,11,26,0.45);
-}
+  .events-section {
+    position: relative;
+    z-index: 10;
+    padding: 100px 5vw;
+    background: rgba(6, 11, 26, 0.45);
+  }
 
-.events-intro {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 52px;
-  flex-wrap: wrap;
-}
+  .events-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 52px;
+    flex-wrap: wrap;
+  }
 
-.events-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 220px;
-  gap: 14px;
-}
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 14px;
+  }
 
-.event-cell:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-.event-cell:nth-child(4) { grid-column: span 2; }
+  .event-cell:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
 
-.event-cell {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  background: rgba(18,18,26,0.6);
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: border-color 0.4s ease;
-}
+  .event-cell:nth-child(4) {
+    grid-column: span 2;
+  }
 
-.event-cell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
-  display: block;
-}
+  .event-cell {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(18, 18, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: border-color 0.4s ease;
+  }
 
-.event-cell:hover img { transform: scale(1.09); }
+  .event-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+  }
 
-.event-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(6,11,26,0.92) 0%, rgba(6,11,26,0.25) 55%, transparent 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 22px 20px;
-}
+  .event-cell:hover img {
+    transform: scale(1.09);
+  }
 
-.event-cell:hover .event-overlay { opacity: 1; }
+  .event-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6, 11, 26, 0.92) 0%, rgba(6, 11, 26, 0.25) 55%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px 20px;
+  }
 
-.event-name {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #fff;
-  margin-bottom: 4px;
-  line-height: 1.3;
-  transform: translateY(10px);
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-}
+  .event-cell:hover .event-overlay {
+    opacity: 1;
+  }
 
-.event-date {
-  font-size: 0.7rem;
-  color: var(--gold-light);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transform: translateY(10px);
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.05s;
-}
+  .event-name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    transform: translateY(10px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-.event-cell:hover .event-name,
-.event-cell:hover .event-date { transform: translateY(0); }
+  .event-date {
+    font-size: 0.7rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transform: translateY(10px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+  }
 
-.event-cell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  border: 1.5px solid rgba(201,168,76,0);
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
-  pointer-events: none;
-}
+  .event-cell:hover .event-name,
+  .event-cell:hover .event-date {
+    transform: translateY(0);
+  }
 
-.event-cell:hover::after {
-  border-color: rgba(201,168,76,0.45);
-  box-shadow: inset 0 0 40px rgba(201,168,76,0.07);
-}
+  .event-cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    border: 1.5px solid rgba(201, 168, 76, 0);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    pointer-events: none;
+  }
 
-.event-expand {
-  position: absolute;
-  top: 14px; right: 14px;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: rgba(10,10,15,0.55);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.78rem;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 5;
-}
+  .event-cell:hover::after {
+    border-color: rgba(201, 168, 76, 0.45);
+    box-shadow: inset 0 0 40px rgba(201, 168, 76, 0.07);
+  }
 
-.event-cell:hover .event-expand { opacity: 1; transform: scale(1); }
+  .event-expand {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(10, 10, 15, 0.55);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 5;
+  }
 
-/* Lightbox */
-#eventsLightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.92);
-  backdrop-filter: blur(14px);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+  .event-cell:hover .event-expand {
+    opacity: 1;
+    transform: scale(1);
+  }
 
-#eventsLightbox.lb-open { display: flex; }
+  /* Lightbox */
+  #eventsLightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(14px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-.lb-inner {
-  position: relative;
-  max-width: 900px;
-  width: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.85), 0 0 0 1px rgba(201,168,76,0.2);
-}
+  #eventsLightbox.lb-open {
+    display: flex;
+  }
 
-.lb-inner img {
-  width: 100%;
-  max-height: 85vh;
-  object-fit: contain;
-  display: block;
-}
+  .lb-inner {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(201, 168, 76, 0.2);
+  }
 
-.lb-close {
-  position: absolute;
-  top: 14px; right: 14px;
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: rgba(10,10,15,0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #fff;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
-  z-index: 10;
-}
+  .lb-inner img {
+    width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    display: block;
+  }
 
-.lb-close:hover { background: rgba(201,168,76,0.35); transform: rotate(90deg); }
+  .lb-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(10, 10, 15, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    z-index: 10;
+  }
 
-@media (max-width: 1024px) {
-  .events-grid { grid-template-columns: repeat(2,1fr); }
-  .event-cell:nth-child(1) { grid-column: span 1; grid-row: span 1; }
-  .event-cell:nth-child(4) { grid-column: span 1; }
-}
+  .lb-close:hover {
+    background: rgba(201, 168, 76, 0.35);
+    transform: rotate(90deg);
+  }
 
-@media (max-width: 600px) {
-  .events-section { padding: 70px 14px; }
-  .events-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .event-cell:nth-child(1) { grid-column: 1 / -1; }
-  .event-overlay { opacity: 1; }
-  .event-name, .event-date { transform: none; }
-}
+  @media (max-width: 1024px) {
+    .events-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .event-cell:nth-child(1) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+
+    .event-cell:nth-child(4) {
+      grid-column: span 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .events-section {
+      padding: 70px 14px;
+    }
+
+    .events-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .event-cell:nth-child(1) {
+      grid-column: 1 / -1;
+    }
+
+    .event-overlay {
+      opacity: 1;
+    }
+
+    .event-name,
+    .event-date {
+      transform: none;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -3015,14 +3111,7 @@
             </div>
 
             <!-- Floating stat cards -->
-            <div class="video-stat-card card-years">
-              <div class="vsc-number">15+</div>
-              <div class="vsc-label">Years Excellence</div>
-            </div>
-            <div class="video-stat-card card-clients">
-              <div class="vsc-number">3.2K</div>
-              <div class="vsc-label">Happy Clients</div>
-            </div>
+            
           </div>
         </div>
 
@@ -3030,7 +3119,8 @@
           <div style="padding: 0 40px 0 20px;">
             <div class="section-badge"><i class="bi bi-star-fill"></i> Why Choose Us</div>
             <h2 class="section-title-xl" style="margin-bottom: 16px; color: #060B1A;">Your Gateway to
-              <em>Exceptional</em> Real Estate</h2>
+              <em>Exceptional</em> Real Estate
+            </h2>
             <p class="section-subtitle" style="margin-bottom: 36px; color: #060B1A;">Nestova combines deep local market
               knowledge with international service standards, providing a secure and transparent marketplace for all
               your real estate needs.</p>
@@ -3191,9 +3281,9 @@
           <div class="section-eyebrow"><span>Regulatory Standing</span></div>
           <h2>Licensed, Regulated &amp; <em>Fully Compliant</em></h2>
           <p>
-            Nestova operates under the highest standards of professional conduct, 
-            regulatory oversight, and ethical real estate practice in Nigeria. 
-            Every transaction is protected, transparent, and fully compliant with 
+            Nestova operates under the highest standards of professional conduct,
+            regulatory oversight, and ethical real estate practice in Nigeria.
+            Every transaction is protected, transparent, and fully compliant with
             all applicable statutes.
           </p>
         </div>
@@ -3203,70 +3293,79 @@
       </div>
 
       <!-- Professional body copy -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px 48px; margin-bottom:48px; border-top:1px solid rgba(255,255,255,0.06); padding-top:36px;" class="license-body-grid">
+      <div class="license-body-grid">
 
         <div>
-          <h4 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
+          <h4
+            style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
             <i class="bi bi-building" style="color:var(--gold);margin-right:8px;"></i>
             NIESV Membership &amp; Registration
           </h4>
           <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">
-            Nestova is a registered member of the <strong style="color:rgba(255,255,255,0.75);">Nigerian Institution of Estate Surveyors and Valuers (NIESV)</strong>, 
-            Nigeria's foremost professional body for real estate practitioners. This membership affirms 
-            that all our estate surveyors hold valid practising licences, adhere to the NIESV Code of 
+            Nestova is a registered member of the <strong style="color:rgba(255,255,255,0.75);">Nigerian Institution of
+              Estate Surveyors and Valuers (NIESV)</strong>,
+            Nigeria's foremost professional body for real estate practitioners. This membership affirms
+            that all our estate surveyors hold valid practising licences, adhere to the NIESV Code of
             Professional Conduct, and complete mandatory continuing professional development every year.
           </p>
         </div>
 
         <div>
-          <h4 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
+          <h4
+            style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
             <i class="bi bi-award" style="color:var(--gold);margin-right:8px;"></i>
             Corporate Affairs Commission (CAC) Filing
           </h4>
           <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">
-            Nestova is duly incorporated under the <strong style="color:rgba(255,255,255,0.75);">Companies and Allied Matters Act (CAMA 2020)</strong> 
-            with the Corporate Affairs Commission of Nigeria. Our corporate filings are fully 
-            up-to-date, ensuring that clients engage with a legally recognised and accountable 
+            Nestova is duly incorporated under the <strong style="color:rgba(255,255,255,0.75);">Companies and Allied
+              Matters Act (CAMA 2020)</strong>
+            with the Corporate Affairs Commission of Nigeria. Our corporate filings are fully
+            up-to-date, ensuring that clients engage with a legally recognised and accountable
             entity backed by Nigerian law.
           </p>
         </div>
 
         <div>
-          <h4 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
+          <h4
+            style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
             <i class="bi bi-shield-lock" style="color:var(--gold);margin-right:8px;"></i>
             Client Fund Protection &amp; Escrow
           </h4>
           <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">
-            All client funds are held in dedicated <strong style="color:rgba(255,255,255,0.75);">ring-fenced escrow accounts</strong> 
-            with a CBN-licensed financial institution, ensuring complete separation of client 
-            monies from operating funds. No disbursement is made without a written instruction 
+            All client funds are held in dedicated <strong style="color:rgba(255,255,255,0.75);">ring-fenced escrow
+              accounts</strong>
+            with a CBN-licensed financial institution, ensuring complete separation of client
+            monies from operating funds. No disbursement is made without a written instruction
             from both parties, providing an ironclad layer of transactional security.
           </p>
         </div>
 
         <div>
-          <h4 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
+          <h4
+            style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;color:var(--text-primary);margin-bottom:10px;">
             <i class="bi bi-file-earmark-check" style="color:var(--gold);margin-right:8px;"></i>
             Anti-Money Laundering &amp; EFCC Compliance
           </h4>
           <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">
-            In accordance with the <strong style="color:rgba(255,255,255,0.75);">Money Laundering (Prevention and Prohibition) Act 2022</strong>, 
-            Nestova maintains a robust AML/CFT framework overseen by a certified compliance 
-            officer. We conduct rigorous KYC verification, transaction monitoring, and 
+            In accordance with the <strong style="color:rgba(255,255,255,0.75);">Money Laundering (Prevention and
+              Prohibition) Act 2022</strong>,
+            Nestova maintains a robust AML/CFT framework overseen by a certified compliance
+            officer. We conduct rigorous KYC verification, transaction monitoring, and
             Suspicious Transaction Reporting (STR) to the NFIU as required by law.
           </p>
         </div>
       </div>
 
       <!-- Accreditation Cards Row -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;" class="license-cards-row">
+      <div class="license-cards-row">
 
         <div class="license-card" data-reveal data-reveal-delay="100">
           <div class="license-logo-circle">
             <i class="bi bi-building-check"></i>
           </div>
           <div class="license-org-name">NIESV</div>
-          <div class="license-org-desc">Nigerian Institution of Estate Surveyors and Valuers — Full Corporate Member</div>
+          <div class="license-org-desc">Nigerian Institution of Estate Surveyors and Valuers — Full Corporate Member
+          </div>
           <div class="license-verified-chip"><i class="bi bi-check-circle-fill"></i> Active</div>
         </div>
 
@@ -3275,7 +3374,8 @@
             <i class="bi bi-briefcase-fill"></i>
           </div>
           <div class="license-org-name">CAC</div>
-          <div class="license-org-desc">Corporate Affairs Commission — Registered Company, RC No. Filed &amp; Current</div>
+          <div class="license-org-desc">Corporate Affairs Commission — Registered Company, RC No. Filed &amp; Current
+          </div>
           <div class="license-verified-chip"><i class="bi bi-check-circle-fill"></i> Registered</div>
         </div>
 
@@ -3284,7 +3384,8 @@
             <i class="bi bi-bank"></i>
           </div>
           <div class="license-org-name">CBN Escrow</div>
-          <div class="license-org-desc">Central Bank of Nigeria — Licensed Escrow Partner for Client Fund Protection</div>
+          <div class="license-org-desc">Central Bank of Nigeria — Licensed Escrow Partner for Client Fund Protection
+          </div>
           <div class="license-verified-chip"><i class="bi bi-check-circle-fill"></i> Protected</div>
         </div>
 
@@ -3300,10 +3401,13 @@
       </div>
 
       <!-- CTA Strip -->
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:44px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);">
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:44px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);">
         <div>
           <p style="font-size:0.92rem;color:var(--text-muted);line-height:1.7;max-width:560px;">
-            Transparency is our cornerstone. All our regulatory certificates, practising licences, and compliance documentation are available for inspection upon request. We believe informed clients make confident decisions.
+            Transparency is our cornerstone. All our regulatory certificates, practising licences, and compliance
+            documentation are available for inspection upon request. We believe informed clients make confident
+            decisions.
           </p>
         </div>
         <a href="{% url 'contact' %}" class="cta-primary" style="flex-shrink:0;">
@@ -3319,103 +3423,111 @@
     <div data-reveal>
       <div class="section-badge"><i class="bi bi-journal-richtext"></i> Insights &amp; Resources</div>
       <h2 class="section-title-xl">From Our <em>Blog</em></h2>
-      <p class="section-subtitle">Expert perspectives on the Nigerian real estate market, investment trends, and homeownership guides.</p>
+      <p class="section-subtitle">Expert perspectives on the Nigerian real estate market, investment trends, and
+        homeownership guides.</p>
     </div>
 
     <div class="blog-grid">
 
       {% if latest_posts %}
-        {% for post in latest_posts %}
-        <a href="{{ post.get_absolute_url }}" class="blog-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
-          <div class="blog-img">
-            {% if post.featured_image %}
-              <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
-            {% else %}
-              <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="{{ post.title }}" loading="lazy">
-            {% endif %}
-            <div class="blog-img-overlay"></div>
-            <div class="blog-cat">{{ post.category|default:"Real Estate" }}</div>
-            <div class="blog-read-time"><i class="bi bi-clock"></i> {{ post.read_time|default:"5" }} min read</div>
-          </div>
-          <div class="blog-body">
-            <div class="blog-date">{{ post.created_at|date:"F j, Y" }}</div>
-            <div class="blog-title">{{ post.title }}</div>
-            <p class="blog-excerpt">{{ post.excerpt|default:post.body|truncatewords:22 }}</p>
-            <div class="blog-footer">
-              <div class="blog-author">
-                <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
-                <span class="blog-author-name">{{ post.author.get_full_name|default:post.author.username }}</span>
-              </div>
-              <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
+      {% for post in latest_posts %}
+      <a href="{{ post.get_absolute_url }}" class="blog-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
+        <div class="blog-img">
+          {% if post.featured_image %}
+          <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+          {% else %}
+          <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="{{ post.title }}"
+            loading="lazy">
+          {% endif %}
+          <div class="blog-img-overlay"></div>
+          <div class="blog-cat">{{ post.category|default:"Real Estate" }}</div>
+          <div class="blog-read-time"><i class="bi bi-clock"></i> {{ post.read_time|default:"5" }} min read</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">{{ post.created_at|date:"F j, Y" }}</div>
+          <div class="blog-title">{{ post.title }}</div>
+          <p class="blog-excerpt">{{ post.excerpt|default:post.body|truncatewords:22 }}</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
+              <span class="blog-author-name">{{ post.author.get_full_name|default:post.author.username }}</span>
             </div>
+            <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
           </div>
-        </a>
-        {% endfor %}
+        </div>
+      </a>
+      {% endfor %}
 
       {% else %}
-        <!-- Fallback static blog cards -->
-        <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="100">
-          <div class="blog-img">
-            <img src="{% static 'assets/img/real-estate/property-exterior-9.webp' %}" alt="Lagos Property Market Outlook 2025" loading="lazy">
-            <div class="blog-img-overlay"></div>
-            <div class="blog-cat">Market Insights</div>
-            <div class="blog-read-time"><i class="bi bi-clock"></i> 6 min read</div>
-          </div>
-          <div class="blog-body">
-            <div class="blog-date">February 14, 2025</div>
-            <div class="blog-title">Lagos Property Market Outlook: What Buyers Need to Know in 2025</div>
-            <p class="blog-excerpt">As supply constraints ease in Lekki and Ikoyi, smart investors are repositioning portfolios. We break down the data, the opportunities, and the risks to watch.</p>
-            <div class="blog-footer">
-              <div class="blog-author">
-                <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
-                <span class="blog-author-name">Chukwuemeka Adeyemi</span>
-              </div>
-              <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
+      <!-- Fallback static blog cards -->
+      <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="100">
+        <div class="blog-img">
+          <img src="{% static 'assets/img/real-estate/property-exterior-9.webp' %}"
+            alt="Lagos Property Market Outlook 2025" loading="lazy">
+          <div class="blog-img-overlay"></div>
+          <div class="blog-cat">Market Insights</div>
+          <div class="blog-read-time"><i class="bi bi-clock"></i> 6 min read</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">February 14, 2025</div>
+          <div class="blog-title">Lagos Property Market Outlook: What Buyers Need to Know in 2025</div>
+          <p class="blog-excerpt">As supply constraints ease in Lekki and Ikoyi, smart investors are repositioning
+            portfolios. We break down the data, the opportunities, and the risks to watch.</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
+              <span class="blog-author-name">Chukwuemeka Adeyemi</span>
             </div>
+            <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
           </div>
-        </a>
+        </div>
+      </a>
 
-        <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="200">
-          <div class="blog-img">
-            <img src="{% static 'assets/img/real-estate/property-interior-4.webp' %}" alt="First-Time Buyer Guide Nigeria" loading="lazy">
-            <div class="blog-img-overlay"></div>
-            <div class="blog-cat">Buyer's Guide</div>
-            <div class="blog-read-time"><i class="bi bi-clock"></i> 8 min read</div>
-          </div>
-          <div class="blog-body">
-            <div class="blog-date">January 28, 2025</div>
-            <div class="blog-title">The Complete First-Time Buyer's Guide to Property Ownership in Nigeria</div>
-            <p class="blog-excerpt">From documentation and due diligence to negotiation and perfection of title — everything a first-time buyer needs to navigate Nigeria's real estate process with confidence.</p>
-            <div class="blog-footer">
-              <div class="blog-author">
-                <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
-                <span class="blog-author-name">Amara Oduola</span>
-              </div>
-              <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
+      <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="200">
+        <div class="blog-img">
+          <img src="{% static 'assets/img/real-estate/property-interior-4.webp' %}" alt="First-Time Buyer Guide Nigeria"
+            loading="lazy">
+          <div class="blog-img-overlay"></div>
+          <div class="blog-cat">Buyer's Guide</div>
+          <div class="blog-read-time"><i class="bi bi-clock"></i> 8 min read</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">January 28, 2025</div>
+          <div class="blog-title">The Complete First-Time Buyer's Guide to Property Ownership in Nigeria</div>
+          <p class="blog-excerpt">From documentation and due diligence to negotiation and perfection of title —
+            everything a first-time buyer needs to navigate Nigeria's real estate process with confidence.</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
+              <span class="blog-author-name">Amara Oduola</span>
             </div>
+            <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
           </div>
-        </a>
+        </div>
+      </a>
 
-        <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="300">
-          <div class="blog-img">
-            <img src="{% static 'assets/img/real-estate/property-exterior-10.webp' %}" alt="Real Estate Investment Nigeria" loading="lazy">
-            <div class="blog-img-overlay"></div>
-            <div class="blog-cat">Investment</div>
-            <div class="blog-read-time"><i class="bi bi-clock"></i> 7 min read</div>
-          </div>
-          <div class="blog-body">
-            <div class="blog-date">January 10, 2025</div>
-            <div class="blog-title">Why Short-Let Properties Are Outperforming Traditional Rentals in Abuja</div>
-            <p class="blog-excerpt">The short-let market in Abuja's Maitama and Wuse II districts delivered an average 34% higher yield than long-term rentals in 2024. Here's how to capitalise on this trend.</p>
-            <div class="blog-footer">
-              <div class="blog-author">
-                <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
-                <span class="blog-author-name">Damilola Fashola</span>
-              </div>
-              <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
+      <a href="{% url 'properties' %}" class="blog-card" data-reveal data-reveal-delay="300">
+        <div class="blog-img">
+          <img src="{% static 'assets/img/real-estate/property-exterior-10.webp' %}"
+            alt="Real Estate Investment Nigeria" loading="lazy">
+          <div class="blog-img-overlay"></div>
+          <div class="blog-cat">Investment</div>
+          <div class="blog-read-time"><i class="bi bi-clock"></i> 7 min read</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">January 10, 2025</div>
+          <div class="blog-title">Why Short-Let Properties Are Outperforming Traditional Rentals in Abuja</div>
+          <p class="blog-excerpt">The short-let market in Abuja's Maitama and Wuse II districts delivered an average 34%
+            higher yield than long-term rentals in 2024. Here's how to capitalise on this trend.</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
+              <span class="blog-author-name">Damilola Fashola</span>
             </div>
+            <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
           </div>
-        </a>
+        </div>
+      </a>
       {% endif %}
 
     </div>
@@ -3433,9 +3545,11 @@
       <div data-reveal>
         <div class="section-badge"><i class="bi bi-camera-fill"></i> In The Community</div>
         <h2 class="section-title-xl">Nestova <em>in Action</em></h2>
-        <p class="section-subtitle" style="margin-top:12px;">Behind every deal is a story. A glimpse into our property launches, client events, open houses, and community initiatives.</p>
+        <p class="section-subtitle" style="margin-top:12px;">Behind every deal is a story. A glimpse into our property
+          launches, client events, open houses, and community initiatives.</p>
       </div>
-      <a href="{% url 'about' %}" class="cta-secondary" data-reveal style="display:inline-flex;align-items:center;gap:10px;flex-shrink:0;">
+      <a href="{% url 'about' %}" class="cta-secondary" data-reveal
+        style="display:inline-flex;align-items:center;gap:10px;flex-shrink:0;">
         <i class="bi bi-calendar-event"></i> See All Events
       </a>
     </div>
@@ -3443,7 +3557,8 @@
     <div class="events-grid" data-reveal>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="Nestova Property Launch — Lekki Phase 1" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}"
+          alt="Nestova Property Launch — Lekki Phase 1" loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Grand Property Launch — Lekki Phase 1</div>
           <div class="event-date">November 2024</div>
@@ -3452,7 +3567,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-8.webp' %}" alt="VIP Open House — Victoria Island" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-interior-8.webp' %}" alt="VIP Open House — Victoria Island"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">VIP Open House — Victoria Island Penthouse</div>
           <div class="event-date">October 2024</div>
@@ -3461,7 +3577,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-6.webp' %}" alt="Investor Forum — Abuja" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-exterior-6.webp' %}" alt="Investor Forum — Abuja"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Nestova Investor Forum — Abuja Hilton</div>
           <div class="event-date">September 2024</div>
@@ -3470,7 +3587,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-2.webp' %}" alt="Client Appreciation Night 2024" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-interior-2.webp' %}" alt="Client Appreciation Night 2024"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Client Appreciation Night 2024</div>
           <div class="event-date">August 2024</div>
@@ -3479,7 +3597,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-4.webp' %}" alt="Ikoyi Development Showcase" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-exterior-4.webp' %}" alt="Ikoyi Development Showcase"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Ikoyi Premium Development Showcase</div>
           <div class="event-date">July 2024</div>
@@ -3488,7 +3607,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-5.webp' %}" alt="First-Time Buyer Workshop" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-interior-5.webp' %}" alt="First-Time Buyer Workshop"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">First-Time Buyer Workshop — Lagos</div>
           <div class="event-date">June 2024</div>
@@ -3497,7 +3617,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-5.webp' %}" alt="Banana Island Site Tour" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-exterior-5.webp' %}" alt="Banana Island Site Tour"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Exclusive Banana Island Site Tour</div>
           <div class="event-date">May 2024</div>
@@ -3506,7 +3627,8 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-1.webp' %}" alt="Real Estate Awards Gala 2024" loading="lazy">
+        <img src="{% static 'assets/img/real-estate/property-interior-1.webp' %}" alt="Real Estate Awards Gala 2024"
+          loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Nigerian Real Estate Awards Gala 2024</div>
           <div class="event-date">April 2024</div>
