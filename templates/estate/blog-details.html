@@ -14,19 +14,32 @@
   "@type": "BlogPosting",
   "headline": "{{ post.name|escapejs }}",
   "description": "{{ post.text|striptags|truncatewords:50|escapejs }}",
-  "image": "{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% endif %}",
+  "url": "{{ request.build_absolute_uri }}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}",
+    "width": 1200,
+    "height": 630
+  },
   "datePublished": "{{ post.publish|date:'c' }}",
   "dateModified": "{{ post.updated|date:'c' }}",
+  "keywords": "{{ post.category.name|escapejs }}, real estate Nigeria, Nestova",
+  "articleSection": "{{ post.category.name|escapejs }}",
+  "wordCount": "{{ post.text|striptags|wordcount }}",
   "author": {
     "@type": "Person",
-    "name": "{{ post.author|escapejs }}"
+    "name": "{{ post.author.user.get_full_name|default:post.author.user.username|escapejs }}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Nestova",
+    "url": "https://nestovaproperty.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ request.scheme }}://{{ request.get_host }}/static/assets/img/logo.png"
+      "url": "https://nestovaproperty.com/static/assets/img/logo.webp",
+      "width": 200,
+      "height": 60
     }
   },
   "mainEntityOfPage": {
