@@ -35,25 +35,29 @@
 <meta property="og:url"
   content="{% if og_url %}{{ og_url }}{% else %}https://nestovaproperty.com{{ request.path }}{% endif %}">
 
-{# IMAGE: No nested {% with %} — just plain if/elif/else for each tag #}
-{# Cloudinary URLs are already absolute so we never prepend the domain   #}
+{# ------------------------------------------------------------------ #}
+{# IMAGE TAGS                                                          #}
+{# All images are on Cloudinary which returns URLs with no extension. #}
+{# Appending .jpg forces Cloudinary to serve a valid JPG that         #}
+{# WhatsApp, Facebook, Twitter and other crawlers can recognize.      #}
+{# ------------------------------------------------------------------ #}
 
 {% if og_image %}
-  <meta property="og:image" content="{{ og_image }}">
-  <meta property="og:image:secure_url" content="{{ og_image }}">
-  <meta name="twitter:image" content="{{ og_image }}">
+  <meta property="og:image" content="{{ og_image }}.jpg">
+  <meta property="og:image:secure_url" content="{{ og_image }}.jpg">
+  <meta name="twitter:image" content="{{ og_image }}.jpg">
 {% elif post and post.image %}
-  <meta property="og:image" content="{{ post.image.url }}">
-  <meta property="og:image:secure_url" content="{{ post.image.url }}">
-  <meta name="twitter:image" content="{{ post.image.url }}">
+  <meta property="og:image" content="{{ post.image.url }}.jpg">
+  <meta property="og:image:secure_url" content="{{ post.image.url }}.jpg">
+  <meta name="twitter:image" content="{{ post.image.url }}.jpg">
 {% elif property and property.featured_image %}
-  <meta property="og:image" content="{{ property.featured_image.url }}">
-  <meta property="og:image:secure_url" content="{{ property.featured_image.url }}">
-  <meta name="twitter:image" content="{{ property.featured_image.url }}">
+  <meta property="og:image" content="{{ property.featured_image.url }}.jpg">
+  <meta property="og:image:secure_url" content="{{ property.featured_image.url }}.jpg">
+  <meta name="twitter:image" content="{{ property.featured_image.url }}.jpg">
 {% elif product and product.main_image %}
-  <meta property="og:image" content="{{ product.main_image.url }}">
-  <meta property="og:image:secure_url" content="{{ product.main_image.url }}">
-  <meta name="twitter:image" content="{{ product.main_image.url }}">
+  <meta property="og:image" content="{{ product.main_image.url }}.jpg">
+  <meta property="og:image:secure_url" content="{{ product.main_image.url }}.jpg">
+  <meta name="twitter:image" content="{{ product.main_image.url }}.jpg">
 {% else %}
   <meta property="og:image" content="https://nestovaproperty.com/static/assets/img/og-default.png">
   <meta property="og:image:secure_url" content="https://nestovaproperty.com/static/assets/img/og-default.png">
