@@ -1,5 +1,8 @@
 {% load static %}
-{# SEO Meta Tags Template - Safe version using explicit IF checks to avoid VariableDoesNotExist #}
+{# SEO Meta Tags Template - Fixed version with correct Cloudinary image URLs #}
+
+{# ── Helper: resolve image URL (Cloudinary = already absolute) ── #}
+{% with image_url=None %}
 
 {# 1. Basic Meta Tags #}
 <meta charset="utf-8">
@@ -21,36 +24,64 @@
 <link rel="canonical" href="https://nestovaproperty.com{{ request.path }}">
 {% endif %}
 
+{# ── RESOLVE THE BEST IMAGE URL ── #}
+{# Cloudinary URLs are already absolute (https://res.cloudinary.com/...)  #}
+{# Local/media URLs are relative and need the domain prepended             #}
+{# We detect this by checking if the URL starts with 'http'               #}
+
+{% if og_image %}
+  {% with resolved_image=og_image %}
+{% elif post and post.image %}
+  {% with resolved_image=post.image.url %}
+{% elif property and property.featured_image %}
+  {% with resolved_image=property.featured_image.url %}
+{% elif product and product.main_image %}
+  {% with resolved_image=product.main_image.url %}
+{% else %}
+  {% with resolved_image="https://nestovaproperty.com/static/assets/img/og-default.png" %}
+{% endif %}
+
 {# 3. Open Graph Meta Tags #}
 <meta property="og:site_name" content="Nestova">
+
 <meta property="og:title"
   content="{% if og_title %}{{ og_title }}{% elif property %}{{ property.title }}{% elif post %}{{ post.name }}{% elif product %}{{ product.name }}{% else %}Nestova - Your Premier Real Estate Platform{% endif %}">
+
 <meta property="og:description"
   content="{% if og_description %}{{ og_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova.{% endif %}">
 
 <meta property="og:type"
   content="{% if og_type %}{{ og_type }}{% elif post %}article{% elif property or product %}product{% else %}website{% endif %}">
+
 <meta property="og:url"
   content="{% if og_url %}{{ og_url }}{% else %}https://nestovaproperty.com{{ request.path }}{% endif %}">
 
+{# IMAGE — if URL already starts with http (Cloudinary), use as-is; otherwise prepend domain #}
 <meta property="og:image"
-  content="{% if og_image %}{{ og_image }}{% elif property and property.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ property.featured_image.url }}{% elif post and post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% elif product and product.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}">
+  content="{% if resolved_image|slice:':4' == 'http' %}{{ resolved_image }}{% else %}https://nestovaproperty.com{{ resolved_image }}{% endif %}">
+
+<meta property="og:image:secure_url"
+  content="{% if resolved_image|slice:':4' == 'http' %}{{ resolved_image }}{% else %}https://nestovaproperty.com{{ resolved_image }}{% endif %}">
 
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:locale" content="en_NG">
 
 {# 4. Twitter Card Meta Tags #}
 <meta name="twitter:card" content="{{ twitter_card|default:'summary_large_image' }}">
 <meta name="twitter:site" content="@Nestova">
+
 <meta name="twitter:title"
   content="{% if twitter_title %}{{ twitter_title }}{% elif property %}{{ property.title }}{% elif post %}{{ post.name }}{% elif product %}{{ product.name }}{% else %}Nestova - Your Premier Real Estate Platform{% endif %}">
+
 <meta name="twitter:description"
   content="{% if twitter_description %}{{ twitter_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova.{% endif %}">
-<meta name="twitter:image"
-  content="{% if twitter_image %}{{ twitter_image }}{% elif property and property.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ property.featured_image.url }}{% elif post and post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% elif product and product.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}">
 
-{# 5. Type-Specific Tags #}
+<meta name="twitter:image"
+  content="{% if resolved_image|slice:':4' == 'http' %}{{ resolved_image }}{% else %}https://nestovaproperty.com{{ resolved_image }}{% endif %}">
+
+{# 5. Article-Specific Tags #}
 {% if post %}
 <meta property="article:published_time" content="{{ article_published_time|default:post.publish|date:'c' }}">
 <meta property="article:modified_time" content="{{ article_modified_time|default:post.updated|date:'c' }}">
@@ -58,6 +89,7 @@
 <meta property="article:section" content="{{ article_section|default:post.category.name }}">
 {% endif %}
 
+{# 6. Product-Specific Tags #}
 {% if property or product %}
 <meta property="product:price:amount"
   content="{% if product_price %}{{ product_price }}{% elif property %}{{ property.price }}{% elif product %}{{ product.discount_price|default:product.price }}{% endif %}">
@@ -66,7 +98,7 @@
   content="{% if product_availability %}{{ product_availability }}{% elif product %}{{ product.is_in_stock|yesno:'in stock,out of stock' }}{% else %}in stock{% endif %}">
 {% endif %}
 
-{# 6. Structured Data (JSON-LD) - Fallback #}
+{# 7. Structured Data (JSON-LD) #}
 {% if not structured_data %}
 <script type="application/ld+json">
 {
@@ -76,7 +108,7 @@
   "url": "https://nestovaproperty.com",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://nestovaproperty.com/static/assets/img/logo.webp",
+    "url": "https://yt3.googleusercontent.com/ua-gJIoDsj_tboSXCUQOml3JsdDA2KSa6KZIuC624yDnq162PDunN0E7jIAyr3iXHYlUYOAlxg=s160-c-k-c0x00ffffff-no-rj",
     "width": 200,
     "height": 60
   }
@@ -84,6 +116,8 @@
 </script>
 {% endif %}
 
-{# 7. Theme & Mobile #}
+{# 8. Theme & Mobile #}
 <meta name="theme-color" content="#046A38">
 <meta name="format-detection" content="telephone=no">
+
+{% endwith %}
