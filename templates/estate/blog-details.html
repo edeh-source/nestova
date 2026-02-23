@@ -17,7 +17,7 @@
   "url": "{{ request.build_absolute_uri }}",
   "image": {
     "@type": "ImageObject",
-    "url": "{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}",
+    "url": "{% if post.image %}{{ post.image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}",
     "width": 1200,
     "height": 630
   },
