@@ -34,7 +34,7 @@
   content="{% if og_url %}{{ og_url }}{% else %}https://nestovaproperty.com{{ request.path }}{% endif %}">
 
 <meta property="og:image"
-  content="{% if og_image %}{{ og_image }}{% elif property and property.featured_image %}{{ property.featured_image.url }}{% elif post and post.image %}{{ post.image.url }}{% elif product and product.main_image %}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.jpg{% endif %}">
+  content="{% if og_image %}{{ og_image }}{% elif property and property.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ property.featured_image.url }}{% elif post and post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% elif product and product.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}">
 
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -48,7 +48,7 @@
 <meta name="twitter:description"
   content="{% if twitter_description %}{{ twitter_description }}{% elif property and property.description %}{{ property.description|striptags|truncatewords:30 }}{% elif post and post.text %}{{ post.text|striptags|truncatewords:30 }}{% elif product and product.short_description %}{{ product.short_description|striptags|truncatewords:30 }}{% else %}Find your dream property in Nigeria with Nestova.{% endif %}">
 <meta name="twitter:image"
-  content="{% if twitter_image %}{{ twitter_image }}{% elif property and property.featured_image %}{{ property.featured_image.url }}{% elif post and post.image %}{{ post.image.url }}{% elif product and product.main_image %}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.jpg{% endif %}">
+  content="{% if twitter_image %}{{ twitter_image }}{% elif property and property.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ property.featured_image.url }}{% elif post and post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% elif product and product.main_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.main_image.url }}{% else %}https://nestovaproperty.com/static/assets/img/og-default.png{% endif %}">
 
 {# 5. Type-Specific Tags #}
 {% if post %}
@@ -74,7 +74,12 @@
   "@type": "Organization",
   "name": "Nestova",
   "url": "https://nestovaproperty.com",
-  "logo": "https://nestovaproperty.com/static/assets/img/logo.png"
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://nestovaproperty.com/static/assets/img/logo.webp",
+    "width": 200,
+    "height": 60
+  }
 }
 </script>
 {% endif %}

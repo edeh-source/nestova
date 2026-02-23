@@ -39,17 +39,17 @@ def homepage(request):
         
         # Get recent blog posts
         from blogs.models import Post
-        from django.utils import timezone
-        recent_blog_posts = Post.objects.select_related('author', 'category').order_by('-publish')[:3]
-        print(f"{recent_blog_posts}")
-        
+        recent_blog_posts = Post.objects.filter(
+            status='published'
+        ).select_related('author', 'category').order_by('-publish')[:3]
+
         # Get featured agents for homepage
         from agents.models import Agent
         featured_agents = Agent.objects.filter(
             is_active=True,
             verification_status='verified'
         ).select_related('user')[:6]
-        
+
         context = {
             'states': states,
             'property_types': property_types,
@@ -58,11 +58,12 @@ def homepage(request):
             'all_properties': all_properties,
             'pricing_packages': pricing_packages,
             'recent_blog_posts': recent_blog_posts,
+            'latest_posts': recent_blog_posts,  # alias for index.html template
             'featured_agents': featured_agents,
         }
-        
+
         return render(request, 'estate/index.html', context)
-    
+
     except Exception as e:
         logger.error(f"Error in homepage view: {str(e)}", exc_info=True)
         # Return a minimal context to prevent complete failure
@@ -73,7 +74,8 @@ def homepage(request):
             'all_properties': [],
             'pricing_packages': [],
             'recent_blog_posts': [],
-            'error_message': 'Some content may not be available at the moment.'
+            'latest_posts': [],
+            'error_message': 'Some content may not be available at the moment.',
         })
 
 

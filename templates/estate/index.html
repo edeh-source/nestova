@@ -1588,7 +1588,7 @@
     box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
   }
 
-  partners-section {
+  .partners-section {
     position: relative;
     z-index: 10;
     padding: 100px 0 80px;
@@ -1650,11 +1650,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     padding: 16px 20px;
     background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2779,8 +2777,10 @@
                   <span>{{ property.city.name }}, {{ property.state.name }}</span>
                 </div>
                 <div class="hero-features">
-                  <div class="hero-feat"><i class="bi bi-door-open"></i><span>{{ property.bedrooms }} Bed{{ property.bedrooms|pluralize }}</span></div>
-                  <div class="hero-feat"><i class="bi bi-droplet"></i><span>{{ property.bathrooms }} Bath{{ property.bathrooms|pluralize }}</span></div>
+                  <div class="hero-feat"><i class="bi bi-door-open"></i><span>{{ property.bedrooms }}
+                      Bed{{property.bedrooms|pluralize }}</span></div>
+                  <div class="hero-feat"><i class="bi bi-droplet"></i><span>{{ property.bathrooms }}
+                      Bath{{property.bathrooms|pluralize }}</span></div>
                   <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>{{ property.square_feet|floatformat:0 }} sq ft</span></div>
                 </div>
                 <div class="hero-cta-row">
@@ -3036,7 +3036,7 @@
           <div class="prop-img-overlay"></div>
           <div
             class="prop-status {% if property.listing_type == 'rent' %}for-rent{% elif property.is_premium %}premium{% else %}for-sale{% endif %}">
-            {% if property.listing_type == 'rent' %}For Rent{% elif property.is_premium %}Premium{% else %}For Sale{% endif %}
+            {% if property.listing_type == 'rent' %}For Rent{% elif property.is_premium %}Premium{% else %}For Sale{%endif %}
           </div>
           <div class="prop-wishlist"><i class="bi bi-heart"></i></div>
         </div>
@@ -3052,7 +3052,7 @@
           </div>
           <div class="prop-features">
             <div class="prop-feat"><i class="bi bi-door-open"></i> {{ property.bedrooms }} Bed{{ property.bedrooms|pluralize }}</div>
-            <div class="prop-feat"><i class="bi bi-droplet"></i> {{ property.bathrooms }} Bath{{ property.bathrooms|pluralize }}</div>
+            <div class="prop-feat"><i class="bi bi-droplet"></i> {{ property.bathrooms }} Bath{ property.bathrooms|pluralize }}</div>
             <div class="prop-feat"><i class="bi bi-aspect-ratio"></i> {{ property.square_feet|floatformat:0 }} sq ft
             </div>
           </div>
@@ -3111,7 +3111,7 @@
             </div>
 
             <!-- Floating stat cards -->
-            
+
           </div>
         </div>
 
@@ -3433,24 +3433,25 @@
       {% for post in latest_posts %}
       <a href="{{ post.get_absolute_url }}" class="blog-card" data-reveal data-reveal-delay="{{ forloop.counter }}00">
         <div class="blog-img">
-          {% if post.featured_image %}
-          <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+          {% if post.image %}
+          <img src="{{ post.image.url }}" alt="{{ post.name }}" loading="lazy">
           {% else %}
-          <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="{{ post.title }}"
+          <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}" alt="{{ post.name }}"
             loading="lazy">
           {% endif %}
           <div class="blog-img-overlay"></div>
-          <div class="blog-cat">{{ post.category|default:"Real Estate" }}</div>
-          <div class="blog-read-time"><i class="bi bi-clock"></i> {{ post.read_time|default:"5" }} min read</div>
+          <div class="blog-cat">{{ post.category.name }}</div>
+          <div class="blog-read-time"><i class="bi bi-clock"></i> 6 min read</div>
         </div>
         <div class="blog-body">
-          <div class="blog-date">{{ post.created_at|date:"F j, Y" }}</div>
-          <div class="blog-title">{{ post.title }}</div>
-          <p class="blog-excerpt">{{ post.excerpt|default:post.body|truncatewords:22 }}</p>
+          <div class="blog-date">{{ post.publish|date:"F j, Y" }}</div>
+          <div class="blog-title">{{ post.name }}</div>
+          <p class="blog-excerpt">{{ post.text|striptags|truncatewords:22 }}</p>
           <div class="blog-footer">
             <div class="blog-author">
               <div class="blog-author-avatar-default"><i class="bi bi-person-fill"></i></div>
-              <span class="blog-author-name">{{ post.author.get_full_name|default:post.author.username }}</span>
+              <span class="blog-author-name">{{ post.author.user.get_full_name|default:post.author.user.username
+                }}</span>
             </div>
             <span class="blog-read-link">Read Article <i class="bi bi-arrow-right"></i></span>
           </div>
@@ -3533,7 +3534,7 @@
     </div>
 
     <div style="text-align:center;margin-top:52px;" data-reveal>
-      <a href="{% url 'properties' %}" class="cta-secondary" style="display:inline-flex;align-items:center;gap:10px;">
+      <a href="{% url 'post_list' %}" class="cta-secondary" style="display:inline-flex;align-items:center;gap:10px;">
         <i class="bi bi-journal-text"></i> View All Articles
       </a>
     </div>
@@ -3648,6 +3649,225 @@
       </button>
     </div>
   </div>
+
+  <!-- ======================== PARTNERS / TRUSTED BY ======================== -->
+  <section class="partners-section cta-band aria-label="Our Partners">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:56px;" data-reveal>
+        <div class="section-eyebrow"><span>Trusted Partners</span></div>
+        <h2 class="section-title" style="color: white;">Companies That <em>Trust</em> Us</h2>
+        <p class="section-sub" style="">We collaborate with Nigeria's most respected real estate institutions, developers, and
+          financial organisations to deliver excellence at every stage.</p>
+      </div>
+    </div>
+
+    <!-- Row 1 — scrolls left -->
+    <div class="partners-track-wrap">
+      <div class="partners-track" id="partnersRow1">
+        <!-- set duplicated for seamless loop -->
+        <a href="#" class="partner-card" aria-label="Knight Frank Nigeria">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Knight Frank</div>
+            <div class="partner-type-text">Property Consultancy</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="JLL Nigeria">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">JLL Nigeria</div>
+            <div class="partner-type-text">Real Estate Services</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="UPDC Plc">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">UPDC Plc</div>
+            <div class="partner-type-text">Property Development</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Lekki Gardens">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Lekki Gardens</div>
+            <div class="partner-type-text">Luxury Estates</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Brains &amp; Hammers">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Brains &amp; Hammers</div>
+            <div class="partner-type-text">Integrated Developer</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Grenadines Homes">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Grenadines Homes</div>
+            <div class="partner-type-text">Premium Residences</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Prestige Realty">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Prestige Realty</div>
+            <div class="partner-type-text">Brokerage &amp; Advisory</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Veritasi Homes">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Veritasi Homes</div>
+            <div class="partner-type-text">Urban Development</div>
+          </div>
+        </a>
+        <!-- duplicates for seamless loop -->
+        <a href="#" class="partner-card" aria-label="Knight Frank Nigeria">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Knight Frank</div>
+            <div class="partner-type-text">Property Consultancy</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="JLL Nigeria">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">JLL Nigeria</div>
+            <div class="partner-type-text">Real Estate Services</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="UPDC Plc">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">UPDC Plc</div>
+            <div class="partner-type-text">Property Development</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Lekki Gardens">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Lekki Gardens</div>
+            <div class="partner-type-text">Luxury Estates</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Brains &amp; Hammers">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Brains &amp; Hammers</div>
+            <div class="partner-type-text">Integrated Developer</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Grenadines Homes">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Grenadines Homes</div>
+            <div class="partner-type-text">Premium Residences</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Prestige Realty">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Prestige Realty</div>
+            <div class="partner-type-text">Brokerage &amp; Advisory</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Veritasi Homes">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Veritasi Homes</div>
+            <div class="partner-type-text">Urban Development</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Row 2 — scrolls right (reverse) -->
+    <div class="partners-row partners-track-wrap" style="margin-top:18px;">
+      <div class="partners-track reverse" id="partnersRow2">
+        <a href="#" class="partner-card" aria-label="Eko Atlantic">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Eko Atlantic</div>
+            <div class="partner-type-text">Landmark City</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Mixta Africa">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Mixta Africa</div>
+            <div class="partner-type-text">Affordable Housing</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Landmark Group">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Landmark Group</div>
+            <div class="partner-type-text">Mixed-Use Estates</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Fine &amp; Country">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Fine &amp; Country</div>
+            <div class="partner-type-text">Luxury Agency</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Nestoil Group">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Nestoil Group</div>
+            <div class="partner-type-text">Integrated Solutions</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Cappa &amp; D'Alberto">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Cappa &amp; D'Alberto</div>
+            <div class="partner-type-text">Construction &amp; Realty</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="PropertyPro">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">PropertyPro</div>
+            <div class="partner-type-text">Digital Marketplace</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Jide Taiwo &amp; Co">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Jide Taiwo &amp; Co</div>
+            <div class="partner-type-text">Estate Surveyors</div>
+          </div>
+        </a>
+        <!-- duplicates -->
+        <a href="#" class="partner-card" aria-label="Eko Atlantic">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Eko Atlantic</div>
+            <div class="partner-type-text">Landmark City</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Mixta Africa">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Mixta Africa</div>
+            <div class="partner-type-text">Affordable Housing</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Landmark Group">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Landmark Group</div>
+            <div class="partner-type-text">Mixed-Use Estates</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Fine &amp; Country">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Fine &amp; Country</div>
+            <div class="partner-type-text">Luxury Agency</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Nestoil Group">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Nestoil Group</div>
+            <div class="partner-type-text">Integrated Solutions</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Cappa &amp; D'Alberto">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Cappa &amp; D'Alberto</div>
+            <div class="partner-type-text">Construction &amp; Realty</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="PropertyPro">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">PropertyPro</div>
+            <div class="partner-type-text">Digital Marketplace</div>
+          </div>
+        </a>
+        <a href="#" class="partner-card" aria-label="Jide Taiwo &amp; Co">
+          <div class="partner-text-fallback">
+            <div class="partner-name-text">Jide Taiwo &amp; Co</div>
+            <div class="partner-type-text">Estate Surveyors</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
