@@ -2740,6 +2740,134 @@
       transform: none;
     }
   }
+
+  /* ============================================
+   TOP EXCOS SECTION
+   ============================================ */
+  .excos-section {
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .excos-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201, 168, 76, 0.06), transparent);
+    pointer-events: none;
+  }
+
+  .exco-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      box-shadow 0.38s ease,
+      border-color 0.38s ease;
+    will-change: transform;
+    margin-bottom: 28px;
+  }
+
+  .exco-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(201, 168, 76, 0.35);
+    border-color: rgba(201, 168, 76, 0.45);
+  }
+
+  .exco-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a2a1e, #0A0A0F);
+  }
+
+  .exco-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .exco-card:hover .exco-img-wrap img {
+    transform: scale(1.08);
+  }
+
+  .exco-img-wrap .exco-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: rgba(201, 168, 76, 0.35);
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(10, 10, 15, 0.6));
+  }
+
+  .exco-gold-bar {
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .exco-card:hover .exco-gold-bar {
+    opacity: 1;
+  }
+
+  .exco-body {
+    padding: 20px 16px 24px;
+  }
+
+  .exco-position {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201, 168, 76, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 50px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+
+  .exco-name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+  }
+
+  .exco-dept {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 575.98px) {
+    .excos-section {
+      padding: 70px 0;
+    }
+
+    .exco-card {
+      margin-bottom: 20px;
+    }
+
+    .exco-name {
+      font-size: 0.96rem;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -2781,7 +2909,7 @@
                       Bed{{property.bedrooms|pluralize }}</span></div>
                   <div class="hero-feat"><i class="bi bi-droplet"></i><span>{{ property.bathrooms }}
                       Bath{{property.bathrooms|pluralize }}</span></div>
-                  <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>{{ property.square_feet|floatformat:0 }} sq ft</span></div>
+                  <div class="hero-feat"><i class="bi bi-aspect-ratio"></i><span>{{ property.square_feet|floatformat:0}} sq ft</span></div>
                 </div>
                 <div class="hero-cta-row">
                   <a href="{{ property.get_absolute_url }}" class="cta-primary">
@@ -2944,7 +3072,7 @@
         <span class="stat-number">5+</span>
         <span class="stat-label">Years of Excellence</span>
       </div>
-      
+
       <div class="stat-item">
         <span class="stat-number">98%</span>
         <span class="stat-label">Client Satisfaction</span>
@@ -3032,7 +3160,8 @@
           <div class="prop-img-overlay"></div>
           <div
             class="prop-status {% if property.listing_type == 'rent' %}for-rent{% elif property.is_premium %}premium{% else %}for-sale{% endif %}">
-            {% if property.listing_type == 'rent' %}For Rent{% elif property.is_premium %}Premium{% else %}For Sale{%endif %}
+            {% if property.listing_type == 'rent' %}For Rent{% elif property.is_premium %}Premium{% else %}For
+            Sale{%endif %}
           </div>
           <div class="prop-wishlist"><i class="bi bi-heart"></i></div>
         </div>
@@ -3047,7 +3176,7 @@
             {{ property.city.name }}, {{ property.state.name }}
           </div>
           <div class="prop-features">
-            <div class="prop-feat"><i class="bi bi-door-open"></i> {{ property.bedrooms }} Bed{{ property.bedrooms|pluralize }}</div>
+            <div class="prop-feat"><i class="bi bi-door-open"></i> {{ property.bedrooms }} Bed{{property.bedrooms|pluralize }}</div>
             <div class="prop-feat"><i class="bi bi-droplet"></i> {{ property.bathrooms }} Bath{ property.bathrooms|pluralize }}</div>
             <div class="prop-feat"><i class="bi bi-aspect-ratio"></i> {{ property.square_feet|floatformat:0 }} sq ft
             </div>
@@ -3098,13 +3227,11 @@
           <div style="position: relative; padding: 30px;">
             <div class="why-video-frame">
               <iframe id="yt-player"
-    src="https://www.youtube-nocookie.com/embed/VXKUW1W-qTc?autoplay=1&mute=1&loop=1&playlist=VXKUW1W-qTc&controls=0&rel=0&playsinline=1"
-    title="Nestova Groups and Properties" 
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    loading="lazy"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
+                src="https://www.youtube-nocookie.com/embed/VXKUW1W-qTc?autoplay=1&mute=1&loop=1&playlist=VXKUW1W-qTc&controls=0&rel=0&playsinline=1"
+                title="Nestova Groups and Properties" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+              </iframe>
               <button class="unmute-btn-glass" onclick="toggleMute()" id="unmute-btn" title="Toggle sound">🔇</button>
             </div>
 
@@ -3555,7 +3682,7 @@
     <div class="events-grid" data-reveal>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-3.webp' %}"
+        <img src="{% static 'assets/img/real-estate/nestova-real2.jpg' %}"
           alt="Nestova Property Launch — Lekki Phase 1" loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Grand Property Launch — Lekki Phase 1</div>
@@ -3565,7 +3692,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-8.webp' %}" alt="VIP Open House — Victoria Island"
+        <img src="{% static 'assets/img/real-estate/nestova-real3.jpg' %}" alt="VIP Open House — Victoria Island"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">VIP Open House — Victoria Island Penthouse</div>
@@ -3575,7 +3702,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-6.webp' %}" alt="Investor Forum — Abuja"
+        <img src="{% static 'assets/img/real-estate/nestova-real4.jpg' %}" alt="Investor Forum — Abuja"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Nestova Investor Forum — Abuja Hilton</div>
@@ -3585,7 +3712,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-2.webp' %}" alt="Client Appreciation Night 2024"
+        <img src="{% static 'assets/img/real-estate/nestova-real5.jpg' %}" alt="Client Appreciation Night 2024"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Client Appreciation Night 2024</div>
@@ -3595,7 +3722,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-4.webp' %}" alt="Ikoyi Development Showcase"
+        <img src="{% static 'assets/img/real-estate/nestova-real6.jpg' %}" alt="Ikoyi Development Showcase"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Ikoyi Premium Development Showcase</div>
@@ -3605,7 +3732,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-5.webp' %}" alt="First-Time Buyer Workshop"
+        <img src="{% static 'assets/img/real-estate/nestova-real7.jpg' %}" alt="First-Time Buyer Workshop"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">First-Time Buyer Workshop — Lagos</div>
@@ -3615,7 +3742,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-exterior-5.webp' %}" alt="Banana Island Site Tour"
+        <img src="{% static 'assets/img/real-estate/nestova-real9.jpg' %}" alt="Banana Island Site Tour"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Exclusive Banana Island Site Tour</div>
@@ -3625,7 +3752,7 @@
       </div>
 
       <div class="event-cell" onclick="openLightbox(this)">
-        <img src="{% static 'assets/img/real-estate/property-interior-1.webp' %}" alt="Real Estate Awards Gala 2024"
+        <img src="{% static 'assets/img/real-estate/nestova-real8.jpg' %}" alt="Real Estate Awards Gala 2024"
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Nigerian Real Estate Awards Gala 2024</div>
@@ -3648,12 +3775,13 @@
   </div>
 
   <!-- ======================== PARTNERS / TRUSTED BY ======================== -->
-  <section class="partners-section cta-band aria-label="Our Partners">
+  <section class="partners-section cta-band aria-label=" Our Partners">
     <div class="container">
       <div style="text-align:center; margin-bottom:56px;" data-reveal>
         <div class="section-eyebrow"><span>Trusted Partners</span></div>
         <h2 class="section-title" style="color: white;">Companies That <em>Trust</em> Us</h2>
-        <p class="section-sub" style="">We collaborate with Nigeria's most respected real estate institutions, developers, and
+        <p class="section-sub" style="">We collaborate with Nigeria's most respected real estate institutions,
+          developers, and
           financial organisations to deliver excellence at every stage.</p>
       </div>
     </div>
@@ -3664,206 +3792,271 @@
         <!-- set duplicated for seamless loop -->
         <a href="#" class="partner-card" aria-label="Knight Frank Nigeria">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Knight Frank</div>
+            <img src="{% static 'assets/img/real-estate/cubana.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Property Consultancy</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="JLL Nigeria">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">JLL Nigeria</div>
+             <img src="{% static 'assets/img/real-estate/Aidens.png' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Real Estate Services</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="UPDC Plc">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">UPDC Plc</div>
+             <img src="{% static 'assets/img/real-estate/adozil.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Property Development</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Lekki Gardens">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Lekki Gardens</div>
+            <img src="{% static 'assets/img/real-estate/billion.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Luxury Estates</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Brains &amp; Hammers">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Brains &amp; Hammers</div>
+             <img src="{% static 'assets/img/real-estate/fidelity.webp' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Integrated Developer</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Grenadines Homes">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Grenadines Homes</div>
+            <img src="{% static 'assets/img/real-estate/harmony.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Premium Residences</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Prestige Realty">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Prestige Realty</div>
+            <img src="{% static 'assets/img/real-estate/lagos.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Brokerage &amp; Advisory</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Veritasi Homes">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Veritasi Homes</div>
+             <img src="{% static 'assets/img/real-estate/zylus.png' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Urban Development</div>
           </div>
         </a>
         <!-- duplicates for seamless loop -->
         <a href="#" class="partner-card" aria-label="Knight Frank Nigeria">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Knight Frank</div>
+             <img src="{% static 'assets/img/real-estate/zental.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Property Consultancy</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="JLL Nigeria">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">JLL Nigeria</div>
+             <img src="{% static 'assets/img/real-estate/nedcomoks.jpg' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Real Estate Services</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="UPDC Plc">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">UPDC Plc</div>
+            <img src="{% static 'assets/img/real-estate/regnarock.png' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Property Development</div>
           </div>
         </a>
         <a href="#" class="partner-card" aria-label="Lekki Gardens">
           <div class="partner-text-fallback">
-            <div class="partner-name-text">Lekki Gardens</div>
+            <img src="{% static 'assets/img/real-estate/propertyylinks.png' %}" class="img-fluid" alt="">
             <div class="partner-type-text">Luxury Estates</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Brains &amp; Hammers">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Brains &amp; Hammers</div>
-            <div class="partner-type-text">Integrated Developer</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Grenadines Homes">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Grenadines Homes</div>
-            <div class="partner-type-text">Premium Residences</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Prestige Realty">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Prestige Realty</div>
-            <div class="partner-type-text">Brokerage &amp; Advisory</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Veritasi Homes">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Veritasi Homes</div>
-            <div class="partner-type-text">Urban Development</div>
           </div>
         </a>
       </div>
     </div>
 
     <!-- Row 2 — scrolls right (reverse) -->
-    <div class="partners-row partners-track-wrap" style="margin-top:18px;">
-      <div class="partners-track reverse" id="partnersRow2">
-        <a href="#" class="partner-card" aria-label="Eko Atlantic">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Eko Atlantic</div>
-            <div class="partner-type-text">Landmark City</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Mixta Africa">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Mixta Africa</div>
-            <div class="partner-type-text">Affordable Housing</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Landmark Group">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Landmark Group</div>
-            <div class="partner-type-text">Mixed-Use Estates</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Fine &amp; Country">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Fine &amp; Country</div>
-            <div class="partner-type-text">Luxury Agency</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Nestoil Group">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Nestoil Group</div>
-            <div class="partner-type-text">Integrated Solutions</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Cappa &amp; D'Alberto">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Cappa &amp; D'Alberto</div>
-            <div class="partner-type-text">Construction &amp; Realty</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="PropertyPro">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">PropertyPro</div>
-            <div class="partner-type-text">Digital Marketplace</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Jide Taiwo &amp; Co">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Jide Taiwo &amp; Co</div>
-            <div class="partner-type-text">Estate Surveyors</div>
-          </div>
-        </a>
-        <!-- duplicates -->
-        <a href="#" class="partner-card" aria-label="Eko Atlantic">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Eko Atlantic</div>
-            <div class="partner-type-text">Landmark City</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Mixta Africa">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Mixta Africa</div>
-            <div class="partner-type-text">Affordable Housing</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Landmark Group">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Landmark Group</div>
-            <div class="partner-type-text">Mixed-Use Estates</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Fine &amp; Country">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Fine &amp; Country</div>
-            <div class="partner-type-text">Luxury Agency</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Nestoil Group">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Nestoil Group</div>
-            <div class="partner-type-text">Integrated Solutions</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Cappa &amp; D'Alberto">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Cappa &amp; D'Alberto</div>
-            <div class="partner-type-text">Construction &amp; Realty</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="PropertyPro">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">PropertyPro</div>
-            <div class="partner-type-text">Digital Marketplace</div>
-          </div>
-        </a>
-        <a href="#" class="partner-card" aria-label="Jide Taiwo &amp; Co">
-          <div class="partner-text-fallback">
-            <div class="partner-name-text">Jide Taiwo &amp; Co</div>
-            <div class="partner-type-text">Estate Surveyors</div>
-          </div>
-        </a>
+   
+  </section>
+
+  <!-- ======================== TOP EXCOS ======================== -->
+  <section class="excos-section" id="excos" aria-label="Our Top Excos">
+    <div class="container">
+
+      <!-- Heading -->
+      <div style="text-align:center; margin-bottom:60px;" data-reveal>
+        <div class="section-eyebrow"><span>Meet The Team</span></div>
+        <h2 class="section-title" style="color: black;">Our Top <em>Excos</em></h2>
+        <p class="section-sub" style="max-width:620px; margin:0 auto;">
+          The seasoned executives driving Nestova's vision forward — a team
+          of proven leaders committed to redefining Nigerian real estate.
+        </p>
       </div>
-    </div>
+
+      <!-- 12 Exec Cards — 4 per row on lg+, 3 on md, 2 on sm, 1 on xs -->
+      <div class="row">
+
+        <!-- 1 -->
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <img src="{% static 'assets/img/real-estate/segun.jpg' %}" class="img-fluid" alt="">
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Dr Segun Philips</div>
+              <div class="exco-dept" style="color: black;">MD &amp; SABREWORKS REALITY</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" data-reveal data-reveal-delay="0">
+          <div class="exco-card">
+            <div class="exco-img-wrap">
+              <div class="exco-placeholder"><i class="bi bi-person-fill"></i></div>
+            </div>
+            <div class="exco-gold-bar"></div>
+            <div class="exco-body">
+              <div class="exco-position" style="color: black;">Chief Executive Officer</div>
+              <div class="exco-name" style="color: black;">Chukwuemeka Adeyemi</div>
+              <div class="exco-dept" style="color: black;">Strategy &amp; Corporate Vision</div>
+            </div>
+          </div>
+        </div>
+
+        
+        
+
+        
+
+        
+
+      
+        
+
+      </div><!-- /.row -->
+    </div><!-- /.container -->
   </section>
 
 </main>
