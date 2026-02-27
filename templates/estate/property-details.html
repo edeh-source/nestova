@@ -1118,7 +1118,9 @@
                     <a href="{% url 'agents:agent_profile' property.agent.slug %}">
                       <img src="{% if property.agent.user.profile_image %}{{ property.agent.user.profile_image.url }}{% else %}{% static 'assets/img/real-estate/agent-3.webp' %}{% endif %}" alt="{{ property.agent.user.get_full_name }}">
                     </a>
-                  {% else %}
+                    {% elif property.listed_by %}
+                      <img src="{{ property.listed_by.get_users_image }}" alt="{{ property.listed_by.get_full_name }}">
+                    {% else %}
                     <img src="{% static 'assets/img/real-estate/agent-3.webp' %}" alt="{{ property.listed_by.get_full_name }}">
                   {% endif %}
                 </div>
@@ -1130,10 +1132,13 @@
                     <span class="agent-role">Listing Agent</span>
                     {% if property.agent.verification_status == 'verified' %}
                     <div class="badge-verified"><i class="bi bi-patch-check-fill"></i> Verified</div>
+                    {% elif property.listed_by == request.user.is_superuser  %}
+                    <div class="badge-verified"><i class="bi bi-patch-check-fill"></i> Verified</div>
                     {% endif %}
                   {% else %}
                     <span class="agent-name" style="cursor:default;">{{ property.listed_by.get_full_name|default:property.listed_by.username }}</span>
                     <span class="agent-role">Listing Agent</span>
+                    <span class="agent-role">{{ property.listed_by.phone_number }}</span>
                   {% endif %}
                 </div>
               </div>

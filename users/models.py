@@ -115,7 +115,7 @@ class User(PermissionsMixin, AbstractBaseUser):
         if self.image:
             return self.image.url
         else:
-            return settings.MEDIA_URL + "person-m-11.webp"
+            return settings.MEDIA_URL + "user-blank.webp"
     
     def get_full_name(self):
         """Return the user's full name or username as fallback"""
