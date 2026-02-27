@@ -1172,7 +1172,12 @@
           <li><a href="{% url 'properties' %}">Properties</a></li>
           <li><a href="{% url 'services:all_services' %}">Services</a></li>
           <li><a href="{% url 'shop:product_list' %}">Shop</a></li>
-          <li><a href="{% url 'agents' %}">Agents</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'shop:profile' %}">Dashboard</a></li>
+          {% else %}
+          <li><a href="{% url 'users:login' %}">Login</a></li>
+          {% endif %}
+          <li><a href="{% url 'agents' %}"></a></li>
           <li><a href="{% url 'post_list' %}">Blog</a></li>
           <li class="dropdown">
             <a href="#">
@@ -1183,8 +1188,7 @@
               {% if not request.user.agent_profile and not request.user.is_authenticated %}
               <li style="color: black;"><a href="{% url 'agents:agents_signup' %}">Become An Agent</a></li>
               {% endif %}
-              <li style="color: black;"><a href="{% url 'shop:profile' %}">My Dashboard</a></li>
-            </ul>
+              
           </li>
           <li class="dropdown">
             <a href="#">
