@@ -325,3 +325,189 @@ class PropertyAmenityLink(models.Model):
     
     def __str__(self):
         return f"{self.property.title} - {self.amenity.name}"
+
+
+# ==================== PROPERTY APPLICATION MODEL ====================
+
+class PropertyApplication(models.Model):
+    """
+    Application form for a property unit — mirrors the Ibby's Mall
+    Form & FAQ document from Finebricks Properties.
+    Linked to a specific Property; submitted from the property detail page.
+    """
+
+    # ── Link to property ────────────────────────────────────────────────────
+    # NOTE: named 'listing' (not 'property') to avoid shadowing Python's
+    # built-in @property decorator, which would cause a TypeError.
+    listing = models.ForeignKey(
+        Property,
+        on_delete=models.CASCADE,
+        related_name='applications'
+    )
+    applicant = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='property_applications'
+    )
+
+    # ── Application status (admin-managed) ──────────────────────────────────
+    APPLICATION_STATUS = [
+        ('pending',   'Pending Review'),
+        ('reviewing', 'Under Review'),
+        ('approved',  'Approved'),
+        ('rejected',  'Rejected'),
+    ]
+    status      = models.CharField(max_length=20, choices=APPLICATION_STATUS, default='pending')
+    admin_notes = models.TextField(blank=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    updated_at   = models.DateTimeField(auto_now=True)
+
+    # ── SECTION 1: Personal Details ──────────────────────────────────────────
+    TITLE_CHOICES = [
+        ('mr',     'Mr'),
+        ('mrs',    'Mrs'),
+        ('miss',   'Miss'),
+        ('ms',     'Ms'),
+        ('dr',     'Dr'),
+        ('prof',   'Prof'),
+        ('engr',   'Engr'),
+        ('chief',  'Chief'),
+        ('alhaji', 'Alhaji'),
+        ('alhaja', 'Alhaja'),
+        ('barr',   'Barr'),
+        ('other',  'Other'),
+    ]
+    title       = models.CharField(max_length=10, choices=TITLE_CHOICES)
+    surname     = models.CharField(max_length=100)
+    firstname   = models.CharField(max_length=100)
+    other_names = models.CharField(max_length=100, blank=True)
+
+    residential_address = models.TextField()
+    phone_number        = models.CharField(max_length=20)
+    email               = models.EmailField()
+    date_of_birth       = models.DateField()
+
+    nationality    = models.CharField(max_length=100, default='Nigerian')
+    marital_status = models.CharField(
+        max_length=20,
+        choices=[
+            ('single',   'Single'),
+            ('married',  'Married'),
+            ('divorced', 'Divorced'),
+            ('widowed',  'Widowed'),
+        ]
+    )
+    occupation    = models.CharField(max_length=150)
+    place_of_work = models.CharField(max_length=200, blank=True)
+    work_address  = models.TextField(blank=True)
+
+    passport_photo = models.ImageField(
+        upload_to='applications/passports/',
+        blank=True, null=True
+    )
+
+    # ── Means of Identification ──────────────────────────────────────────────
+    ID_TYPE_CHOICES = [
+        ('national_id',     'National Identity Card'),
+        ('drivers_licence', "Driver's Licence / Permit"),
+        ('intl_passport',   'International Passport'),
+        ('voters_card',     "Voter's Card"),
+    ]
+    id_type    = models.CharField(max_length=20, choices=ID_TYPE_CHOICES)
+    id_number  = models.CharField(max_length=100)
+    id_document = models.FileField(
+        upload_to='applications/ids/',
+        blank=True, null=True,
+        help_text="Scanned copy / photo of the ID document"
+    )
+
+    # ── Politically Exposed Person ───────────────────────────────────────────
+    is_pep      = models.BooleanField(
+        default=False,
+        verbose_name="Are you (or related to) a Politically Exposed Person (PEP)?"
+    )
+    pep_details = models.CharField(
+        max_length=300, blank=True,
+        help_text="Name and position held (required if PEP is Yes)"
+    )
+
+    # ── SECTION 2: Next of Kin ───────────────────────────────────────────────
+    NOK_RELATIONSHIP = [
+        ('spouse',  'Spouse'),
+        ('parent',  'Parent'),
+        ('sibling', 'Sibling'),
+        ('child',   'Child'),
+        ('friend',  'Friend'),
+        ('other',   'Other'),
+    ]
+    nok_name         = models.CharField(max_length=200, verbose_name="Name of Next of Kin")
+    nok_relationship = models.CharField(max_length=20, choices=NOK_RELATIONSHIP, verbose_name="Relationship")
+    nok_phone        = models.CharField(max_length=20, verbose_name="Next of Kin Phone Number")
+    nok_email        = models.EmailField(blank=True, verbose_name="Next of Kin Email")
+    nok_address      = models.TextField(verbose_name="Next of Kin Address")
+
+    # ── SECTION 3: Purchase Details (FAQ Q2 & Q3) ───────────────────────────
+    FLOOR_CHOICES = [
+        ('ground', 'Ground Floor'),
+        ('first',  'First Floor'),
+        ('second', 'Second Floor'),
+    ]
+    PAYMENT_PLAN_CHOICES = [
+        ('3_month', '3-Month Plan'),
+        ('6_month', '6-Month Plan'),
+    ]
+    floor_choice    = models.CharField(max_length=10, blank=True, null=True, choices=FLOOR_CHOICES)
+    number_of_shops = models.PositiveIntegerField(default=1,blank=True, null=True, verbose_name="Number of Shop Units")
+    payment_plan    = models.CharField(max_length=10, blank=True, null=True, choices=PAYMENT_PLAN_CHOICES)
+    intended_use    = models.TextField(
+        help_text="e.g. retail, office, service centre, etc.",
+        verbose_name="Intended Use of the Shopping Unit", blank=True, null=True,
+    )
+
+    # ── SECTION 4: AML Declaration (FAQ Q7) ─────────────────────────────────
+    aml_accepted         = models.BooleanField(default=False, verbose_name="AML/CFT Declaration Accepted")
+    subscriber_signature = models.ImageField(
+        upload_to='applications/signatures/',
+        blank=True, null=True,
+        help_text="Upload a scanned signature image"
+    )
+
+    # ── SECTION 5: Realtor Details ───────────────────────────────────────────
+    realtor_name  = models.CharField(max_length=200, blank=True)
+    realtor_email = models.EmailField(blank=True)
+    realtor_phone = models.CharField(max_length=20, blank=True)
+    realtor_cid   = models.CharField(max_length=100, blank=True, verbose_name="Realtor CID Number")
+
+    # ────────────────────────────────────────────────────────────────────────
+    class Meta:
+        ordering = ['-submitted_at']
+        verbose_name = 'Property Application'
+        verbose_name_plural = 'Property Applications'
+
+    def __str__(self):
+        return f"{self.get_full_name()} → {self.listing.title} ({self.get_status_display()})"
+
+    def get_full_name(self):
+        parts = [self.firstname, self.other_names, self.surname]
+        return ' '.join(p for p in parts if p).strip()
+
+    # Price lookup table matching FAQ Q3
+    UNIT_PRICES = {
+        ('ground', '3_month'): 40_000_000,
+        ('ground', '6_month'): 40_500_000,
+        ('first',  '3_month'): 37_000_000,
+        ('first',  '6_month'): 37_500_000,
+        ('second', '3_month'): 37_000_000,
+        ('second', '6_month'): 37_500_000,
+    }
+
+    def get_unit_price(self):
+        return self.UNIT_PRICES.get((self.floor_choice, self.payment_plan), 0)
+
+    def get_total_price(self):
+        return self.get_unit_price() * self.number_of_shops
+
+    @property
+    def formatted_total(self):
+        return f"₦{self.get_total_price():,.2f}"

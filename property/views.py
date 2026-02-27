@@ -1,7 +1,7 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Property, State, City, PropertyType
+from .models import Property, State, City, PropertyType, PropertyApplication
 from listings.models import SavedProperty
 import logging
 
@@ -152,47 +152,113 @@ def search_properties(request):
     return render(request, 'estate/search_results.html', context)
 
 
-
 def get_properties_details(request, slug):
     property_detail = get_object_or_404(Property, slug=slug)
+
+    # ── Saved property check ─────────────────────────────────────────────────
     saved_property = None
     if request.user.is_authenticated:
         try:
             saved_property = SavedProperty.objects.get(user=request.user, property=property_detail)
         except SavedProperty.DoesNotExist:
             saved_property = None
-        
+
+    # ── Application form setup ───────────────────────────────────────────────
+    from .forms import PropertyApplicationForm
+
+    # Check if user already submitted an application for this property
+    existing_application = None
+    if request.user.is_authenticated:
+        existing_application = PropertyApplication.objects.filter(
+            listing=property_detail,
+            applicant=request.user
+        ).first()
+
+    application_form = None
+    application_success = False
+
+    # ── POST: could be a save-property action OR an application submission ───
     if request.method == "POST":
-        property_saved = SavedProperty.objects.create(user=request.user, property=property_detail)
-        try:
-            return JsonResponse({
-                "status": "success",
-                "message": f"{property_detail.title} saved Successfully"
+
+        # ── POST: Save property (original behaviour, triggered by save button)
+        if 'save_property' in request.POST:
+            try:
+                SavedProperty.objects.create(user=request.user, property=property_detail)
+                return JsonResponse({
+                    "status": "success",
+                    "message": f"{property_detail.title} saved successfully"
+                })
+            except Exception as e:
+                return JsonResponse({
+                    "status": "error",
+                    "message": f"Error saving property: {str(e)}"
+                })
+
+        # ── POST: Application form submission ────────────────────────────────
+        elif 'submit_application' in request.POST:
+            application_form = PropertyApplicationForm(request.POST, request.FILES)
+            if application_form.is_valid():
+                application = application_form.save(commit=False)
+                application.listing = property_detail
+                if request.user.is_authenticated:
+                    application.applicant = request.user
+                application.save()
+                application_success = True
+                application_form = None  # Clear form after success
+            # If invalid, the form with errors falls through to the context below
+
+    # ── GET (or failed POST): build a blank / pre-filled form ────────────────
+    if application_form is None and not application_success:
+        initial = {}
+        # Pre-fill realtor fields if the logged-in user is an agent
+        if request.user.is_authenticated and hasattr(request.user, 'agent_profile'):
+            agent = request.user.agent_profile
+            initial = {
+                'realtor_name':  agent.user.get_full_name(),
+                'realtor_email': agent.user.email,
+                'realtor_phone': getattr(agent, 'phone_number', ''),
+                'realtor_cid':   getattr(agent, 'agent_code', ''),
+            }
+        # Pre-fill personal details if user is already logged in
+        if request.user.is_authenticated:
+            initial.update({
+                'email':     request.user.email,
+                'firstname': request.user.first_name,
+                'surname':   request.user.last_name,
             })
-        except Exception as e:
-            return JsonResponse({
-                "status": "error",
-                "message": f"Error Saving Property: {str(e)}"
-            })
-    else:
-        pass          
-            
-    # Track referral if 'ref' param is present
+        application_form = PropertyApplicationForm(initial=initial)
+
+    # ── Referral tracking ────────────────────────────────────────────────────
     ref_code = request.GET.get('ref')
     if ref_code:
         from agents.utils import store_property_referral
         store_property_referral(request, property_detail.id, ref_code)
-    
-    # Generate referral link for logged-in agents
+
+    # ── Generate referral link for logged-in agents ──────────────────────────
     referral_link = None
     if request.user.is_authenticated and hasattr(request.user, 'agent_profile'):
         from agents.utils import generate_property_referral_url
         referral_link = generate_property_referral_url(request, property_detail, request.user.agent_profile)
-        
+
     context = {
-        'property': property_detail,
-        'referral_link': referral_link,
-        'saved_property': saved_property is not None,
+        'property':              property_detail,
+        'referral_link':         referral_link,
+        'saved_property':        saved_property is not None,
+
+        # Application form context
+        'application_form':      application_form,
+        'existing_application':  existing_application,
+        'application_success':   application_success,
+
+        # Price reference table for the JS live calculator in the template
+        'price_table': {
+            'ground_3month':   40_000_000,
+            'ground_6month':   40_500_000,
+            'upper_3month':    37_000_000,
+            'upper_6month':    37_500_000,
+            'initial_deposit': 10_000_000,
+            'dev_doc_fee':      2_500_000,
+        },
     }
     return render(request, 'estate/property-details.html', context)
 
