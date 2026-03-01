@@ -171,7 +171,7 @@
 
   .search-fields {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
     gap: 14px;
     align-items: end;
   }
@@ -213,6 +213,12 @@
     box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
   }
 
+  .search-field select:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
   .search-field select option {
     background: #12121a;
     color: #F5F0E8;
@@ -249,6 +255,16 @@
   }
 
   /* ─── Search responsive ─── */
+  @media (max-width: 1200px) {
+    .search-fields {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .search-btn-wrap {
+      grid-column: 1 / -1;
+    }
+  }
+
   @media (max-width: 1100px) {
     .search-fields {
       grid-template-columns: 1fr 1fr;
@@ -395,7 +411,8 @@
    ============================================ */
   .hero-universe {
     position: relative;
-    margin-top: 80px;
+    margin-top: 0;
+    padding-top:80px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -3098,9 +3115,23 @@
         <!-- Hidden listing_type updated by JS when tab is clicked -->
         <input type="hidden" name="listing_type" id="listingTypeInput" value="buy">
 
+        <!-- ── State Select ── -->
         <div class="search-field">
-          <label for="location">Location</label>
-          <input id="location" name="location" type="text" placeholder="City, estate or area…" autocomplete="off">
+          <label for="state_type">State</label>
+          <select id="state_type" name="state_type">
+            <option value="">Any State</option>
+            {% for state in states %}
+            <option value="{{ state.id }}">{{ state.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- ── City Select (populated dynamically) ── -->
+        <div class="search-field">
+          <label for="city_type">City</label>
+          <select id="city_type" name="city_type" disabled>
+            <option value="">Select State First</option>
+          </select>
         </div>
 
         <div class="search-field">
@@ -3686,7 +3717,7 @@
           alt="Nestova Property Launch — Lekki Phase 1" loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Grand Property Launch — Lekki Phase 1</div>
-          <div class="event-date">June 2025</div>
+          <div class="event-date">November 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3696,7 +3727,7 @@
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">VIP Open House — Victoria Island Penthouse</div>
-          <div class="event-date">June 2024</div>
+          <div class="event-date">October 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3706,7 +3737,7 @@
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Nestova Investor Forum — Abuja Hilton</div>
-          <div class="event-date">September 2025</div>
+          <div class="event-date">September 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3716,7 +3747,7 @@
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Client Appreciation Night 2024</div>
-          <div class="event-date">August 2023</div>
+          <div class="event-date">August 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3726,7 +3757,7 @@
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">Ikoyi Premium Development Showcase</div>
-          <div class="event-date">July 2025</div>
+          <div class="event-date">July 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3736,7 +3767,7 @@
           loading="lazy">
         <div class="event-overlay">
           <div class="event-name">First-Time Buyer Workshop — Lagos</div>
-          <div class="event-date">August 2023</div>
+          <div class="event-date">June 2024</div>
         </div>
         <div class="event-expand"><i class="bi bi-arrows-fullscreen"></i></div>
       </div>
@@ -3878,7 +3909,7 @@
       <div style="text-align:center; margin-bottom:60px;" data-reveal>
         <div class="section-eyebrow"><span>Meet The Team</span></div>
         <h2 class="section-title" style="color: black;">Our Top <em>Excos</em></h2>
-        <p class="section-sub" style="max-width:620px; margin:0 auto; color:black;">
+        <p class="section-sub" style="max-width:620px; margin:0 auto; color: black;">
           The seasoned executives driving Nestova's vision forward — a team
           of proven leaders committed to redefining Nigerian real estate.
         </p>
@@ -4130,6 +4161,50 @@
     }
     muted = !muted;
   }
+
+  // ── State → City cascade ────────────────────────────────────────────────
+  (function () {
+    const stateSelect = document.getElementById('state_type');
+    const citySelect  = document.getElementById('city_type');
+
+    if (!stateSelect || !citySelect) return;
+
+    stateSelect.addEventListener('change', function () {
+      const stateId = this.value;
+
+      // Reset city dropdown immediately
+      citySelect.innerHTML = '<option value="">Loading…</option>';
+      citySelect.disabled = true;
+
+      if (!stateId) {
+        citySelect.innerHTML = '<option value="">Select State First</option>';
+        return;
+      }
+
+      fetch(`/api/get-cities/?state_id=${encodeURIComponent(stateId)}`)
+        .then(function (res) {
+          if (!res.ok) throw new Error('Network response was not ok');
+          return res.json();
+        })
+        .then(function (data) {
+          citySelect.innerHTML = '<option value="">Any City</option>';
+          if (data.cities && data.cities.length > 0) {
+            data.cities.forEach(function (city) {
+              const opt = document.createElement('option');
+              opt.value = city.id;
+              opt.textContent = city.name;
+              citySelect.appendChild(opt);
+            });
+            citySelect.disabled = false;
+          } else {
+            citySelect.innerHTML = '<option value="">No Cities Found</option>';
+          }
+        })
+        .catch(function () {
+          citySelect.innerHTML = '<option value="">Error loading cities</option>';
+        });
+    });
+  })();
 
   // ── Search tab switching ── wires hidden listing_type input
   document.querySelectorAll('.search-tab').forEach(tab => {
