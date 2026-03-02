@@ -285,6 +285,19 @@ def property_list(request):
             Q(city__name__icontains=query)
         )
 
+    state_id = request.GET.get('state_type')
+    if state_id:
+        properties_list = properties_list.filter(state_id=state_id)
+
+    listing_type = request.GET.get('listing_type')
+    if listing_type and listing_type not in ('', 'buy'):
+        properties_list = properties_list.filter(status__name__icontains=listing_type)    
+
+    # City filter (from homepage search form)
+    city_id = request.GET.get('city_type')
+    if city_id:
+        properties_list = properties_list.filter(city_id=city_id)   
+
     # Property Type
     prop_type = request.GET.get('type')
     if prop_type and prop_type != 'All Types':
